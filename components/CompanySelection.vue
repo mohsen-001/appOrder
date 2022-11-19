@@ -108,10 +108,4 @@ export default {
     scrollbar-width: none;
     /* Firefox */
 }
-
-input {
-    width: 300px;
-    height: 50px;
-    border-radius: 50px;
-  }
 </style>

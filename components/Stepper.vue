@@ -19,8 +19,8 @@
       </div>
   
       <div>
-        <button style="margin-top: 100px">Prev</button>
-        <button @click="nextStep" style="margin-top: 100px">Next</button>
+        <!-- <button style="margin-top: 100px">Prev</button>
+        <button @click="nextStep" style="margin-top: 100px">Next</button> -->
       </div>
     </div>
   </template>
@@ -35,7 +35,6 @@
           { name: "Step 2", status: null },
           { name: "Step 3", status: null },
           { name: "Step 4", status: null },
-          { name: "Step 5", status: null },
         ],
         activeStepper: 0,
         // doneStepper: 0,

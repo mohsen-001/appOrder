@@ -1,65 +1,33 @@
 <template>
   <div>
-    <div id="container">
+    <div id="containerOne">
+      <div class="btm_pge">
+        <b-button variant="primary" class="btn">Next</b-button>
+      </div>
       <div id="app_container">
         <!-- lgoin Cover -->
 
         <div class="login_cover">
-          <img
-            class="login_cover_img"
-            src="../static/ara-char.svg"
-            alt="aracbic person"
-            width="350px"
-          />
+          <img class="page_head_img" src="../static/head-img.svg" alt="aracbic person" width="200px" />
         </div>
 
         <!-- login container -->
 
-        <div class="login_container">
-          <div class="login_container_head">
-            <h2>Welcome</h2>
-            <p>Login to continue.</p>
+        <div class="page_container">
+
+          <div class="page_stepper">
+            <div class="stepper_area p40">
+              <Stepper />
+            </div>
+          </div>
+          
+
+          <div class="form_area">
+            <StepOne />
+
           </div>
 
-          <div class="login_container-form">
-            <form action="/">
 
-              <b-form-group
-                id="input-group-1"
-                label="Username"
-                label-for="input-1"
-                >
-                  <b-form-input
-                    id="input-1"
-                    v-model="form.username"
-                    type="text"
-                    placeholder="Username"
-                    required
-                  >
-                  </b-form-input>
-              </b-form-group>
-
-              <b-form-group
-                id="input-group-2"
-                label="Password"
-                label-for="input-2"
-                >
-                  <b-form-input
-                    id="input-2"
-                    v-model="form.password"
-                    type="password"
-                    placeholder="Password"
-                    required
-                  >
-                  </b-form-input>
-              </b-form-group>
-
-            
-
-              <b-button variant="primary" class="cus-btn">Primary</b-button>
-                
-            </form>
-          </div>
         </div>
       </div>
     </div>
@@ -67,103 +35,96 @@
 </template>
 
 <script>
+import CountrySelection from '../components/CountrySelection.vue';
+
 export default {
-  name: "IndexPage",
+  name: "StepOnePage",
   data() {
     return {
+      checked: false,
       form: {
-        username: "",
-        password: "",
+        link: "",
       }
     }
-  }
-};
+  },
+
+}
 </script>
 
-<style scoped>
-/* :root {
-  --pri-color: #115598;
-} */
 
+<style scoped>
 body {
   font-family: "Poppins", sans-serif;
 }
 
-#container {
+#containerOne {
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
 }
 
-.cus-btn {
+/* .cus-btn {
   padding: 15px;
   width: 100%;
   border-radius: 50px;
   margin-top: 10px;
-  background-color: #115598;
+} */
+
+.btm_pge {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background-color: white;
+  padding: 10px;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  box-shadow: 0px -3px 6px -3px rgba(0, 0, 0, 0.3);
+  /* -webkit-box-shadow: 1px -4px 5px -8px rgba(0,0,0,0.11);
+  -moz-box-shadow: 1px -4px 5px -8px rgba(0,0,0,0.11); */
 }
 
-/* for mobile size */
-
-@media screen and (max-width: 767px) {
-  #app_container {
-    width: 600px;
-    height: 100vh;
-    background-color: #115598 !important;
-  }
-
-  .login_cover {
-    width: 100%;
-    height: 35%;
-    position: relative;
-  }
-
-  .login_cover_img {
-    position: absolute;
-    bottom: -35px;
-  }
-
-  .login_container {
-    background-color: white;
-    width: 100%;
-    height: 65%;
-    border-top-right-radius: 81px;
-  }
-
-  .login_container_head {
-    text-align: center;
-    padding: 20px;
-  }
-
-  .login_container-form {
-    margin-top: 40px;
-    display: flex;
-    justify-content: center;
-    /* align-items: center; */
-  }
-
-  input {
-    width: 300px;
-    height: 50px;
-    border-radius: 50px;
-  }
-
-  
-  .login_container_head{
-    height: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .login_container_head h2{
-    font-weight: 900;
-    color: #115598;
-  }
+#app_container {
+  width: 600px;
+  height: 100vh;
+  background-color: #115598 !important;
 }
 
+.form_area {
+  margin-top: 40px;
+  height: 80%;
+  overflow: scroll;
+  /* padding: 30px; */
+}
+
+.login_cover {
+  width: 100%;
+  height: 12%;
+  position: relative;
+}
+
+.page_head_img {
+  position: absolute;
+  bottom: 0px;
+  right: 20px;
+
+}
+
+.page_container {
+  background-color: white;
+  width: 100%;
+  height: 88%;
+  border-top-left-radius: 81px;
+  padding: 20px 0;
+}
+
+.p40 {
+    padding: 0 40px;
+}
+
+.m20 {
+    margin-top: 20px;
+}
 
 
 
