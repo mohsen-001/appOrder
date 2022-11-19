@@ -31,10 +31,10 @@
     data() {
       return {
         steppers: [
-          { name: "Step 1", status: "active_stepper" },
-          { name: "Step 2", status: null },
-          { name: "Step 3", status: null },
-          { name: "Step 4", status: null },
+          { name: "Source", status: "active_stepper" },
+          { name: "Customer", status: null },
+          { name: "Order", status: null },
+          { name: "Invoice", status: null },
         ],
         activeStepper: 0,
         // doneStepper: 0,
@@ -115,7 +115,7 @@
     height: 40px;
     background-color: white;
     border-radius: 20px;
-    border: 5px solid rgb(203, 203, 203);
+    border: 5px solid #E9E9E9;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -143,7 +143,7 @@
     position: absolute;
     width: 100%;
     height: 3px;
-    background-color: rgb(203, 203, 203);
+    background-color: #E9E9E9;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -152,7 +152,7 @@
     position: absolute;
     /* width: 80%; */
     height: 3px;
-    background-color: red;
+    background-color: #115598;
     top: 50%;
     left: 0;
     transform: translateY(-50%);
@@ -165,23 +165,24 @@
     color: rgb(203, 203, 203);
     width: 80px;
     text-align: center;
+    font-size: 0.9rem;
   }
   .active_stepper {
-    border-color: red;
+    border-color: #115598;
   }
   .active_stepper div {
     transform: scale(4);
-    background-color: red;
+    background-color: #115598;
   }
   .done_stepper {
-    border-color: red;
+    border-color: #115598;
   }
   .done_stepper div {
     transform: scale(8);
-    background-color: red;
+    background-color: #115598;
   }
   .active_text {
-    color: red !important;
+    color: #115598 !important;
     font-weight: bold;
   }
   </style>

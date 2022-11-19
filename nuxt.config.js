@@ -1,6 +1,9 @@
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
+  server: {
+    host: "192.168.3.26"
+  },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -31,7 +34,10 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
-
+  
+  axios: {
+    baseUrl: "http://192.168.3.26:3000",
+  },
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 

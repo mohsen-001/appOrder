@@ -13,13 +13,6 @@
                 </b-form-input>
             </b-form-group>
         </div>
-
-        <div class="p40 m20">
-            <b-form-group id="input-group-1" label="Add Link" label-for="input-1">
-                <b-form-input id="input-1" v-model="form.link" type="text" placeholder="Link" required>
-                </b-form-input>
-            </b-form-group>
-        </div>
     </div>
 </template>
 

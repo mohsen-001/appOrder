@@ -2,12 +2,13 @@
   <div>
     <div id="containerOne">
       <div class="btm_pge">
-        <b-button variant="primary" class="btn">Next</b-button>
+        <b-button @click="nextStep" pill variant="primary" class="btn w-100">{{ currentStepper == 3? "Download":"Next" }}</b-button>
       </div>
       <div id="app_container">
         <!-- lgoin Cover -->
 
         <div class="login_cover">
+          <img class="back" src="../static/arrow-back.svg" alt="back">
           <img class="page_head_img" src="../static/head-img.svg" alt="aracbic person" width="200px" />
         </div>
 
@@ -17,13 +18,17 @@
 
           <div class="page_stepper">
             <div class="stepper_area p40">
-              <Stepper />
+              <Stepper ref="stepper" />
             </div>
           </div>
-          
+
 
           <div class="form_area">
-            <StepOne />
+
+              <StepOne v-show="currentStepper == 0"/>
+              <StepTwo v-show="currentStepper == 1"/>
+              <StepThree v-show="currentStepper == 2"/>
+              <StepFour v-show="currentStepper == 3"/>
 
           </div>
 
@@ -45,17 +50,54 @@ export default {
       form: {
         link: "",
       }
+      ,
+      currentStepper: 0,
     }
   },
+  methods: {
+    nextStep() {
+      if (this.currentStepper >= 3) {
+        this.currentStepper = 0;
+        this.$refs.stepper.nextStep()
+        return
+      }else{
+        this.currentStepper++;
+        this.$refs.stepper.nextStep()
+      }
+      // console.log(this.currentStepper);
+    },
+  }
 
 }
 </script>
 
 
 <style scoped>
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+  
+}
+
 body {
   font-family: "Poppins", sans-serif;
 }
+
+.back{
+  position: absolute;
+  top: 50%;
+  left: 40px;
+  transform: translateY(-50%);
+  width: 20px;
+}
+
 
 #containerOne {
   width: 100vw;
@@ -80,6 +122,7 @@ body {
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
   box-shadow: 0px -3px 6px -3px rgba(0, 0, 0, 0.3);
+  z-index: 10;
   /* -webkit-box-shadow: 1px -4px 5px -8px rgba(0,0,0,0.11);
   -moz-box-shadow: 1px -4px 5px -8px rgba(0,0,0,0.11); */
 }
@@ -119,11 +162,11 @@ body {
 }
 
 .p40 {
-    padding: 0 40px;
+  padding: 0 40px;
 }
 
 .m20 {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 
