@@ -33,7 +33,9 @@ export default {
   css: ['~/assets/css/customStyle.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    "~/plugins/lottie-vue-player.client.js"
+  ],
   
   axios: {
     baseUrl: "http://192.168.3.26:3000",
@@ -43,6 +45,14 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [],
+
+  // script: [
+  //   {
+  //     src: "https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js",
+  //   }
+  // ],
+
+
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
