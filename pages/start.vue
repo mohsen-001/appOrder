@@ -141,8 +141,7 @@ export default {
   validations: {
     form: {
       landing_link: {
-        // url,
-        required,
+        url,
       },
       name: {
         required,
