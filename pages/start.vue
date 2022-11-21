@@ -56,10 +56,26 @@
             </div>
 
             <div class="form_area">
-              <StepOne v-show="currentStepper == 0" ref="step0" />
-              <StepTwo v-show="currentStepper == 1" ref="step1" />
-              <StepThree v-show="currentStepper == 2" ref="step2" />
-              <StepFour v-show="currentStepper == 3" ref="step3" />
+              <StepOne
+                v-show="currentStepper == 0"
+                ref="step0"
+                :form="$v.form"
+              />
+              <StepTwo
+                v-show="currentStepper == 1"
+                ref="step1"
+                :form="$v.form"
+              />
+              <StepThree
+                v-show="currentStepper == 2"
+                ref="step2"
+                :form="$v.form"
+              />
+              <StepFour
+                v-show="currentStepper == 3"
+                ref="step3"
+                :form="$v.form"
+              />
             </div>
           </div>
 
@@ -74,7 +90,7 @@
 
 <script>
 import CountrySelection from "../components/CountrySelection.vue";
-import { required, minLength } from "vuelidate/lib/validators";
+import { required, minLength, url } from "vuelidate/lib/validators";
 
 export default {
   name: "StepOnePage",
@@ -90,13 +106,43 @@ export default {
       formInsertion: true,
       done: false,
       invalidSteps: [],
+      from: {
+        projectname: null,
+        project_id: null,
+        source: null,
+        landing_link: null,
+        phone_number: null,
+        city: null,
+        area: null,
+        address_id: null,
+        address: null,
+        products: [
+          {
+            id: 1,
+            product_code: null,
+            product_image: null,
+            product_quantity: null,
+            product_size: null,
+            product_color: "#FF0000FF",
+          },
+        ],
+
+        price: 0,
+        send_brochure: true,
+        with_tax: true,
+        delay: false,
+        start_date: null,
+        note: null,
+        selectedAddress: null,
+        name: null,
+      },
     };
   },
   validations: {
     form: {
-      link: {
+      landing_link: {
+        // url,
         required,
-        minLength: minLength(3),
       },
       name: {
         required,
@@ -123,6 +169,7 @@ export default {
   methods: {
     nextStep() {
       let isvlaid = this.$refs["step" + this.currentStepper].validate();
+
       if (isvlaid) {
         if (this.currentStepper >= 3) {
           this.currentStepper = 0;

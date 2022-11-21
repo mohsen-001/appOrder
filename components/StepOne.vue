@@ -13,18 +13,15 @@
       <b-form-group id="input-group-1" label="Add Link" label-for="input-1">
         <b-form-input
           id="input-1"
-          v-model="$v.form.link.$model"
+          v-model="form.landing_link.$model"
           type="text"
           placeholder="Link"
-          :state="validateState('link')"
+          :state="validateState('landing_link')"
           required
-          @blur="$v.form.link.$touch"
+          @blur="form.landing_link.$touch"
         >
         </b-form-input>
-        <b-form-invalid-feedback id="input-1-live-feedback"
-          >This is a required field and must be at least 3
-          characters.</b-form-invalid-feedback
-        >
+        <b-form-invalid-feedback>Invalid link url</b-form-invalid-feedback>
       </b-form-group>
     </div>
   </div>
@@ -36,40 +33,23 @@ import { required, minLength } from "vuelidate/lib/validators";
 export default {
   name: "StepOne",
 
-  validations: {
-    form: {
-      link: {
-        required,
-        minLength: minLength(3),
-      },
-    },
+  props: {
+    form: Object,
   },
   data() {
     return {
       checked: false,
-      form: {
-        link: "",
-      },
     };
   },
   methods: {
     validateState(name) {
-      const { $dirty, $error } = this.$v.form[name];
+      const { $dirty, $error } = this.form[name];
       return $dirty ? !$error : null;
     },
-    resetForm() {
-      this.form = {
-        name: null,
-        food: null,
-      };
 
-      this.$nextTick(() => {
-        this.$v.$reset();
-      });
-    },
     validate() {
-      this.$v.form.$touch();
-      if (this.$v.form.$anyError) {
+      this.form.landing_link.$touch();
+      if (this.form.landing_link.$invalid) {
         return false;
       }
       return true;
