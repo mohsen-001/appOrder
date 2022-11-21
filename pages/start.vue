@@ -2,22 +2,52 @@
   <div>
     <div id="containerOne">
       <div class="btm_pge">
-        <b-button @click="nextStep" pill variant="primary" class="btn w-100" v-show="currentStepper < 3">Next</b-button>
-        <b-button @click="download" pill variant="primary" class="btn w-100" v-show="currentStepper == 3">Download PDF</b-button>
-        <b-button @click="backHome" pill variant="primary" class="btn w-100" v-show="downloaded">Back to Home</b-button>
+        <b-button
+          @click="nextStep"
+          pill
+          variant="primary"
+          class="btn w-100"
+          v-show="currentStepper < 3"
+          >Next</b-button
+        >
+        <b-button
+          @click="download"
+          pill
+          variant="primary"
+          class="btn w-100"
+          v-show="currentStepper == 3"
+          >Download PDF</b-button
+        >
+        <b-button
+          @click="backHome"
+          pill
+          variant="primary"
+          class="btn w-100"
+          v-show="downloaded"
+          >Back to Home</b-button
+        >
       </div>
       <div id="app_container">
         <!-- lgoin Cover -->
 
         <div class="login_cover">
-          <img class="back" src="../static/arrow-back.svg" alt="back" v-show="currentStepper !== 0">
-          <img class="page_head_img" src="../static/head-img.svg" alt="aracbic person" width="200px" />
+          <img
+            class="back"
+            src="../static/arrow-back.svg"
+            alt="back"
+            v-show="currentStepper !== 0"
+          />
+          <img
+            class="page_head_img"
+            src="../static/head-img.svg"
+            alt="aracbic person"
+            width="200px"
+          />
         </div>
 
         <!-- login container -->
 
         <div class="page_container">
-
           <div class="h-100" v-if="formInsertion">
             <div class="page_stepper">
               <div class="stepper_area p40">
@@ -26,17 +56,16 @@
             </div>
 
             <div class="form_area">
-              <StepOne v-show="currentStepper == 0" />
-              <StepTwo v-show="currentStepper == 1" />
-              <StepThree v-show="currentStepper == 2" />
-              <StepFour v-show="currentStepper == 3" />
+              <StepOne v-show="currentStepper == 0" ref="step0" />
+              <StepTwo v-show="currentStepper == 1" ref="step1" />
+              <StepThree v-show="currentStepper == 2" ref="step2" />
+              <StepFour v-show="currentStepper == 3" ref="step3" />
             </div>
           </div>
 
           <div class="h-100" v-if="done">
             <Done />
           </div>
-
         </div>
       </div>
     </div>
@@ -44,7 +73,8 @@
 </template>
 
 <script>
-import CountrySelection from '../components/CountrySelection.vue';
+import CountrySelection from "../components/CountrySelection.vue";
+import { required, minLength } from "vuelidate/lib/validators";
 
 export default {
   name: "StepOnePage",
@@ -53,60 +83,91 @@ export default {
       checked: true,
       form: {
         link: "",
-      }
-      ,
+      },
       currentStepper: 0,
       // isInvoice: false,
       downloaded: false,
       formInsertion: true,
-      done: false
-    }
+      done: false,
+      invalidSteps: [],
+    };
+  },
+  validations: {
+    form: {
+      link: {
+        required,
+        minLength: minLength(3),
+      },
+      name: {
+        required,
+        minLength: minLength(3),
+      },
+      number: {
+        required,
+        minLength: minLength(3),
+      },
+      city: {
+        required,
+        minLength: minLength(3),
+      },
+      area: {
+        required,
+        minLength: minLength(3),
+      },
+      address: {
+        required,
+        minLength: minLength(3),
+      },
+    },
   },
   methods: {
     nextStep() {
-      if (this.currentStepper >= 3) {
-        this.currentStepper = 0;
-        this.$refs.stepper.nextStep()
-        return
+      let isvlaid = this.$refs["step" + this.currentStepper].validate();
+      if (isvlaid) {
+        if (this.currentStepper >= 3) {
+          this.currentStepper = 0;
+          this.$refs.stepper.nextStep();
+          return;
+        } else {
+          this.currentStepper++;
+          this.$refs.stepper.nextStep();
+        }
       } else {
-        this.currentStepper++;
-        this.$refs.stepper.nextStep()
+        this.invalidSteps.push(this.currentStepper);
       }
+
       // console.log(this.currentStepper);
     },
     prevStep() {
       if (this.currentStepper == 0) {
-        return
+        return;
       } else {
         this.currentStepper--;
-        this.$refs.stepper.prevStep()
+        this.$refs.stepper.prevStep();
       }
 
       // console.log('hey');
     },
 
-    download(e){
+    download(e) {
       this.formInsertion = false;
       this.downloaded = true;
       this.done = true;
       // console.log(e.target);
-      e.target.style.display = 'none';
+      e.target.style.display = "none";
     },
 
-    backHome(){
+    backHome() {
       this.currentStepper = 0;
       this.formInsertion = true;
       this.done = false;
       this.downloaded = false;
     },
-  }
-
-}
+  },
+};
 </script>
 
-
 <style scoped>
-
 body {
   font-family: "Poppins", sans-serif;
 }
@@ -118,7 +179,6 @@ body {
   transform: translateY(-50%);
   width: 20px;
 }
-
 
 #containerOne {
   width: 100vw;
@@ -171,7 +231,6 @@ body {
   position: absolute;
   bottom: 0px;
   right: 20px;
-
 }
 
 .page_container {
@@ -189,17 +248,6 @@ body {
 .m20 {
   margin-top: 20px;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 @media screen and (max-width: 768px) {
   #app_container {
