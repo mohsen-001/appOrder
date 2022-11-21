@@ -6,7 +6,7 @@
                     <b-form-input id="input-1" v-model="stepThreeform.productName" type="text"
                         placeholder="Product name" required>
                     </b-form-input>
-                    <b-button @click="addProduct" pill variant="primary" class="add_btn ml-2"><span>+</span></b-button>
+                    <b-button @click="addProduct(product)" pill variant="primary" class="add_btn ml-2"><span>+</span></b-button>
                 </div>
             </b-form-group>
         </div>
@@ -26,12 +26,12 @@
             </b-form-group>
         </div>
         <div class="p40 m20 ">
-            <b-form-checkbox v-model="checked" switch size="lg">Price Per Picture</b-form-checkbox>
+            <b-form-checkbox v-model="showPrice" switch size="lg">Price Per Picture</b-form-checkbox>
         </div>
 
         <div class="m20 product_holder d-flex justify-content-start">
             <div class="wrapper">
-                <Product class="mr-2" v-for="(item, index) in stepThreeform.products" :key="index" />
+                <Product :showPrice="showPrice" class="mr-2" v-for="(item, index) in stepThreeform.products" :key="index" />
             </div>
         </div>
 
@@ -88,12 +88,22 @@ export default {
             },
             checked: false,
             isDelay: false,
+            showPrice: false,
 
         }
     },
     methods: {
-        addProduct() {
-            this.stepThreeform.products.push({});
+        product(){
+            this.stepThreeform.products.push({});   ;
+            // console.log('first');
+        },
+        async addProduct(callback) {
+            // console.log('second');
+            
+            await callback();
+            let elem = document.querySelector(".product_holder");
+            let elemW = elem.scrollWidth;
+            elem.scrollTo(elemW, 0); 
         }
     }
 
@@ -105,18 +115,18 @@ export default {
 } */
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease;
 }
 
 .v-enter-from,
 .v-leave-to {
-  opacity: 0;
+    opacity: 0;
 }
 
 
-.custm .add_btn {
+/* .custm .add_btn {
     margin-left: 10px;
-}
+} */
 
 .p40 {
     padding: 0 40px;
@@ -129,6 +139,7 @@ export default {
 .product_holder {
     overflow: scroll;
     padding-left: 40px;
+    scroll-behavior: smooth;
 }
 
 .product_holder .wrapper {

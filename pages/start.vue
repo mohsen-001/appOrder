@@ -137,6 +137,7 @@ body {
 .btm_pge {
   position: fixed;
   width: 100%;
+  max-width: 820px;
   bottom: 0;
   background-color: white;
   padding: 10px;
@@ -149,7 +150,7 @@ body {
 }
 
 #app_container {
-  width: 600px;
+  width: 820px;
   height: 100vh;
   background-color: #115598 !important;
 }
@@ -157,7 +158,8 @@ body {
 .form_area {
   margin-top: 40px;
   height: 80%;
-  overflow: scroll;
+  overflow: auto;
+  padding-bottom: 20px;
   /* padding: 30px; */
 }
 

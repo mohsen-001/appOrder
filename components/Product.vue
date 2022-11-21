@@ -19,7 +19,7 @@
                 <span>+</span></b-button>
 
         </div>
-        <div class="p40 m20">
+        <div class="p40 m20" v-show="showPrice">
             <b-form-input v-model="productValue.price" pill id="input-1 " class="text-center" type="text"
                 placeholder="Price" required>
             </b-form-input>
@@ -30,6 +30,7 @@
 
 <script>
 export default {
+    props: ['showPrice'],
     data() {
         return {
             productValue: {

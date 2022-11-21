@@ -104,15 +104,13 @@ body {
 .cus-btn {
   padding: 15px;
   width: 100%;
+  /* max-width: 600px; */
   border-radius: 50px;
   margin-top: 10px;
   /* background-color: #115598; */
 }
 
-/* for mobile size */
-
-@media screen and (max-width: 767px) {
-  #app_container {
+#app_container {
     width: 600px;
     height: 100vh;
     background-color: #115598 !important;
@@ -167,7 +165,12 @@ body {
     font-weight: 900;
     color: #115598;
   }
-}
+
+/* for mobile size */
+
+/* @media screen and (min-width: 767px) {
+ 
+} */
 
 
 
