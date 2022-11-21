@@ -104,10 +104,12 @@ export default {
             let elem = document.querySelector(".product_holder");
             let elemW = elem.scrollWidth;
             elem.scrollTo(elemW, 0); 
-        }
+        }, 
     }
-
 }
+
+
+
 </script>
 
 <style scoped>
