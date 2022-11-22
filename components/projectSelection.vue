@@ -41,19 +41,19 @@
     <div class="country" @scroll="touchScroll">
       <div class="slide_wrpr">
         <div
-          @click="selectCountry(index)"
+          @click="handleClick(item, index)"
           class="item mr-3"
-          v-for="(items, index) in countries"
+          v-for="(item, index) in items"
           :key="index"
         >
           <div
-            class="flag"
-            :class="index == selected_country ? 'selected' : ''"
+            class="flag p-5"
+            :class="index == selected_item ? 'selected' : ''"
           >
-            <img :src="countries[index].flag" alt="image" />
+            <img src="/logos/fairy.png" alt="image" />
           </div>
-          <p :class="index == selected_country ? 'country_name' : ''">
-            {{ countries[index].name }}
+          <p :class="index == selected_item ? 'country_name' : ''">
+            {{ item.name }}
           </p>
         </div>
       </div>
@@ -64,23 +64,39 @@
 <script>
 export default {
   name: "CountrySelection",
+  props: {
+    items: Array,
+    itemValue: String,
+  },
   data() {
     return {
-      countries: [
-        { name: "Afghanistan", flag: "https://tinyurl.com/4b8wjs3p" },
-        { name: "Iran", flag: "https://tinyurl.com/4b8wjs3p" },
-        { name: "America", flag: "https://tinyurl.com/4b8wjs3p" },
-        { name: "United State", flag: "https://tinyurl.com/4b8wjs3p" },
-      ],
-      selected_country: null,
+      // items: [
+      //   { name: "Afghanistan", flag: "https://tinyurl.com/4b8wjs3p" },
+      //   { name: "Iran", flag: "https://tinyurl.com/4b8wjs3p" },
+      //   { name: "America", flag: "https://tinyurl.com/4b8wjs3p" },
+      //   { name: "United State", flag: "https://tinyurl.com/4b8wjs3p" },
+      // ],
+      selected_item: null,
       opacityL: 0.2,
       opacityR: 1,
+      value: null,
     };
   },
 
   methods: {
+    handleClick(item, index) {
+      this.selected_item = index;
+      if (this.value == item.id) {
+        this.$emit("input", "");
+      } else {
+        this.$emit("input", item.id);
+      }
+
+      // return selected record
+      this.$root.$emit("msItem", item);
+    },
     selectCountry(index) {
-      this.selected_country = index;
+      this.selected_item = index;
       console.log(index);
     },
 
@@ -163,7 +179,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 15px;
   box-shadow: 0 0 20px rgba(128, 128, 128, 0.23);
 }
 
@@ -171,8 +187,8 @@ export default {
   width: 150px;
 }
 
-.selected.flag {
-  border: 3px solid #007bff;
+.selected {
+  border: 2px solid #007bff;
 }
 
 .country_name {
@@ -184,6 +200,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .item p {

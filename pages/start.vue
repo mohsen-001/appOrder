@@ -105,9 +105,8 @@ export default {
       done: false,
       invalidSteps: [],
       form: {
-        projectname: null,
-        project_id: null,
-        source: null,
+        project: null,
+        no_ad_order: false,
         landing_link: null,
         number: null,
         city: null,
@@ -161,6 +160,8 @@ export default {
         required,
         minLength: minLength(3),
       },
+      project: { required },
+      no_ad_order: {},
     },
   },
   methods: {
