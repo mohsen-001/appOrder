@@ -2,7 +2,7 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
   server: {
-    host: "192.168.3.26"
+    // host: "192.168.3.26",
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -30,15 +30,20 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['~/assets/css/customStyle.css'],
+  css: ["~/assets/css/customStyle.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    "~/plugins/lottie-vue-player.client.js"
+    "~/plugins/lottie-vue-player.client.js",
+    {
+      src: "~/plugins/Vuelidate.js",
+      mode: "all",
+    },
   ],
-  
+
   axios: {
-    baseUrl: "http://192.168.3.26:3000",
+    baseURL: "http://localhost:8000/api/v1",
+    // baseUrl: "http://192.168.3.26:3000",
   },
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -51,8 +56,6 @@ export default {
   //     src: "https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js",
   //   }
   // ],
-
-
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
