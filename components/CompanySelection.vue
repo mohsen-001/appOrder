@@ -71,9 +71,9 @@ export default {
     return {
       companies: [
         { name: "Fairyshopping", logo: "/logos/fairy.png" },
-        { name: "Flaminstore", logo: "/logos/fairy.png" },
-        { name: "UAE Shopix", logo: "/logos/fairy.png" },
-        { name: "Oredoh", logo: "/logos/fairy.png" },
+        { name: "Flaminstore", logo: "/logos/flaminstore.png" },
+        { name: "UAE Shopix", logo: "/logos/oredoh.png" },
+        { name: "Oredoh", logo: "/logos/teebalhoor.png" },
       ],
       selected_company: null,
       opacityL: 0.2,

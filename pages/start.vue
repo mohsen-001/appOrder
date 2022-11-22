@@ -190,7 +190,10 @@ export default {
           centered: true
         })
           .then(value => {
-            this.log_out = value
+            this.log_out = value;
+            if (value) {
+              this.$router.push('/')
+            }
           })
           .catch(err => {
             // An error occurred
@@ -205,11 +208,6 @@ export default {
 body {
   font-family: "Poppins", sans-serif;
 }
-
-.modal-open::v-deep .modal-content footer .btn {
-  padding: 10px !important;
-}
-
 
 .logout_btn {
   width: 66px;
@@ -253,13 +251,6 @@ body {
   justify-content: center;
 }
 
-/* .cus-btn {
-  padding: 15px;
-  width: 100%;
-  border-radius: 50px;
-  margin-top: 10px;
-} */
-
 .btm_pge {
   position: fixed;
   width: 100%;
@@ -271,8 +262,6 @@ body {
   border-top-right-radius: 40px;
   box-shadow: 0px -3px 6px -3px rgba(0, 0, 0, 0.3);
   z-index: 10;
-  /* -webkit-box-shadow: 1px -4px 5px -8px rgba(0,0,0,0.11);
-  -moz-box-shadow: 1px -4px 5px -8px rgba(0,0,0,0.11); */
 }
 
 #app_container {

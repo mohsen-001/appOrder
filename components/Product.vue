@@ -3,8 +3,8 @@
     <div class="product_container">
         <div>
             <div class="product_img">
-                <img src="https://img.freepik.com/premium-psd/cosmetic-product-packaging-mockup_1150-40282.jpg?w=2000"
-                    alt="">
+                <img src="https://img.freepik.com/premium-psd/cosmetic-product-packaging-mockup_1150-40282.jpg?w=2000" alt="">
+                <div @click="$emit('rmBtn')" class="position-absolute d-flex justify-content-center align-items-center"><i class="fa-solid fa-xmark"></i></div>
             </div>
             <span class="mt-2 d-block">Flora Dress</span>
         </div>
@@ -106,6 +106,18 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+}
+
+.product_img > div {
+    top: 8px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    cursor: pointer;
 }
 
 .product_img img {
