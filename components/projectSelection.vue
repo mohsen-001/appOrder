@@ -1,7 +1,7 @@
 <template>
-  <div class="country_container">
+  <div class="project_container">
     <div class="slide_label d-flex justify-content-between z-10">
-      <span class="label_text">Country</span>
+      <span class="label_text">company</span>
       <div class="arrow">
         <svg
           :style="{ opacity: opacityL }"
@@ -38,23 +38,25 @@
         </svg>
       </div>
     </div>
-    <div class="country" @scroll="touchScroll">
-      <div class="slide_wrpr">
-        <div
-          @click="handleClick(item, index)"
-          class="item mr-3"
-          v-for="(item, index) in items"
-          :key="index"
-        >
+    <div class="pr-5 pl-5">
+      <div class="project" @scroll="touchScroll">
+        <div class="slide_wrpr">
           <div
-            class="flag p-5"
-            :class="index == selected_item ? 'selected' : ''"
+            @click="handleClick(item, index)"
+            class="item mr-3"
+            v-for="(item, index) in items"
+            :key="index"
           >
-            <img src="/logos/fairy.png" alt="image" />
+            <div
+              class="flag p-5"
+              :class="index == selected_item ? 'selected' : ''"
+            >
+              <img src="/logos/fairy.png" alt="image" />
+            </div>
+            <p :class="index == selected_item ? 'project_name' : ''">
+              {{ item.name }}
+            </p>
           </div>
-          <p :class="index == selected_item ? 'country_name' : ''">
-            {{ item.name }}
-          </p>
         </div>
       </div>
     </div>
@@ -63,7 +65,7 @@
 
 <script>
 export default {
-  name: "CountrySelection",
+  name: "projectSelection",
   props: {
     items: Array,
     itemValue: String,
@@ -95,13 +97,13 @@ export default {
       // return selected record
       this.$root.$emit("msItem", item);
     },
-    selectCountry(index) {
+    selectproject(index) {
       this.selected_item = index;
       console.log(index);
     },
 
     scrollRight() {
-      let elem = document.querySelector(".country");
+      let elem = document.querySelector(".project");
       let elemW = elem.scrollWidth;
       let scrollBottom = elemW - elem.scrollLeft - elem.clientWidth;
       elem.scrollLeft += 180;
@@ -113,7 +115,7 @@ export default {
     },
 
     scrollLeft() {
-      let elem = document.querySelector(".country");
+      let elem = document.querySelector(".project");
       let elemW = elem.scrollWidth;
       let scrollBottom = elemW - elem.scrollLeft - elem.clientWidth;
       elem.scrollLeft -= 180;
@@ -125,7 +127,7 @@ export default {
     },
 
     touchScroll() {
-      let elem = document.querySelector(".country");
+      let elem = document.querySelector(".project");
       let elemW = elem.scrollWidth;
       let scrollBottom = elemW - elem.scrollLeft - elem.clientWidth;
 
@@ -151,27 +153,28 @@ export default {
   margin: 0 40px;
 }
 
-.country_container .label_text {
+.project_container .label_text {
   font-size: 1.2rem;
   font-weight: bold;
   opacity: 0.8;
+  margin: 10px;
 }
 
-.country {
+.project {
   overflow: scroll;
-  padding-top: 1rem;
-  padding-left: 40px;
+
+  padding: 2px;
   scroll-behavior: smooth;
 }
 
-.country .slide_wrpr {
+.project .slide_wrpr {
   width: auto;
   display: flex;
   justify-content: start;
   align-items: center;
 }
 
-.country .flag {
+.project .flag {
   width: 90px;
   height: 90px;
   background-color: white;
@@ -183,15 +186,15 @@ export default {
   box-shadow: 0 0 20px rgba(128, 128, 128, 0.23);
 }
 
-.country .flag img {
-  width: 150px;
+.project .flag img {
+  width: 60px;
 }
 
 .selected {
   border: 2px solid #007bff;
 }
 
-.country_name {
+.project_name {
   color: #007bff;
 }
 
@@ -209,12 +212,12 @@ export default {
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-.country::-webkit-scrollbar {
+.project::-webkit-scrollbar {
   display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
-.country {
+.project {
   -ms-overflow-style: none;
   /* IE and Edge */
   scrollbar-width: none;

@@ -1,9 +1,9 @@
 <template>
   <div>
     <CountrySelection />
-    <CompanySelection />
 
     <projectSelection :items="projects" v-model="form.project.$model" />
+
     <div class="p40">
       <b-form-checkbox
         class="cus_switch"
