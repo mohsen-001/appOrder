@@ -13,8 +13,8 @@
         >
         </b-form-input>
         <b-form-invalid-feedback
-          >Customer Name Is Required</b-form-invalid-feedback
-        >
+          >Customer Name Is Required
+        </b-form-invalid-feedback>
       </b-form-group>
     </div>
     <div class="p40 m20">
@@ -22,16 +22,14 @@
         <b-form-input
           id="input-2"
           v-model="form.number.$model"
-          type="text"
+          type="number"
           placeholder="Number"
           required
           :state="validateState('number')"
           @blur="form.number.$touch"
         >
         </b-form-input>
-        <b-form-invalid-feedback
-          >Customer Number Is Required</b-form-invalid-feedback
-        >
+        <b-form-invalid-feedback>Invalid Phone Number</b-form-invalid-feedback>
       </b-form-group>
     </div>
     <div class="p40 m20">
@@ -113,10 +111,12 @@ export default {
       this.form.city.$touch();
       this.form.area.$touch();
       this.form.address.$touch();
+      this.form.number.$touch();
       if (
         this.form.name.$invalid ||
         this.form.city.$invalid ||
         this.form.area.$invalid ||
+        this.form.number.$invalid ||
         this.form.address.$invalid
       )
         return false;

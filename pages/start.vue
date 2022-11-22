@@ -90,28 +90,26 @@
 
 <script>
 import CountrySelection from "../components/CountrySelection.vue";
-import { required, minLength, url } from "vuelidate/lib/validators";
+import { required, minLength, url, helpers } from "vuelidate/lib/validators";
 
 export default {
   name: "StepOnePage",
   data() {
     return {
       checked: true,
-      form: {
-        link: "",
-      },
+
       currentStepper: 0,
       // isInvoice: false,
       downloaded: false,
       formInsertion: true,
       done: false,
       invalidSteps: [],
-      from: {
+      form: {
         projectname: null,
         project_id: null,
         source: null,
         landing_link: null,
-        phone_number: null,
+        number: null,
         city: null,
         area: null,
         address_id: null,
@@ -149,7 +147,7 @@ export default {
       },
       number: {
         required,
-        minLength: minLength(3),
+        phoneNumber: helpers.regex("phoneNumber", /^[\d()+]{7,14}$/),
       },
       city: {
         required,
