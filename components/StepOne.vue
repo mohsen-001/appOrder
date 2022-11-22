@@ -3,14 +3,24 @@
     <CountrySelection />
     <CompanySelection />
 
+    <projectSelection :items="projects" v-model="form.project.$model" />
     <div class="p40">
-      <b-form-checkbox v-model="checked" class="cus_switch" switch size="lg"
+      <b-form-checkbox
+        class="cus_switch"
+        switch
+        size="lg"
+        v-model="form.no_ad_order.$model"
         >Non Ad Order</b-form-checkbox
       >
     </div>
 
     <div class="p40 m20">
-      <b-form-group id="input-group-1" label="Add Link" label-for="input-1">
+      <b-form-group
+        id="input-group-1"
+        label="Add Link"
+        label-for="input-1"
+        v-show="form.no_ad_order.$model"
+      >
         <b-form-input
           id="input-1"
           v-model="form.landing_link.$model"
@@ -39,12 +49,31 @@ export default {
   data() {
     return {
       checked: false,
+      ColumnAxiosSource: null,
+      projects: [],
+      isFetchingProjects: false, //
     };
+  },
+  created() {
+    if (this.projects.length < 1) this.fetchItems();
   },
   methods: {
     validateState(name) {
       const { $dirty, $error } = this.form[name];
       return $dirty ? !$error : null;
+    },
+    async fetchItems() {
+      try {
+        this.isFetchingProjects = true;
+        const url = `https://api.teebalhoor.net/public/api/projects`;
+        const { data } = await this.$axios.get(url, {
+          params: {},
+        });
+        this.projects = data.data;
+      } catch (error) {
+        console.log(error);
+      }
+      this.isFetchingProjects = false;
     },
 
     validate() {

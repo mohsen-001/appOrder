@@ -13,8 +13,8 @@
         >
         </b-form-input>
         <b-form-invalid-feedback
-          >Customer Name Is Required</b-form-invalid-feedback
-        >
+          >Customer Name Is Required
+        </b-form-invalid-feedback>
       </b-form-group>
     </div>
     <div class="p40 m20">
@@ -22,21 +22,19 @@
         <b-form-input
           id="input-2"
           v-model="form.number.$model"
-          type="text"
+          type="number"
           placeholder="Number"
           required
           :state="validateState('number')"
           @blur="form.number.$touch"
         >
         </b-form-input>
-        <b-form-invalid-feedback
-          >Customer Number Is Required</b-form-invalid-feedback
-        >
+        <b-form-invalid-feedback>Invalid Phone Number</b-form-invalid-feedback>
       </b-form-group>
     </div>
     <div class="p40 m20">
       <b-form-group id="input-group-3" label="City" label-for="input-3">
-        <b-form-input
+        <b-form-select
           id="input-3"
           v-model="form.city.$model"
           type="text"
@@ -44,8 +42,11 @@
           required
           :state="validateState('city')"
           @blur="form.city.$touch"
-        >
-        </b-form-input>
+          :options="cities"
+          class="mb-3"
+          value-field="name"
+          text-field="name"
+        ></b-form-select>
         <b-form-invalid-feedback
           >Customer City Is Required</b-form-invalid-feedback
         >
@@ -53,7 +54,7 @@
     </div>
     <div class="p40 m20">
       <b-form-group id="input-group-4" label="Area" label-for="input-4">
-        <b-form-input
+        <b-form-select
           id="input-4"
           v-model="form.area.$model"
           type="text"
@@ -61,8 +62,11 @@
           required
           :state="validateState('area')"
           @blur="form.area.$touch"
-        >
-        </b-form-input>
+          :options="areas"
+          class="mb-3"
+          value-field="name"
+          text-field="name"
+        ></b-form-select>
         <b-form-invalid-feedback
           >Customer Area Is Required</b-form-invalid-feedback
         >
@@ -93,6 +97,7 @@
 </template>
 
 <script>
+import allcities from "../static/cities.js";
 export default {
   name: "StepOne",
   props: {
@@ -101,7 +106,19 @@ export default {
   data() {
     return {
       checked: false,
+      cities: allcities(this).Emaratscities,
+      areas: [],
     };
+  },
+  watch: {
+    "form.city.$model": function (item) {
+      this.cities = allcities(this).Emaratscities;
+      const city = this.cities.filter(
+        (city) => city.name == this.form.city.$model
+      );
+      this.areas = city.map((row) => row.subcities);
+      this.areas = this.areas[0];
+    },
   },
   methods: {
     validateState(name) {
@@ -113,10 +130,12 @@ export default {
       this.form.city.$touch();
       this.form.area.$touch();
       this.form.address.$touch();
+      this.form.number.$touch();
       if (
         this.form.name.$invalid ||
         this.form.city.$invalid ||
         this.form.area.$invalid ||
+        this.form.number.$invalid ||
         this.form.address.$invalid
       )
         return false;
