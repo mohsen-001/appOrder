@@ -3,6 +3,7 @@
     <div class="slide_label d-flex justify-content-between z-10">
       <span class="label_text">Country</span>
       <div class="arrow">
+        <span class="flag-icon flag-icon-gr"></span>
         <svg
           :style="{ opacity: opacityL }"
           @click="scrollLeft"
@@ -46,12 +47,13 @@
           v-for="(items, index) in countries"
           :key="index"
         >
-          <div
-            class="flag"
-            :class="index == selected_country ? 'selected' : ''"
-          >
-            <img :src="countries[index].flag" alt="image" />
-          </div>
+          <span
+            :class="`fi fi-ae flag ${
+              index == selected_country ? 'selected' : ''
+            }`"
+          ></span>
+          <!-- <img :src="countries[index].flag" alt="image" /> -->
+
           <p :class="index == selected_country ? 'country_name' : ''">
             {{ countries[index].name }}
           </p>
@@ -62,12 +64,13 @@
 </template>
 
 <script>
+import "/node_modules/flag-icons/css/flag-icons.min.css";
 export default {
   name: "CountrySelection",
   data() {
     return {
       countries: [
-        { name: "Afghanistan", flag: "https://tinyurl.com/4b8wjs3p" },
+        { name: "United Arab Emirates", flag: "https://tinyurl.com/4b8wjs3p" },
         { name: "Iran", flag: "https://tinyurl.com/4b8wjs3p" },
         { name: "America", flag: "https://tinyurl.com/4b8wjs3p" },
         { name: "United State", flag: "https://tinyurl.com/4b8wjs3p" },

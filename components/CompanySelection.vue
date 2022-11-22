@@ -50,10 +50,7 @@
             class="flag"
             :class="index == selected_company ? 'selected' : ''"
           >
-            <img
-              :src="companies[index].logo"
-              alt="image"
-            />
+            <img :src="companies[index].logo" alt="image" />
           </div>
           <p :class="index == selected_company ? 'company_name' : ''">
             {{ companies[index].name }}
