@@ -1,8 +1,19 @@
 <template>
   <div>
     <CountrySelection v-model="form.country.$model" />
-    <projectSelection :items="projects" v-model="form.project.$model" />
-
+    <div class="error-container mb-3">
+      <span class="error" v-show="form.country.$invalid"
+        >Country Is Required</span
+      >
+    </div>
+    <div>
+      <projectSelection :items="projects" v-model="form.project.$model" />
+      <div class="error-container mb-3">
+        <span class="error" v-show="form.project.$invalid"
+          >Company Is Required</span
+        >
+      </div>
+    </div>
     <div class="p40">
       <b-form-checkbox
         class="cus_switch"

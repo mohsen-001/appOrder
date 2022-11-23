@@ -86,9 +86,10 @@ export default {
 
   methods: {
     handleClick(item, index) {
-      if (this.value == item.id) {
+      if (this.selected_item == index) {
+        console.log("here");
         this.selected_item = null;
-        this.$emit("input", "");
+        this.$emit("input", null);
       } else {
         this.selected_item = index;
         this.$emit("input", item.id);
