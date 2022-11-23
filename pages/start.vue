@@ -134,7 +134,6 @@ export default {
         number: null,
         city: null,
         area: null,
-        address_id: null,
         address: null,
         products: [
           {
@@ -144,6 +143,7 @@ export default {
             product_quantity: null,
             product_size: null,
             product_color: "#FF0000FF",
+            product_price: null,
           },
         ],
 
@@ -186,6 +186,16 @@ export default {
       project: { required },
       country: { required },
       no_ad_order: {},
+      products: {
+        $each: {
+          id: {},
+          product_code: { required },
+          product_quantity: { required },
+          product_size: { required },
+          product_color: { required },
+          product_price: { required },
+        },
+      },
     },
   },
   methods: {

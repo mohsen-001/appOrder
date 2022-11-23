@@ -33,6 +33,7 @@
       </b-form-group>
     </div>
     <div class="p40 m20">
+      <b-progress :value="12" :max="34" show-progress animated></b-progress>
       <b-form-group id="input-group-3" label="City" label-for="input-3">
         <b-form-select
           id="input-3"
@@ -46,7 +47,19 @@
           class="mb-3"
           value-field="name"
           text-field="name"
-        ></b-form-select>
+        >
+          <template #first>
+            <b-form-select-option :value="null" disabled>
+              Choose City
+              <b-progress
+                :value="12"
+                :max="34"
+                show-progress
+                animated
+              ></b-progress>
+            </b-form-select-option>
+          </template>
+        </b-form-select>
         <b-form-invalid-feedback
           >Customer City Is Required</b-form-invalid-feedback
         >
@@ -123,9 +136,11 @@ export default {
   methods: {
     validateState(name) {
       const { $dirty, $error } = this.form[name];
+      console.log($dirty, $error);
       return $dirty ? !$error : null;
     },
     validate() {
+      return true;
       this.form.name.$touch();
       this.form.city.$touch();
       this.form.area.$touch();
