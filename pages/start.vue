@@ -12,22 +12,9 @@
         </b-modal>
       </div>
 
-      <div class="btm_pge d-flex">
-        <b-button
-          @click="nextStep"
-          pill
-          variant="primary"
-          class="btn w-100"
-          v-show="currentStepper < 2"
-          >Next</b-button
-        >
-        <b-button
-          @click="nextStep"
-          pill
-          variant="primary"
-          class="btn w-100"
-          v-show="currentStepper == 2"
-          >Submit
+      <div class="btm_pge d-flex" v-if="showActionBtn">
+        <b-button @click="nextStep" pill variant="primary" class="btn w-100" v-show="currentStepper < 2">Next</b-button>
+        <b-button @click="nextStep" pill variant="primary" class="btn w-100" v-show="currentStepper == 2">Submit
         </b-button>
         <b-button
           @click="download"
@@ -110,6 +97,10 @@
           <div class="h-100" v-if="done">
             <Done />
           </div>
+
+          <div class="h-100" v-if="startInsert">
+            <Start @startInsertion="startForm"/>
+          </div>
         </div>
       </div>
     </div>
@@ -129,8 +120,10 @@ export default {
       log_out: "",
       currentStepper: 0,
       // isInvoice: false,
+      showActionBtn: false,
       downloaded: false,
-      formInsertion: true,
+      formInsertion: false,
+      startInsert: true,
       done: false,
       invalidSteps: [],
       form: {
@@ -260,17 +253,25 @@ export default {
           hideHeaderClose: false,
           centered: true,
         })
-        .then((value) => {
-          this.log_out = value;
-          if (value) {
-            this.$router.push("/");
-          }
-        })
-        .catch((err) => {
-          // An error occurred
-        });
-    },
-  },
+          .then(value => {
+            this.log_out = value;
+            if (value) {
+              this.$router.push('/')
+            }
+          })
+          .catch(err => {
+            // An error occurred
+          })
+      },
+
+      startForm(){
+        // console.log('hey');
+        this.startInsert = false;
+        this.formInsertion = true;
+        this.showActionBtn = true;
+      }
+  }
+  
 };
 </script>
 
