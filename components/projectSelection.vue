@@ -38,25 +38,24 @@
         </svg>
       </div>
     </div>
-    <div class="pr-5 pl-5">
-      <div class="project" @scroll="touchScroll">
-        <div class="slide_wrpr">
+
+    <div class="project" @scroll="touchScroll">
+      <div class="slide_wrpr">
+        <div
+          @click="handleClick(item, index)"
+          class="item mr-3"
+          v-for="(item, index) in items"
+          :key="index"
+        >
           <div
-            @click="handleClick(item, index)"
-            class="item mr-3"
-            v-for="(item, index) in items"
-            :key="index"
+            class="flag p-5"
+            :class="index == selected_item ? 'selected' : ''"
           >
-            <div
-              class="flag p-5"
-              :class="index == selected_item ? 'selected' : ''"
-            >
-              <img src="/logos/fairy.png" alt="image" />
-            </div>
-            <p :class="index == selected_item ? 'project_name' : ''">
-              {{ item.name }}
-            </p>
+            <img src="/logos/fairy.png" alt="image" />
           </div>
+          <p :class="index == selected_item ? 'project_name' : ''">
+            {{ item.name }}
+          </p>
         </div>
       </div>
     </div>
@@ -87,10 +86,11 @@ export default {
 
   methods: {
     handleClick(item, index) {
-      this.selected_item = index;
       if (this.value == item.id) {
+        this.selected_item = null;
         this.$emit("input", "");
       } else {
+        this.selected_item = index;
         this.$emit("input", item.id);
       }
 
@@ -161,9 +161,9 @@ export default {
 }
 
 .project {
-  overflow: scroll;
-
-  padding: 2px;
+  overflow-x: scroll;
+  padding-top: 1rem;
+  padding-left: 40px;
   scroll-behavior: smooth;
 }
 
@@ -191,7 +191,7 @@ export default {
 }
 
 .selected {
-  border: 2px solid #007bff;
+  border: 3px solid #007bff;
 }
 
 .project_name {

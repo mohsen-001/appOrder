@@ -1,7 +1,6 @@
 <template>
   <div>
-    <CountrySelection />
-
+    <CountrySelection v-model="form.country.$model" />
     <projectSelection :items="projects" v-model="form.project.$model" />
 
     <div class="p40">
@@ -78,7 +77,14 @@ export default {
 
     validate() {
       this.form.landing_link.$touch();
-      if (this.form.landing_link.$invalid) {
+      this.form.country.$touch();
+      this.form.project.$touch();
+      console.log(!this.form.project.$invalid, !this.form.country.$invalid);
+      if (
+        this.form.landing_link.$invalid ||
+        this.form.country.$invalid ||
+        this.form.project.$invalid
+      ) {
         return false;
       }
       return true;
