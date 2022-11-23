@@ -84,3 +84,15 @@
   border-color: #0062cc !important;
   box-shadow: 0 0 0 0.2rem rgb(38 143 255 / 50%) !important;
 }
+
+
+.anim_btn button{
+  border-radius: 50px;
+  width: 150px;
+  background-color: #115598 !important;
+  border-color: #115598;
+}
+
+.anim_btn button:active{
+  background-color: #0b355f !important;
+}
