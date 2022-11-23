@@ -27,7 +27,6 @@
 
     <div class="m20 product_holder d-flex justify-content-start">
       <div class="wrapper">
-        
         <Product @rmBtn="removeProduct(index)" :showPrice="showPrice" class="mr-2" v-for="(item, index) in stepThreeform.products" :key="index" />
       </div>
     </div>
@@ -108,22 +107,14 @@ export default {
       return true;
     },
     removeProduct(e){
-      this.stepThreeform.products = this.stepThreeform.products.filter((item, index) => {
-        return index != e;
-      })
-      // console.log(newArr);
-      // console.log(this.stepThreeform.products);
+      this.stepThreeform.products.splice(e, 1);
     }
   }
 }
 
-
-
 </script>
 
 <style scoped>
-/* #input-1 {
-} */
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s ease;
