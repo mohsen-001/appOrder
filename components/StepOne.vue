@@ -1,9 +1,19 @@
 <template>
   <div>
-    <CountrySelection />
-
-    <projectSelection :items="projects" v-model="form.project.$model" />
-
+    <CountrySelection v-model="form.country.$model" />
+    <div class="error-container mb-3">
+      <span class="error" v-show="form.country.$invalid"
+        >Country Is Required</span
+      >
+    </div>
+    <div>
+      <projectSelection :items="projects" v-model="form.project.$model" />
+      <div class="error-container mb-3">
+        <span class="error" v-show="form.project.$invalid"
+          >Company Is Required</span
+        >
+      </div>
+    </div>
     <div class="p40">
       <b-form-checkbox
         class="cus_switch"
@@ -78,7 +88,14 @@ export default {
 
     validate() {
       this.form.landing_link.$touch();
-      if (this.form.landing_link.$invalid) {
+      this.form.country.$touch();
+      this.form.project.$touch();
+      console.log(!this.form.project.$invalid, !this.form.country.$invalid);
+      if (
+        this.form.landing_link.$invalid ||
+        this.form.country.$invalid ||
+        this.form.project.$invalid
+      ) {
         return false;
       }
       return true;

@@ -42,20 +42,19 @@
     <div class="country" @scroll="touchScroll">
       <div class="slide_wrpr">
         <div
-          @click="selectCountry(index)"
+          @click="selectCountry(item.name)"
           class="item mr-3"
-          v-for="(items, index) in countries"
+          v-for="(item, index) in countries"
           :key="index"
         >
-          <span
-            :class="`fi fi-ae flag ${
-              index == selected_country ? 'selected' : ''
-            }`"
-          ></span>
-          <!-- <img :src="countries[index].flag" alt="image" /> -->
-
-          <p :class="index == selected_country ? 'country_name' : ''">
-            {{ countries[index].name }}
+          <div
+            :class="` flag ${item.name == selected_country ? 'selected' : ''}`"
+          >
+            <span :class="`fi fi-${item.flag} flag-icon `"></span>
+            <!-- <img :src="countries[index].flag" alt="image" /> -->
+          </div>
+          <p :class="item.name == selected_country ? 'country_name' : ''">
+            {{ item.name }}
           </p>
         </div>
       </div>
@@ -70,10 +69,10 @@ export default {
   data() {
     return {
       countries: [
-        { name: "United Arab Emirates", flag: "https://tinyurl.com/4b8wjs3p" },
-        { name: "Iran", flag: "https://tinyurl.com/4b8wjs3p" },
-        { name: "America", flag: "https://tinyurl.com/4b8wjs3p" },
-        { name: "United State", flag: "https://tinyurl.com/4b8wjs3p" },
+        { name: "United Arab Emirates", flag: "ae" },
+        { name: "Qatar", flag: "qa" },
+        { name: "Kuwait", flag: "kw" },
+        { name: "Iraq", flag: "iq" },
       ],
       selected_country: null,
       opacityL: 0.2,
@@ -82,9 +81,15 @@ export default {
   },
 
   methods: {
-    selectCountry(index) {
-      this.selected_country = index;
-      console.log(index);
+    selectCountry(item) {
+      if (this.selected_country == item) {
+        this.selected_country = null;
+        this.$emit("input", "");
+      } else {
+        this.selected_country = item;
+        this.$emit("input", item);
+      }
+      console.log(item);
     },
 
     scrollRight() {
@@ -169,7 +174,10 @@ export default {
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(128, 128, 128, 0.23);
 }
-
+.flag-icon {
+  width: 90px;
+  height: 100px;
+}
 .country .flag img {
   width: 150px;
 }
