@@ -13,8 +13,21 @@
       </div>
 
       <div class="btm_pge d-flex" v-if="showActionBtn">
-        <b-button @click="nextStep" pill variant="primary" class="btn w-100" v-show="currentStepper < 2">Next</b-button>
-        <b-button @click="nextStep" pill variant="primary" class="btn w-100" v-show="currentStepper == 2">Submit
+        <b-button
+          @click="nextStep"
+          pill
+          variant="primary"
+          class="btn w-100"
+          v-show="currentStepper < 2"
+          >Next</b-button
+        >
+        <b-button
+          @click="submit"
+          pill
+          variant="primary"
+          class="btn w-100"
+          v-show="currentStepper == 2"
+          >Submit
         </b-button>
         <b-button
           @click="download"
@@ -99,7 +112,7 @@
           </div>
 
           <div class="h-100" v-if="startInsert">
-            <Start @startInsertion="startForm"/>
+            <Start @startInsertion="startForm" />
           </div>
         </div>
       </div>
@@ -109,14 +122,18 @@
 
 <script>
 import CountrySelection from "../components/CountrySelection.vue";
-import { required, minLength, url, helpers } from "vuelidate/lib/validators";
+import {
+  required,
+  minLength,
+  url,
+  helpers,
+  requiredIf,
+} from "vuelidate/lib/validators";
 
 export default {
   name: "StepOnePage",
   data() {
     return {
-      checked: true,
-
       log_out: "",
       currentStepper: 0,
       // isInvoice: false,
@@ -129,6 +146,7 @@ export default {
       form: {
         country: null,
         project: null,
+        source: 7,
         no_ad_order: false,
         landing_link: null,
         number: null,
@@ -146,13 +164,16 @@ export default {
             product_price: null,
           },
         ],
-
+        price_per_picture: false,
         price: 0,
+        delivery_fee: 0,
+        delay: null,
+        delay_order: false,
+        note: null,
+
         send_brochure: true,
         with_tax: true,
-        delay: false,
-        start_date: null,
-        note: null,
+
         selectedAddress: null,
         name: null,
       },
@@ -160,8 +181,12 @@ export default {
   },
   validations: {
     form: {
+      source: {},
       landing_link: {
         url,
+        required: requiredIf(function (value) {
+          return !this.form.no_ad_order;
+        }),
       },
       name: {
         required,
@@ -193,8 +218,30 @@ export default {
           product_quantity: { required },
           product_size: { required },
           product_color: { required },
-          product_price: { required },
+          product_price: {
+            required: requiredIf(function (value) {
+              return this.form.price_per_picture;
+            }),
+          },
         },
+      },
+      price_per_picture: {},
+      price: {
+        required: requiredIf(function (value) {
+          return !this.form.price_per_picture;
+        }),
+      },
+      delivery_fee: {},
+      delay_order: {},
+      delay: {
+        required: requiredIf(function (value) {
+          return this.form.delay_order;
+        }),
+      },
+
+      note: {
+        required,
+        minLength: minLength(5),
       },
     },
   },
@@ -214,6 +261,46 @@ export default {
       } else {
         this.invalidSteps.push(this.currentStepper);
       }
+    },
+
+    submit() {
+      let isvlaid = this.$refs["step" + this.currentStepper].validate();
+      if (!isvlaid) return;
+
+      return this.nextStep();
+    },
+    arrangeData() {
+      const products = {};
+      products["province"] = this.products.city;
+      products["area"] = this.products.area;
+      products["address"] = this.products.address;
+      products["name"] = this.products.name;
+
+      products["pcode"] = this.products.products.map((row) => row.product_code);
+      products["qty"] = this.products.products.map(
+        (row) => row.product_quantity
+      );
+      products["prod_size"] = this.products.products.map(
+        (row) => row.product_size
+      );
+      products["prod_color"] = this.products.products.map(
+        (row) => row.product_color
+      );
+      products["prod_price"] = this.form.price_per_picture
+        ? this.products.products.map((row) => row.product_price)
+        : [];
+      products["delay"] = this.products.delay;
+      products["project"] = this.products.project;
+      products["withtax"] = 0;
+      products["buroaz"] = 0;
+      products["ad_id"] = this.$auth.user.username;
+      products["phone"] = this.products.number;
+      products["price"] = parseFloat(this.products.price);
+      products["status"] = this.products.delay_order == true ? 1 : 5;
+      products["source"] = this.products.source;
+      products["landing_link"] = this.products.landing_link;
+
+      products["notes"] = this.products.note;
     },
     prevStep() {
       if (this.currentStepper == 0) {
@@ -253,25 +340,24 @@ export default {
           hideHeaderClose: false,
           centered: true,
         })
-          .then(value => {
-            this.log_out = value;
-            if (value) {
-              this.$router.push('/')
-            }
-          })
-          .catch(err => {
-            // An error occurred
-          })
-      },
+        .then((value) => {
+          this.log_out = value;
+          if (value) {
+            this.$router.push("/");
+          }
+        })
+        .catch((err) => {
+          // An error occurred
+        });
+    },
 
-      startForm(){
-        // console.log('hey');
-        this.startInsert = false;
-        this.formInsertion = true;
-        this.showActionBtn = true;
-      }
-  }
-  
+    startForm() {
+      // console.log('hey');
+      this.startInsert = false;
+      this.formInsertion = true;
+      this.showActionBtn = true;
+    },
+  },
 };
 </script>
 

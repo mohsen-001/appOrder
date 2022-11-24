@@ -4,15 +4,25 @@
       <b-form-group id="input-group-12" label="Add Product" label-for="input-1">
         <div class="d-flex">
           <span style="width: 100%">
-            <b-form-input
+            <!-- ,, -->
+            <b-form-select
               id="input-1"
-              v-model="form.$model.products[0].product_code"
+              v-model="form.$model.products[activeIndex].product_code"
               type="text"
               placeholder="Product name"
               required
               :state="validateproducts('product_code')"
+              :options="products"
+              class="mb-3"
+              value-field="pcode"
+              text-field="name"
             >
-            </b-form-input>
+              <template #first>
+                <b-form-select-option :value="null" disabled>
+                  Choose Product
+                </b-form-select-option>
+              </template>
+            </b-form-select>
             <b-form-invalid-feedback
               >Product Is Required
             </b-form-invalid-feedback>
@@ -31,7 +41,7 @@
       <b-form-group id="input-group-13" label="Size" label-for="input-2">
         <b-form-input
           id="input-2"
-          v-model="form.$model.products[0].product_size"
+          v-model="form.$model.products[activeIndex].product_size"
           type="text"
           placeholder="Size"
           :state="validateproducts('product_size')"
@@ -46,9 +56,9 @@
         <b-form-input
           class="ml-2"
           id="input-1"
-          v-model="form.$model.products[0].product_color"
+          v-model="form.$model.products[activeIndex].product_color"
           type="text"
-          placeholder="Link"
+          placeholder="Color"
           :state="validateproducts('product_color')"
           required
         >
@@ -60,7 +70,7 @@
     </div>
 
     <div class="p40 m20">
-      <b-form-checkbox v-model="showPrice" switch size="lg"
+      <b-form-checkbox switch size="lg" v-model="form.price_per_picture.$model"
         >Price Per Picture</b-form-checkbox
       >
     </div>
@@ -68,14 +78,17 @@
     <div class="m20 product_holder d-flex justify-content-start">
       <div class="wrapper">
         <Product
+          @click="onActiveProduct(index)"
           :showPrice="showPrice"
           :form="form"
-          :is_touched="is_touched"
           class="mr-2"
           :index="index"
           v-for="(item, index) in form.products.$each.$iter"
+          :title="form.$model.products[index].product_code"
           :key="index"
-          @rmBtn="removeProduct(item)"
+          @rmBtn="removeProduct(item, index)"
+          :invalidIndexs.sync="invalidIndexs"
+          :isActive.sync="activeIndex"
         />
       </div>
     </div>
@@ -85,23 +98,29 @@
         id="input-group-4"
         label="Total Selling Price"
         label-for="input-4"
+        v-show="!form.price_per_picture.$model"
       >
         <b-form-input
           id="input-4"
-          v-model="stepThreeform.link"
           type="text"
-          placeholder="Total"
+          placeholder="number"
+          :state="validateState('price_per_picture')"
+          v-model="form.price.$model"
           required
+          @blur="form.price.$touch"
         >
         </b-form-input>
+        <b-form-invalid-feedback
+          >Total Price Is Required</b-form-invalid-feedback
+        >
       </b-form-group>
     </div>
     <div class="p40 m20">
       <b-form-group id="input-group-5" label="Delivery Fee" label-for="input-5">
         <b-form-input
           id="input-5"
-          v-model="stepThreeform.link"
-          type="text"
+          v-model="form.delivery_fee.$model"
+          type="number"
           placeholder="Fee"
           required
         >
@@ -113,26 +132,31 @@
         class="total_holder d-flex justify-content-between align-items-center"
       >
         <span class="total_text">Total Price</span>
-        <span class="total_price">255 AED</span>
+        <span class="total_price">{{ totalPrice }} AED</span>
       </div>
     </div>
     <div class="p40 m20">
-      <b-form-checkbox v-model="isDelay" switch size="lg"
+      <b-form-checkbox v-model="form.delay_order.$model" switch size="lg"
         >Delay Order</b-form-checkbox
       >
     </div>
 
     <Transition>
-      <div class="p40 m20 if_input" v-show="isDelay">
+      <div class="p40 m20 if_input" v-show="form.delay_order.$model">
         <b-form-group id="input-group-5" label="Date" label-for="input-5">
           <b-form-input
             id="input-5"
-            v-model="stepThreeform.link"
             type="date"
             placeholder="Choose"
             required
+            :state="validateState('delay')"
+            v-model="form.delay.$model"
+            @blur="form.delay.$touch"
           >
           </b-form-input>
+          <b-form-invalid-feedback
+            >Delay Date Is Required</b-form-invalid-feedback
+          >
         </b-form-group>
       </div>
     </Transition>
@@ -141,12 +165,17 @@
       <b-form-group id="input-group-6" label="Order Note" label-for="textarea">
         <b-form-textarea
           id="textarea"
-          v-model="stepThreeform.address"
           placeholder="Order note"
           rows="5"
           max-rows="6"
+          :state="validateState('note')"
+          v-model="form.note.$model"
+          @blur="form.note.$touch"
         >
         </b-form-textarea>
+        <b-form-invalid-feedback
+          >Note Must Be 5 Character</b-form-invalid-feedback
+        >
       </b-form-group>
     </div>
   </div>
@@ -167,20 +196,87 @@ export default {
       checked: false,
       isDelay: false,
       showPrice: false,
-      is_touched: false,
+      activeIndex: 0,
+      invalidIndexs: [],
+      products: [
+        {
+          pcode: "CL23",
+          name: "سماعات - ايربودز - ابل",
+        },
+        {
+          pcode: "CL28",
+          name: "سكوتر كهربائي",
+        },
+        {
+          pcode: "CL17",
+          name: "عطر ماهر",
+        },
+        {
+          pcode: "CL19",
+          name: "جهاز التسبيح الأصلي - اشتري واحد و احصل على الثاني مجانا",
+        },
+        {
+          pcode: "CL16",
+          name: "عطر خشبي",
+        },
+      ],
     };
   },
+  created() {
+    this.getProducts();
+  },
+  computed: {
+    totalPrice() {
+      let exist = this.form.price_per_picture.$model;
+      let price = 0;
+      if (exist)
+        for (let key in this.form.$model.products) {
+          price =
+            price +
+            parseFloat(
+              this.form.$model.products[key].product_price
+                ? this.form.$model.products[key].product_price
+                : 0
+            );
+        }
+      else
+        price =
+          price +
+          parseFloat(this.form.price.$model ? this.form.price.$model : 0);
+
+      return (
+        price +
+        parseFloat(
+          this.form.delivery_fee.$model ? this.form.delivery_fee.$model : 0
+        )
+      );
+      //  return exist ? true : false;
+    },
+  },
   methods: {
+    async getProducts() {
+      try {
+        // https://api.teebalhoor.net/public/api/projects
+        const url = `https://api.teebalhoor.net/public/products`;
+        const { data } = await this.$axios.get(url);
+        this.products = data.data;
+        console.log("products", this.products);
+      } catch (error) {
+        console.log(error);
+      }
+    },
     validateproducts(name) {
-      const { $dirty, $erorr } = this.form.products.$each[0][name];
-      console.log($dirty, $erorr, this.form.products.$each[0][name]);
-      return $dirty ? !$erorr : null;
+      const { $dirty, $error } =
+        this.form.products.$each[this.activeIndex][name];
+
+      return $dirty ? !$error : null;
     },
     validateState(name) {
-      const { $dirty, $erorr } = this.form[name];
-      return $dirty ? !$erorr : null;
+      const { $dirty, $error } = this.form[name];
+      return $dirty ? !$error : null;
     },
     product() {
+      this.activeIndex = this.form.$model.products.length - 1;
       this.form.products.$model.push({
         id: this.generateID(),
         category: "",
@@ -204,24 +300,68 @@ export default {
       );
     },
     async addProduct(callback) {
+      if (!this.checkValidation()) return;
+
       await callback();
       let elem = document.querySelector(".product_holder");
       let elemW = elem.scrollWidth;
       elem.scrollTo(elemW, 0);
     },
-    validate() {
-      this.is_touched = true;
+    checkValidation() {
       this.form.products.$touch();
+      const form = this.form.products.$each.$iter;
 
-      let isValid = !this.form.products.$invalid;
-      return isValid;
+      for (var key in form) {
+        const { $invalid, $error } = this.form.products.$each[key];
+        let exist = this.invalidIndexs.find((index) => index == key);
+        if ($invalid) {
+          if (!exist) this.invalidIndexs.push(key);
+        } else {
+          if (exist)
+            this.invalidIndexs = this.invalidIndexs.filter(
+              (index) => index != key
+            );
+        }
+      }
+
+      return this.invalidIndexs.length > 0 ? false : true;
     },
-    removeProduct(item) {
+    validate() {
+      this.checkValidation();
+      let isValid = !this.form.products.$invalid;
+      this.form.$touch();
+      console.log(
+        isValid &&
+          !this.form.note.$invalid &&
+          !this.form.delay.$invalid &&
+          !this.form.price.$invalid
+      );
+      return (
+        isValid &&
+        !this.form.note.$invalid &&
+        !this.form.delay.$invalid &&
+        !this.form.price.$invalid
+      );
+    },
+    removeProduct(item, key) {
+      if (this.activeIndex == key) this.activeIndex = 0;
       if (this.form.$model.products.length > 1) {
         this.form.$model.products = this.form.$model.products.filter(
           (row) => row.id != item.$model.id
         );
+
+        if (this.isInValid(key))
+          this.invalidIndexs = this.invalidIndexs.filter(
+            (index) => index != key
+          );
       }
+    },
+    isInValid(key) {
+      let exist = this.invalidIndexs.find((index) => index == key);
+      return exist ? true : false;
+    },
+    onActiveProduct(index) {
+      this.activeIndex = index;
     },
   },
 };
@@ -235,7 +375,7 @@ export default {
   transition: opacity 0.5s ease;
 }
 
-.v-enter-from,
+.v-enter-form,
 .v-leave-to {
   opacity: 0;
 }
@@ -263,6 +403,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
 }
 
 .product_holder::-webkit-scrollbar {
