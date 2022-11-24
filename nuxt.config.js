@@ -88,7 +88,6 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     "@nuxtjs/pwa",
-    // https://go.nuxtjs.dev/bootstrap
     "bootstrap-vue/nuxt",
     "@nuxtjs/auth-next",
   ],
