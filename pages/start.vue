@@ -263,11 +263,10 @@ export default {
       let isvlaid = this.$refs["step" + this.currentStepper].validate();
       if (!isvlaid) return;
       const products = this.arrangeData();
-      const data = await this.$axios.post(
-        "http://192.168.3.27:8000/api/add-crm-order",
-        products
-      );
-      console.log(data);
+      // const data = await this.$axios.post(
+      //   "https://api.teebalhoor.net/public/api/add-crm-order",
+      //   products
+      // );
 
       return this.nextStep();
     },
