@@ -47,6 +47,30 @@ export default {
     baseURL: "http://localhost:8000/api/v1",
     // baseUrl: "http://192.168.3.26:3000",
   },
+
+
+  auth: {
+    // Options
+    strategies: {
+      laravelSanctum: {
+        provider: "laravel/sanctum",
+        url: "https://api.teebalhoor.net/public",
+        endpoints: {
+          login: {
+            url: "/api/login",
+          },
+          logout: {
+            url: "/api/logout",
+          },
+        },
+      },
+    },
+    redirect: {
+      home: "/start",
+      login: "/",
+      logout: "/",
+    },
+  },
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
