@@ -249,7 +249,7 @@ export default {
     nextStep() {
       let isvlaid = this.$refs["step" + this.currentStepper].validate();
 
-      if (isvlaid) {
+      if (true) {
         if (this.currentStepper == 3) {
           this.currentStepper = 0;
           this.$refs.stepper.nextStep();

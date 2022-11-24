@@ -368,8 +368,6 @@ export default {
 </script>
 
 <style scoped>
-/* #input-1 {
-} */
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s ease;
