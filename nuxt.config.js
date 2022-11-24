@@ -63,9 +63,21 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    "@nuxtjs/pwa",
     // https://go.nuxtjs.dev/bootstrap
     "bootstrap-vue/nuxt",
   ],
+  pwa: {
+    meta: {
+      title: "Order App",
+      author: "Haji Rohullah & Mohsen",
+    },
+    manifest: {
+      name: "Smart Friqi Order App",
+      short_name: "SmartFriqi App",
+      lang: "en",
+    },
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
