@@ -1,24 +1,24 @@
 <template>
-
   <div class="stepper_container">
     <div class="progress_holder">
       <div class="progress_line" :style="{ width: progress + 'px' }"></div>
     </div>
 
     <div class="step" v-for="(step, index) in steppers" :key="index">
-      <div class="circle"
-        :class="` ${index < doneStepper && index != activeStepper ? 'done_stepper' : ''} ${index == activeStepper ? 'active_stepper' : ''}`">
-        <div class="check_holder">
-          
-        </div>
+      <div
+        class="circle"
+        :class="` ${
+          index < doneStepper && index != activeStepper ? 'done_stepper' : ''
+        } ${index == activeStepper ? 'active_stepper' : ''}`"
+      >
+        <div class="check_holder"></div>
         <i class="fa-solid fa-check position-absolute"></i>
       </div>
-      <span :class="
-        index == activeStepper ? 'active_text' : ''
-      ">{{ steppers[index] }}</span>
+      <span :class="index == activeStepper ? 'active_text' : ''">{{
+        steppers[index]
+      }}</span>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -46,13 +46,11 @@ export default {
         return;
       } else if (this.doneStepper != this.activeStepper - 1) {
         return;
-      }
-      else {
+      } else {
         this.doneStepper += 1;
       }
 
       if (this.activeStepper > this.steppers.length - 1) {
-
         this.progress = (stepDis - 40) / 2 + 40;
         this.activeStepper = 0;
         this.doneStepper = 0;
@@ -67,11 +65,10 @@ export default {
           this.progress += stepDis / 2 + 20;
         }
       }
-      console.log(this.activeStepper);
     },
 
     prevStep() {
-      const progressLine = document.querySelector('.progress_line').offsetWidth;
+      const progressLine = document.querySelector(".progress_line").offsetWidth;
       const stepDis = document.querySelectorAll(".step")[1].offsetLeft;
 
       if (this.activeStepper <= 0) {
@@ -84,7 +81,10 @@ export default {
         return;
       } else if (this.doneStepper != this.activeStepper - 1) {
         return;
-      } else if (this.progress < progressLine && this.progress > (stepDis - 40) / 2 + 40) {
+      } else if (
+        this.progress < progressLine &&
+        this.progress > (stepDis - 40) / 2 + 40
+      ) {
         this.progress -= stepDis;
       } else {
         this.progress -= stepDis / 2 + 20;

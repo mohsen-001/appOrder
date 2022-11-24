@@ -1,30 +1,26 @@
+<!-- <div class="invoice_page_hide">
+  <PdfPage ref="pdfDownload" />
+</div> -->
 <template>
   <div>
-    <div id="containerOne">
-      <div class="invoice_page_hide">
-        <PdfPage ref="pdfDownload" />
-      </div>
-      <div>
-        <b-modal id="modal-center" class="logout_model" centered title="BootstrapVue">
-          <p class="my-4">Vertically centered modal!</p>
-        </b-modal>
-      </div>
-
-      <div class="btm_pge d-flex" v-if="showActionBtn">
-        <b-button @click="nextStep" pill variant="primary" class="btn w-100" v-show="currentStepper < 2">Next</b-button>
-        <b-button @click="nextStep" pill variant="primary" class="btn w-100" v-show="currentStepper == 2">Submit
-        </b-button>
-        <b-button @click="download" pill variant="primary" class="btn w-100" v-show="currentStepper == 3">Download PDF
-        </b-button>
-        <b-button @click="backHome" pill variant="primary" class="btn w-100" v-show="downloaded">Back to Home</b-button>
-        <!-- <button class="ml-2 logout_btn d-flex justify-content-center align-items-center"><i
-            class="fa-solid fa-arrow-right-from-bracket" v-b-modal.modal-center></i></button> -->
-        <b-button class="ml-2 logout_btn d-flex justify-content-center align-items-center" @click="logOut">
-          <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        </b-button>
-      </div>
-
-
+    <b-toast id="my-toast" variant="warning" solid>
+      <template #toast-title>
+        <div class="d-flex flex-grow-1 align-items-baseline">
+          <b-img
+            blank
+            blank-color="#ff5555"
+            class="mr-2"
+            width="12"
+            height="12"
+          ></b-img>
+          <strong class="mr-auto">Notice!</strong>
+          <small class="text-muted mr-2">42 seconds ago</small>
+        </div>
+      </template>
+      This is the content of the toast. It is short and to the point.
+    </b-toast>
+    <b-button @click="$bvToast.show('my-toast')">Show toast</b-button>
+    <div id="container">
       <div id="app_container">
         <!-- lgoin Cover -->
 
@@ -52,12 +48,42 @@
             </div>
           </div>
 
-          <div class="h-100" v-if="done">
-            <Done />
-          </div>
+          <div class="login_container-form">
+            <form action="/">
+              <b-form-group
+                id="input-group-1"
+                label="Username"
+                label-for="input-1"
+              >
+                <b-form-input
+                  id="input-1"
+                  v-model="form.username"
+                  type="text"
+                  placeholder="Username"
+                  required
+                >
+                </b-form-input>
+              </b-form-group>
 
-          <div class="h-100" v-if="startInsert">
-            <Start @startInsertion="startForm" />
+              <b-form-group
+                id="input-group-2"
+                label="Password"
+                label-for="input-2"
+              >
+                <b-form-input
+                  id="input-2"
+                  v-model="form.password"
+                  type="password"
+                  placeholder="Password"
+                  required
+                >
+                </b-form-input>
+              </b-form-group>
+
+              <b-button @click="signIn" variant="primary" class="cus-btn"
+                >Primary</b-button
+              >
+            </form>
           </div>
         </div>
       </div>
@@ -86,153 +112,134 @@ export default {
       done: false,
       invalidSteps: [],
       form: {
-        country: null,
-        project: null,
-        no_ad_order: false,
-        landing_link: null,
-        number: null,
-        city: null,
-        area: null,
-        address: null,
-        products: [
-          {
-            id: 1,
-            product_code: null,
-            product_image: null,
-            product_quantity: null,
-            product_size: null,
-            product_color: "#FF0000FF",
-            product_price: null,
-          },
-        ],
-
-        price: 0,
-        send_brochure: true,
-        with_tax: true,
-        delay: false,
-        start_date: null,
-        note: null,
-        selectedAddress: null,
-        name: null,
+        username: "",
+        password: "",
       },
+      signKey: 1,
+      showVerify: false,
+      rememberMe: true,
+      disableLoginButton: true,
+      error: {},
+      invalidCreds: "",
+      networkError: false,
+      email: "",
+      password: "",
+      isLoading: false,
+      showPass: false,
+      gettingLocation: false,
+      location: null,
+      errorStr: null,
+      fetch: true,
+      show1: false,
+      aniPass: true,
+      aniSuccess: false,
+      aniError: false,
     };
   },
-  validations: {
-    form: {
-      landing_link: {
-        url,
-      },
-      name: {
-        required,
-        minLength: minLength(3),
-      },
-      number: {
-        required,
-        phoneNumber: helpers.regex("phoneNumber", /^[\d()+]{7,14}$/),
-      },
-      city: {
-        required,
-        minLength: minLength(3),
-      },
-      area: {
-        required,
-        minLength: minLength(3),
-      },
-      address: {
-        required,
-        minLength: minLength(3),
-      },
-      project: { required },
-      country: { required },
-      no_ad_order: {},
-      products: {
-        $each: {
-          id: {},
-          product_code: { required },
-          product_quantity: { required },
-          product_size: { required },
-          product_color: { required },
-          product_price: { required },
-        },
-      },
+  methods: {
+    login() {
+      this.$router.push("/start");
+    },
+    async signIn() {
+      this.aniSuccess = true;
+      this.aniPass = false;
+      this.aniError = false;
+
+      this.isLoading = true;
+      await this.$auth
+        .loginWith("local", {
+          data: {
+            email_username: this.form.username,
+            password: this.from.password,
+            browser: this.detectBrowser(),
+            latitude: this.latitude,
+            longitude: this.longitude,
+          },
+        })
+        .then((res) => {
+          localStorage.removeItem("company_popup_dialog");
+          this.$router.push("/");
+          // this.$toastr.s(this.$tr("successfully_logged_in"));
+          // this.$toasterNA("green", this.$tr("successfully_logged_in"));
+          this.isLoading = false;
+        })
+        .catch(async (err) => {
+          this.aniSuccess = false;
+          this.aniPass = false;
+          this.aniError = true;
+          let play = document.querySelector("#animationError");
+          play.getLottie().stop();
+          await play.getLottie().play();
+          this.showVerify = false;
+          this.isLoading = false;
+          if (err.response) {
+            if (err.response.status == 422) {
+              this.error = err.response.data.errors;
+              if (this.error.password) {
+                // this.$toastr.e(this.$tr(this.error.password[0]));
+                // this.$toasterNA("red", this.$tr(this.error.password[0]));
+              }
+              if (this.error.email) {
+                // this.$toastr.e(this.$tr(this.error.email[0]));
+                // this.$toasterNA("red", this.$tr(this.error.email[0]));
+              }
+            } else if (
+              err.response.status === 401 &&
+              err.response.data.timeLimit
+            ) {
+              // this.$toastr.e(this.$tr("not_allowed_at_current_time"));
+              // this.$toasterNA("red", this.$tr("not_allowed_at_current_time"));
+            } else if (err.response.status == 401) {
+              this.invalidCreds = err.response.data.message;
+              // this.$toastr.e(this.invalidCreds);
+              this.$toasterNA("red", this.invalidCreds);
+            } else if (err.response.status == 406) {
+              // this.$toastr.e(this.$tr("account_not_activated"));
+              // this.$toasterNA("red", this.$tr("account_not_activated"));
+            } else if (err.response.status == 500) {
+              this.networkError = true;
+              this.invalidCreds = err.response.data.message;
+              // this.$toastr.e(this.$tr("server_error_please_try_again"));
+              // this.$toasterNA("red", this.$tr("server_error_please_try_again"));
+            } else if (err.response.status == 404) {
+              this.invalidCreds = err.response.data.message;
+              // this.$toastr.e(
+              // 	this.$tr("account_warning_password_incorrect_5_times"),
+              // );
+              // this.$toasterNA(
+              //   "red",
+              //   this.$tr("account_warning_password_incorrect_5_times")
+              // );
+            } else if (err.response.status == 405) {
+            } else if (err.response.status == 406) {
+            } else if (err.response.status == 307) {
+            } else if (err.response.status == 308) {
+            }
+          } else if (err.message == "Network Error") {
+          }
+        });
+    },
+
+    detectBrowser() {
+      let userAgent = navigator.userAgent;
+      let browserName;
+
+      if (userAgent.match(/chrome|chromium|crios/i)) {
+        browserName = "chrome";
+      } else if (userAgent.match(/firefox|fxios/i)) {
+        browserName = "firefox";
+      } else if (userAgent.match(/safari/i)) {
+        browserName = "safari";
+      } else if (userAgent.match(/opr\//i)) {
+        browserName = "opera";
+      } else if (userAgent.match(/edg/i)) {
+        browserName = "edge";
+      } else {
+        browserName = "No browser detection";
+      }
+      return browserName;
     },
   },
-  methods: {
-    nextStep() {
-      let isvlaid = this.$refs["step" + this.currentStepper].validate();
-
-      if (true) {
-        if (this.currentStepper == 3) {
-          this.currentStepper = 0;
-          this.$refs.stepper.nextStep();
-          return;
-        } else {
-          this.currentStepper++;
-          this.$refs.stepper.nextStep();
-        }
-      } else {
-        this.invalidSteps.push(this.currentStepper);
-      }
-    },
-    prevStep() {
-      if (this.currentStepper == 0) {
-        return;
-      } else {
-        this.currentStepper--;
-        this.$refs.stepper.prevStep();
-      }
-    },
-
-    download(e) {
-      this.formInsertion = false;
-      this.downloaded = true;
-      this.done = true;
-      this.currentStepper++;
-      e.target.style.display = "none";
-
-      this.$refs.pdfDownload.generateIt()
-    },
-
-    backHome() {
-      this.currentStepper = 0;
-      this.formInsertion = true;
-      this.done = false;
-      this.downloaded = false;
-    },
-
-    logOut() {
-      this.log_out = "";
-      this.$bvModal
-        .msgBoxConfirm("Are you sure you want to exit?", {
-          title: "Logout",
-          size: "sm",
-          buttonSize: "sm",
-          okVariant: "danger",
-          okTitle: "Logout",
-          cancelTitle: "Cancel",
-          footerClass: "p-2",
-          hideHeaderClose: false,
-          centered: true,
-        })
-        .then(value => {
-          this.log_out = value;
-          if (value) {
-            this.$router.push('/')
-          }
-        })
-        .catch(err => {
-          // An error occurred
-        })
-    },
-
-    startForm() {
-      // console.log('hey');
-      this.startInsert = false;
-      this.formInsertion = true;
-      this.showActionBtn = true;
-    }
-  }
-
 };
 </script>
 

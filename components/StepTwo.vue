@@ -1,6 +1,21 @@
 <template>
   <div>
     <div class="p40 m20">
+      <b-form-group id="input-group-2" label="Phone Number" label-for="input-2">
+        <b-form-input
+          id="input-2"
+          v-model="form.number.$model"
+          type="number"
+          placeholder="Number"
+          required
+          :state="validateState('number')"
+          @blur="form.number.$touch"
+        >
+        </b-form-input>
+        <b-form-invalid-feedback>Invalid Phone Number</b-form-invalid-feedback>
+      </b-form-group>
+    </div>
+    <div class="p40 m20">
       <b-form-group id="input-group-1" label="Name" label-for="input-1">
         <b-form-input
           id="input-1"
@@ -17,23 +32,9 @@
         </b-form-invalid-feedback>
       </b-form-group>
     </div>
+
     <div class="p40 m20">
-      <b-form-group id="input-group-2" label="Phone Number" label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="form.number.$model"
-          type="number"
-          placeholder="Number"
-          required
-          :state="validateState('number')"
-          @blur="form.number.$touch"
-        >
-        </b-form-input>
-        <b-form-invalid-feedback>Invalid Phone Number</b-form-invalid-feedback>
-      </b-form-group>
-    </div>
-    <div class="p40 m20">
-      <b-progress :value="12" :max="34" show-progress animated></b-progress>
+      <!-- <b-progress :value="12" :max="34" show-progress animated></b-progress> -->
       <b-form-group id="input-group-3" label="City" label-for="input-3">
         <b-form-select
           id="input-3"
@@ -51,12 +52,6 @@
           <template #first>
             <b-form-select-option :value="null" disabled>
               Choose City
-              <b-progress
-                :value="12"
-                :max="34"
-                show-progress
-                animated
-              ></b-progress>
             </b-form-select-option>
           </template>
         </b-form-select>
@@ -79,7 +74,13 @@
           class="mb-3"
           value-field="name"
           text-field="name"
-        ></b-form-select>
+        >
+          <template #first>
+            <b-form-select-option :value="null" disabled>
+              Choose Area
+            </b-form-select-option>
+          </template>
+        </b-form-select>
         <b-form-invalid-feedback
           >Customer Area Is Required</b-form-invalid-feedback
         >
@@ -130,17 +131,17 @@ export default {
         (city) => city.name == this.form.city.$model
       );
       this.areas = city.map((row) => row.subcities);
+
       this.areas = this.areas[0];
     },
   },
   methods: {
     validateState(name) {
       const { $dirty, $error } = this.form[name];
-      console.log($dirty, $error);
+
       return $dirty ? !$error : null;
     },
     validate() {
-      return true;
       this.form.name.$touch();
       this.form.city.$touch();
       this.form.area.$touch();

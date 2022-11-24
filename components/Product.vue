@@ -1,5 +1,10 @@
 <template>
-  <div class="product_container">
+  <div
+    :class="`product_container ${
+      ifInvalid ? 'invalid' : isActive == index ? 'active' : ''
+    } `"
+    @click="$emit('click')"
+  >
     <div>
       <div class="product_img">
         <img
@@ -13,7 +18,7 @@
           <i class="fa-solid fa-xmark"></i>
         </div>
       </div>
-      <span class="mt-2 d-block">Flora Dress</span>
+      <span class="mt-2 d-block">{{ title ? title : "product" }}</span>
     </div>
     <div class="p40 m20 position-relative">
       <b-form-group id="input-group-1">
@@ -21,15 +26,13 @@
           pill
           class="mb-2 mt-2 text-center paddingin"
           id="input-1"
-          type="text"
+          type="number"
           placeholder="Qty"
           v-model="form.$model.products[index].product_quantity"
           :state="validateproducts('product_quantity')"
         >
         </b-form-input>
-        <b-form-invalid-feedback
-          >Product Color Is Required</b-form-invalid-feedback
-        >
+        <b-form-invalid-feedback> Qty *</b-form-invalid-feedback>
       </b-form-group>
       <b-button
         @click="minsBtn"
@@ -48,22 +51,20 @@
         <span>+</span></b-button
       >
     </div>
-    <div class="p40 m20" v-show="showPrice">
+    <div class="p40 m20" v-show="form.price_per_picture.$model">
       <b-form-group id="input-group-1">
         <b-form-input
           pill
           id="input-1 "
           class="text-center"
-          type="text"
+          type="number"
           placeholder="Price"
           required
           v-model="form.$model.products[index].product_price"
           :state="validateproducts('product_price')"
         >
         </b-form-input>
-        <b-form-invalid-feedback
-          >Product Color Is Required</b-form-invalid-feedback
-        >
+        <b-form-invalid-feedback>Price *</b-form-invalid-feedback>
       </b-form-group>
     </div>
   </div>
@@ -71,7 +72,15 @@
 
 <script>
 export default {
-  props: ["showPrice", "form", "is_touched", "index"],
+  props: [
+    "showPrice",
+    "form",
+    "is_touched",
+    "index",
+    "title",
+    "invalidIndexs",
+    "isActive",
+  ],
   data() {
     return {
       productValue: {
@@ -80,11 +89,18 @@ export default {
       },
     };
   },
+  computed: {
+    ifInvalid() {
+      let exist = this.invalidIndexs.find((value) => value == this.index);
+
+      return exist ? true : false;
+    },
+  },
   methods: {
     validateproducts(name) {
-      const data = this.form.$model.products[this.index][name];
-      console.log(this.form.products);
-      return !this.is_touched ? null : data ? true : false;
+      if (!this.form.products.$each[this.index]) return null;
+      const { $dirty, $error } = this.form.products.$each[this.index][name];
+      return $dirty ? !$error : null;
     },
     addBtn() {
       this.form.$model.products[this.index].product_quantity++;
@@ -141,6 +157,12 @@ export default {
   margin-bottom: 10px;
   /* margin: 0 5px; */
 }
+.invalid {
+  border: 1px solid #ee303054;
+}
+.active {
+  border: 1px solid rgba(0, 123, 255, 0.47059);
+}
 
 .product_img {
   width: 100%;
@@ -176,5 +198,14 @@ input {
 
 .paddingin {
   padding: 0 35px;
+}
+
+.was-validated .form-control:invalid,
+.form-control.is-invalid {
+  background-image: unset !important;
+}
+.was-validated .form-control:valid,
+.form-control.is-valid {
+  background-image: unset !important;
 }
 </style>

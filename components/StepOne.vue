@@ -2,14 +2,14 @@
   <div>
     <CountrySelection v-model="form.country.$model" />
     <div class="error-container mb-3">
-      <span class="error" v-show="form.country.$invalid"
+      <span class="error" v-show="this.is_touched && form.country.$invalid"
         >Country Is Required</span
       >
     </div>
     <div>
       <projectSelection :items="projects" v-model="form.project.$model" />
       <div class="error-container mb-3">
-        <span class="error" v-show="form.project.$invalid"
+        <span class="error" v-show="this.is_touched && form.project.$invalid"
           >Company Is Required</span
         >
       </div>
@@ -29,14 +29,14 @@
         id="input-group-1"
         label="Add Link"
         label-for="input-1"
-        v-show="form.no_ad_order.$model"
+        v-show="!form.no_ad_order.$model"
       >
         <b-form-input
           id="input-1"
-          v-model="form.landing_link.$model"
           type="text"
           placeholder="Link"
           :state="validateState('landing_link')"
+          v-model="form.landing_link.$model"
           required
           @blur="form.landing_link.$touch"
         >
@@ -62,6 +62,7 @@ export default {
       ColumnAxiosSource: null,
       projects: [],
       isFetchingProjects: false, //
+      is_touched: false, //
     };
   },
   created() {
@@ -87,10 +88,11 @@ export default {
     },
 
     validate() {
+      this.is_touched = true;
       this.form.landing_link.$touch();
       this.form.country.$touch();
       this.form.project.$touch();
-      console.log(!this.form.project.$invalid, !this.form.country.$invalid);
+
       if (
         this.form.landing_link.$invalid ||
         this.form.country.$invalid ||
