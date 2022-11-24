@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-toast id="my-toast" variant="warning" solid>
+    <!-- <b-toast id="my-toast" variant="warning" solid>
       <template #toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
           <b-img
@@ -15,8 +15,8 @@
         </div>
       </template>
       This is the content of the toast. It is short and to the point.
-    </b-toast>
-    <b-button @click="$bvToast.show('my-toast')">Show toast</b-button>
+    </b-toast> -->
+    <!-- <b-button @click="$bvToast.show('my-toast')">Show toast</b-button> -->
     <div id="container">
       <div id="app_container">
         <!-- lgoin Cover -->
@@ -70,7 +70,7 @@
                 </b-form-input>
               </b-form-group>
 
-              <b-button @click="signIn" variant="primary" class="cus-btn"
+              <b-button @click="signIn()" variant="primary" class="cus-btn"
                 >Primary</b-button
               >
             </form>
@@ -112,107 +112,22 @@ export default {
     };
   },
   methods: {
-    login() {
-      this.$router.push("/start");
-    },
     async signIn() {
-      this.aniSuccess = true;
-      this.aniPass = false;
-      this.aniError = false;
-
-      this.isLoading = true;
-      await this.$auth
-        .loginWith("local", {
-          data: {
-            email_username: this.form.username,
-            password: this.from.password,
-            browser: this.detectBrowser(),
-            latitude: this.latitude,
-            longitude: this.longitude,
-          },
-        })
-        .then((res) => {
-          localStorage.removeItem("company_popup_dialog");
-          this.$router.push("/");
-          // this.$toastr.s(this.$tr("successfully_logged_in"));
-          // this.$toasterNA("green", this.$tr("successfully_logged_in"));
-          this.isLoading = false;
-        })
-        .catch(async (err) => {
-          this.aniSuccess = false;
-          this.aniPass = false;
-          this.aniError = true;
-          let play = document.querySelector("#animationError");
-          play.getLottie().stop();
-          await play.getLottie().play();
-          this.showVerify = false;
-          this.isLoading = false;
-          if (err.response) {
-            if (err.response.status == 422) {
-              this.error = err.response.data.errors;
-              if (this.error.password) {
-                // this.$toastr.e(this.$tr(this.error.password[0]));
-                // this.$toasterNA("red", this.$tr(this.error.password[0]));
-              }
-              if (this.error.email) {
-                // this.$toastr.e(this.$tr(this.error.email[0]));
-                // this.$toasterNA("red", this.$tr(this.error.email[0]));
-              }
-            } else if (
-              err.response.status === 401 &&
-              err.response.data.timeLimit
-            ) {
-              // this.$toastr.e(this.$tr("not_allowed_at_current_time"));
-              // this.$toasterNA("red", this.$tr("not_allowed_at_current_time"));
-            } else if (err.response.status == 401) {
-              this.invalidCreds = err.response.data.message;
-              // this.$toastr.e(this.invalidCreds);
-              this.$toasterNA("red", this.invalidCreds);
-            } else if (err.response.status == 406) {
-              // this.$toastr.e(this.$tr("account_not_activated"));
-              // this.$toasterNA("red", this.$tr("account_not_activated"));
-            } else if (err.response.status == 500) {
-              this.networkError = true;
-              this.invalidCreds = err.response.data.message;
-              // this.$toastr.e(this.$tr("server_error_please_try_again"));
-              // this.$toasterNA("red", this.$tr("server_error_please_try_again"));
-            } else if (err.response.status == 404) {
-              this.invalidCreds = err.response.data.message;
-              // this.$toastr.e(
-              // 	this.$tr("account_warning_password_incorrect_5_times"),
-              // );
-              // this.$toasterNA(
-              //   "red",
-              //   this.$tr("account_warning_password_incorrect_5_times")
-              // );
-            } else if (err.response.status == 405) {
-            } else if (err.response.status == 406) {
-            } else if (err.response.status == 307) {
-            } else if (err.response.status == 308) {
-            }
-          } else if (err.message == "Network Error") {
-          }
+      try {
+        console.log("sign in");
+        const result = await this.$auth.loginWith("laravelSanctum", {
+          data: { email: this.form.email, password: this.form.password },
         });
-    },
 
-    detectBrowser() {
-      let userAgent = navigator.userAgent;
-      let browserName;
-
-      if (userAgent.match(/chrome|chromium|crios/i)) {
-        browserName = "chrome";
-      } else if (userAgent.match(/firefox|fxios/i)) {
-        browserName = "firefox";
-      } else if (userAgent.match(/safari/i)) {
-        browserName = "safari";
-      } else if (userAgent.match(/opr\//i)) {
-        browserName = "opera";
-      } else if (userAgent.match(/edg/i)) {
-        browserName = "edge";
-      } else {
-        browserName = "No browser detection";
+        // if user logged in successfully show success message
+        if (result.status === 201 && result.data.result) {
+          console.log("logged in");
+        } else {
+          console.log("login failed ");
+        }
+      } catch (e) {
+        console.log("error occured", e);
       }
-      return browserName;
     },
   },
 };

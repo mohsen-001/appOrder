@@ -6,6 +6,9 @@ export default {
     // host: "192.168.3.26",
   },
 
+  router: {
+    middleware: ['auth']
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: "app-order",
@@ -44,8 +47,12 @@ export default {
   ],
 
   axios: {
-    baseURL: "http://localhost:8000/api/v1",
-    // baseUrl: "http://192.168.3.26:3000",
+    baseURL: "https://api.teebalhoor.net/public",
+    credentials: true,
+    changeOrigin: true,
+    common: {
+      Accept: "application/json",
+    },
   },
 
 
