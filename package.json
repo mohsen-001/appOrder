@@ -18,6 +18,7 @@
     "core-js": "^3.25.3",
     "flag-icons": "^6.6.6",
     "install": "^0.13.0",
+    "jspdf": "^2.5.1",
     "nuxt": "^2.15.8",
     "nuxt-fontawesome": "^0.4.0",
     "vue": "^2.7.10",

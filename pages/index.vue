@@ -1,3 +1,6 @@
+<!-- <div class="invoice_page_hide">
+  <PdfPage ref="pdfDownload" />
+</div> -->
 <template>
   <div>
     <div id="containerOne">
@@ -128,18 +131,15 @@
 
 <script>
 import CountrySelection from "../components/CountrySelection.vue";
-import {
-  required,
-  minLength,
-  url,
-  helpers,
-  requiredIf,
-} from "vuelidate/lib/validators";
+import { required, minLength, url, helpers } from "vuelidate/lib/validators";
+import { jsPDF } from "jspdf";
 
 export default {
   name: "StepOnePage",
   data() {
     return {
+      checked: true,
+
       log_out: "",
       currentStepper: 0,
       // isInvoice: false,
@@ -374,6 +374,11 @@ export default {
 <style scoped>
 body {
   font-family: "Poppins", sans-serif;
+}
+
+.invoice_page_hide {
+  position: fixed !important;
+  top: -2000px !important;
 }
 
 .logout_btn {

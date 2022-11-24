@@ -1,22 +1,5 @@
 <template>
   <div>
-    <!-- <b-toast id="my-toast" variant="warning" solid>
-      <template #toast-title>
-        <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img
-            blank
-            blank-color="#ff5555"
-            class="mr-2"
-            width="12"
-            height="12"
-          ></b-img>
-          <strong class="mr-auto">Notice!</strong>
-          <small class="text-muted mr-2">42 seconds ago</small>
-        </div>
-      </template>
-      This is the content of the toast. It is short and to the point.
-    </b-toast> -->
-    <!-- <b-button @click="$bvToast.show('my-toast')">Show toast</b-button> -->
     <div id="container">
       <div id="app_container">
         <!-- lgoin Cover -->
@@ -70,7 +53,7 @@
                 </b-form-input>
               </b-form-group>
 
-              <b-button @click="signIn()" variant="primary" class="cus-btn"
+              <b-button @click="login" variant="primary" class="cus-btn"
                 >Primary</b-button
               >
             </form>
@@ -90,42 +73,11 @@ export default {
         username: "",
         password: "",
       },
-      signKey: 1,
-      showVerify: false,
-      rememberMe: true,
-      disableLoginButton: true,
-      error: {},
-      invalidCreds: "",
-      networkError: false,
-      email: "",
-      password: "",
-      isLoading: false,
-      showPass: false,
-      gettingLocation: false,
-      location: null,
-      errorStr: null,
-      fetch: true,
-      show1: false,
-      aniPass: true,
-      aniSuccess: false,
-      aniError: false,
     };
   },
   methods: {
-    async signIn() {
-      try {
-        this.$router.push("/");
-        console.log("sign in");
-
-        // // if user logged in successfully show success message
-        // if (result.status === 201 && result.data.result) {
-        //   console.log("logged in");
-        // } else {
-        //   console.log("login failed ");
-        // }
-      } catch (e) {
-        console.log("error occured", e);
-      }
+    login() {
+      this.$router.push("/start");
     },
   },
 };
