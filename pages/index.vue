@@ -1,79 +1,124 @@
 <template>
   <div>
-    <!-- <b-toast id="my-toast" variant="warning" solid>
-      <template #toast-title>
-        <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img
-            blank
-            blank-color="#ff5555"
-            class="mr-2"
-            width="12"
-            height="12"
-          ></b-img>
-          <strong class="mr-auto">Notice!</strong>
-          <small class="text-muted mr-2">42 seconds ago</small>
-        </div>
-      </template>
-      This is the content of the toast. It is short and to the point.
-    </b-toast> -->
-    <!-- <b-button @click="$bvToast.show('my-toast')">Show toast</b-button> -->
-    <div id="container">
+    <div id="containerOne">
+      <div>
+        <b-modal
+          id="modal-center"
+          class="logout_model"
+          centered
+          title="BootstrapVue"
+        >
+          <p class="my-4">Vertically centered modal!</p>
+        </b-modal>
+      </div>
+
+      <div class="btm_pge d-flex" v-if="showActionBtn">
+        <b-button
+          @click="nextStep"
+          pill
+          variant="primary"
+          class="btn w-100"
+          v-show="currentStepper < 2"
+          >Next</b-button
+        >
+        <b-button
+          @click="submit"
+          pill
+          variant="primary"
+          class="btn w-100"
+          v-show="currentStepper == 2"
+          >Submit
+        </b-button>
+        <b-button
+          @click="download"
+          pill
+          variant="primary"
+          class="btn w-100"
+          v-show="currentStepper == 3"
+          >Download PDF
+        </b-button>
+        <b-button
+          @click="backHome"
+          pill
+          variant="primary"
+          class="btn w-100"
+          v-show="downloaded"
+          >Back to Home</b-button
+        >
+        <!-- <button class="ml-2 logout_btn d-flex justify-content-center align-items-center"><i
+            class="fa-solid fa-arrow-right-from-bracket" v-b-modal.modal-center></i></button> -->
+        <b-button
+          class="
+            ml-2
+            logout_btn
+            d-flex
+            justify-content-center
+            align-items-center
+          "
+          @click="logOut"
+        >
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </b-button>
+      </div>
       <div id="app_container">
         <!-- lgoin Cover -->
 
         <div class="login_cover">
           <img
-            class="login_cover_img"
-            src="../static/ara-char.svg"
+            @click="prevStep"
+            class="back"
+            src="../static/arrow-back.svg"
+            alt="back"
+            v-show="currentStepper > 0 && currentStepper <= 3"
+          />
+          <img
+            class="page_head_img"
+            src="../static/head-img.svg"
             alt="aracbic person"
-            width="350px"
+            width="200px"
           />
         </div>
 
         <!-- login container -->
 
-        <div class="login_container">
-          <div class="login_container_head">
-            <h2>Welcome</h2>
-            <p>Login to continue.</p>
+        <div class="page_container">
+          <div class="h-100" v-if="formInsertion">
+            <div class="page_stepper">
+              <div class="stepper_area p40">
+                <Stepper ref="stepper" />
+              </div>
+            </div>
+
+            <div class="form_area">
+              <StepOne
+                v-show="currentStepper == 0"
+                ref="step0"
+                :form="$v.form"
+              />
+              <StepTwo
+                v-show="currentStepper == 1"
+                ref="step1"
+                :form="$v.form"
+              />
+              <StepThree
+                v-show="currentStepper == 2"
+                ref="step2"
+                :form="$v.form"
+              />
+              <StepFour
+                v-show="currentStepper == 3"
+                ref="step3"
+                :form="$v.form"
+              />
+            </div>
           </div>
 
-          <div class="login_container-form">
-            <form action="/">
-              <b-form-group
-                id="input-group-1"
-                label="Username"
-                label-for="input-1"
-              >
-                <b-form-input
-                  id="input-1"
-                  v-model="form.username"
-                  type="text"
-                  placeholder="Username"
-                  required
-                >
-                </b-form-input>
-              </b-form-group>
+          <div class="h-100" v-if="done">
+            <Done />
+          </div>
 
-              <b-form-group
-                id="input-group-2"
-                label="Password"
-                label-for="input-2"
-              >
-                <b-form-input
-                  id="input-2"
-                  v-model="form.password"
-                  type="password"
-                  placeholder="Password"
-                  required
-                >
-                </b-form-input>
-              </b-form-group>
-
-              <b-button @click="signIn()" variant="primary" class="cus-btn"
-                >Primary</b-button
-              >
-            </form>
+          <div class="h-100" v-if="startInsert">
+            <Start @startInsertion="startForm" />
           </div>
         </div>
       </div>
@@ -82,142 +127,351 @@
 </template>
 
 <script>
+import CountrySelection from "../components/CountrySelection.vue";
+import {
+  required,
+  minLength,
+  url,
+  helpers,
+  requiredIf,
+} from "vuelidate/lib/validators";
+
 export default {
-  name: "IndexPage",
+  name: "StepOnePage",
   data() {
     return {
+      log_out: "",
+      currentStepper: 0,
+      // isInvoice: false,
+      showActionBtn: false,
+      downloaded: false,
+      formInsertion: false,
+      startInsert: true,
+      done: false,
+      invalidSteps: [],
       form: {
-        username: "",
-        password: "",
+        country: null,
+        project: null,
+        source: 7,
+        no_ad_order: false,
+        landing_link: null,
+        number: null,
+        city: null,
+        area: null,
+        address: null,
+        products: [
+          {
+            id: 1,
+            product_code: null,
+            product_image: null,
+            product_quantity: null,
+            product_size: null,
+            product_color: "#FF0000FF",
+            product_price: null,
+          },
+        ],
+        price_per_picture: false,
+        price: 0,
+        delivery_fee: 0,
+        delay: null,
+        delay_order: false,
+        note: null,
+        name: null,
       },
-      signKey: 1,
-      showVerify: false,
-      rememberMe: true,
-      disableLoginButton: true,
-      error: {},
-      invalidCreds: "",
-      networkError: false,
-      email: "",
-      password: "",
-      isLoading: false,
-      showPass: false,
-      gettingLocation: false,
-      location: null,
-      errorStr: null,
-      fetch: true,
-      show1: false,
-      aniPass: true,
-      aniSuccess: false,
-      aniError: false,
     };
   },
-  methods: {
-    async signIn() {
-      try {
-        console.log("sign in");
-        const result = await this.$auth.loginWith("laravelSanctum", {
-          data: { email: this.form.email, password: this.form.password },
-        });
+  validations: {
+    form: {
+      source: {},
+      landing_link: {
+        url,
+        required: requiredIf(function (value) {
+          return !this.form.no_ad_order;
+        }),
+      },
+      name: {
+        required,
+        minLength: minLength(3),
+      },
+      number: {
+        required,
+        phoneNumber: helpers.regex("phoneNumber", /^[\d()+]{7,14}$/),
+      },
+      city: {
+        required,
+        minLength: minLength(3),
+      },
+      area: {
+        required,
+        minLength: minLength(3),
+      },
+      address: {
+        required,
+        minLength: minLength(3),
+      },
+      project: { required },
+      country: { required },
+      no_ad_order: {},
+      products: {
+        $each: {
+          id: {},
+          product_code: { required },
+          product_quantity: { required },
+          product_size: { required },
+          product_color: { required },
+          product_price: {
+            required: requiredIf(function (value) {
+              return this.form.price_per_picture;
+            }),
+          },
+        },
+      },
+      price_per_picture: {},
+      price: {
+        required: requiredIf(function (value) {
+          return !this.form.price_per_picture;
+        }),
+      },
+      delivery_fee: {},
+      delay_order: {},
+      delay: {
+        required: requiredIf(function (value) {
+          return this.form.delay_order;
+        }),
+      },
 
-        // if user logged in successfully show success message
-        if (result.status === 201 && result.data.result) {
-          console.log("logged in");
+      note: {
+        required,
+        minLength: minLength(5),
+      },
+    },
+  },
+  methods: {
+    nextStep() {
+      this.arrangeData();
+      let isvlaid = this.$refs["step" + this.currentStepper].validate();
+
+      if (isvlaid) {
+        if (this.currentStepper == 3) {
+          this.currentStepper = 0;
+          this.$refs.stepper.nextStep();
+          return;
         } else {
-          console.log("login failed ");
+          this.currentStepper++;
+          this.$refs.stepper.nextStep();
         }
-      } catch (e) {
-        console.log("error occured", e);
+      } else {
+        this.invalidSteps.push(this.currentStepper);
       }
+    },
+
+    async submit() {
+      let isvlaid = this.$refs["step" + this.currentStepper].validate();
+      if (!isvlaid) return;
+      const products = this.arrangeData();
+      // const data = await this.$axios.post(
+      //   "https://api.teebalhoor.net/public/api/add-crm-order",
+      //   products
+      // );
+
+      return this.nextStep();
+    },
+    arrangeData() {
+      const products = {};
+      try {
+        products["province"] = this.form.city;
+        products["area"] = this.form.area;
+        products["address"] = this.form.address;
+        products["name"] = this.form.name;
+
+        products["pcode"] = this.form.products.map((row) => row.product_code);
+        products["qty"] = this.form.products.map((row) => row.product_quantity);
+        products["prod_size"] = this.form.products.map(
+          (row) => row.product_size
+        );
+        products["prod_color"] = this.form.products.map(
+          (row) => row.product_color
+        );
+        products["prod_price"] = this.form.price_per_picture
+          ? this.form.products.map((row) => row.product_price)
+          : [];
+        products["delay"] = this.form.delay;
+        products["project"] = this.form.project;
+        products["withtax"] = 0;
+        products["buroaz"] = 0;
+        products["ad_id"] = "this.$auth.user.username";
+        products["phone"] = this.form.number;
+        products["price"] = parseFloat(this.$refs["step2"].totalPrice);
+        products["status"] = this.form.delay_order == true ? 1 : 5;
+        products["source"] = this.form.source;
+        products["landing_link"] = this.form.landing_link;
+
+        products["notes"] = this.form.note;
+      } catch (error) {
+        console.log(error);
+      }
+      return products;
+    },
+    prevStep() {
+      if (this.currentStepper == 0) {
+        return;
+      } else {
+        this.currentStepper--;
+        this.$refs.stepper.prevStep();
+      }
+    },
+
+    download(e) {
+      this.formInsertion = false;
+      this.downloaded = true;
+      this.done = true;
+      this.currentStepper++;
+      e.target.style.display = "none";
+    },
+
+    backHome() {
+      this.currentStepper = 0;
+      this.formInsertion = true;
+      this.done = false;
+      this.downloaded = false;
+    },
+
+    logOut() {
+      this.log_out = "";
+      this.$bvModal
+        .msgBoxConfirm("Are you sure you want to exit?", {
+          title: "Logout",
+          size: "sm",
+          buttonSize: "sm",
+          okVariant: "danger",
+          okTitle: "Logout",
+          cancelTitle: "Cancel",
+          footerClass: "p-2",
+          hideHeaderClose: false,
+          centered: true,
+        })
+        .then((value) => {
+          this.log_out = value;
+          if (value) {
+            this.$router.push("/");
+          }
+        })
+        .catch((err) => {
+          // An error occurred
+        });
+    },
+
+    startForm() {
+      // console.log('hey');
+      this.startInsert = false;
+      this.formInsertion = true;
+      this.showActionBtn = true;
     },
   },
 };
 </script>
 
 <style scoped>
-/* :root {
-  --pri-color: #115598;
-} */
-
 body {
   font-family: "Poppins", sans-serif;
 }
 
-#container {
+.logout_btn {
+  width: 66px;
+  height: 66px;
+  border-radius: 50px;
+}
+
+.logout_btn {
+  border: none;
+  background-color: #007bff17;
+}
+
+.logout_btn:active {
+  background-color: #007bff2b;
+}
+
+.logout_btn:focus {
+  background-color: #007bff2b;
+  border-color: #0062cc;
+  box-shadow: 0 0 0 0.2rem rgb(38 143 255 / 50%);
+}
+
+.logout_btn i {
+  font-size: 1.3rem;
+  width: 66px;
+  color: #007bff;
+}
+
+.back {
+  position: absolute;
+  top: 50%;
+  left: 40px;
+  transform: translateY(-50%);
+  width: 20px;
+}
+
+#containerOne {
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
 }
 
-.cus-btn {
-  padding: 15px;
+.btm_pge {
+  position: fixed;
   width: 100%;
-  /* max-width: 600px; */
-  border-radius: 50px;
-  margin-top: 10px;
-  /* background-color: #115598; */
+  max-width: 820px;
+  bottom: 0;
+  background-color: white;
+  padding: 10px;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  box-shadow: 0px -3px 6px -3px rgba(0, 0, 0, 0.3);
+  z-index: 10;
 }
 
 #app_container {
-  width: 600px;
+  width: 820px;
   height: 100vh;
   background-color: #115598 !important;
 }
 
+.form_area {
+  margin-top: 40px;
+  height: 80%;
+  overflow: auto;
+  padding-bottom: 20px;
+  /* padding: 30px; */
+}
+
 .login_cover {
   width: 100%;
-  height: 35%;
+  height: 12%;
   position: relative;
 }
 
-.login_cover_img {
+.page_head_img {
   position: absolute;
-  bottom: -35px;
+  bottom: 0px;
+  right: 20px;
 }
 
-.login_container {
+.page_container {
   background-color: white;
   width: 100%;
-  height: 65%;
-  border-top-right-radius: 81px;
+  height: 88%;
+  border-top-left-radius: 81px;
+  padding: 20px 0;
 }
 
-.login_container_head {
-  text-align: center;
-  padding: 20px;
+.p40 {
+  padding: 0 40px;
 }
 
-.login_container-form {
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
-  /* align-items: center; */
+.m20 {
+  margin-top: 20px;
 }
-
-input {
-  width: 300px;
-  height: 50px;
-  border-radius: 50px;
-}
-
-.login_container_head {
-  height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.login_container_head h2 {
-  font-weight: 900;
-  color: #115598;
-}
-
-/* for mobile size */
-
-/* @media screen and (min-width: 767px) {
-
-} */
 
 @media screen and (max-width: 768px) {
   #app_container {

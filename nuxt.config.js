@@ -73,9 +73,9 @@ export default {
       },
     },
     redirect: {
-      home: "/start",
-      login: "/",
-      logout: "/",
+      home: "/",
+      login: "/signin",
+      logout: "/signin",
     },
   },
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -96,7 +96,7 @@ export default {
   modules: [
     "@nuxtjs/pwa",
     "bootstrap-vue/nuxt",
-    "@nuxtjs/auth-next",
+    '@nuxtjs/auth-next'
   ],
   pwa: {
     meta: {
