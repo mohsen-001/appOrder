@@ -90,6 +90,7 @@ export default {
     "@nuxtjs/pwa",
     // https://go.nuxtjs.dev/bootstrap
     "bootstrap-vue/nuxt",
+    "@nuxtjs/auth-next",
   ],
   pwa: {
     meta: {
