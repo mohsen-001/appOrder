@@ -2,6 +2,7 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
   server: {
+    port: 3007
     // host: "192.168.3.26",
   },
 
@@ -51,7 +52,7 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    
+
   ],
 
   // script: [
