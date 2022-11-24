@@ -103,3 +103,49 @@
   width: 100%;
   height: 20px;
 }
+
+
+
+
+
+/* table customization */
+.table_holder .table {
+  color: white;
+}
+
+.table_holder .table th, .table_holder .table td {
+  border: none;
+}
+
+.table_holder table tr td:nth-child(2) {
+  width: 400px;
+}
+
+.table_holder table thead th{
+  background-color: #80CDCF !important;
+  background-color: transparent;
+}
+
+.table_holder table tbody tr:nth-child(odd){
+  background-color: #2B3E4C !important;
+}
+
+.table_holder table tbody tr:nth-child(even){
+  background-color: #80cccf1d !important;
+}
+
+.table_holder table thead th div{
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #263342;
+}
+
+.table_holder table thead th:first-child{
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.table_holder table thead th:last-child{
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}

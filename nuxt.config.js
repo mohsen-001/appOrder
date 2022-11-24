@@ -35,6 +35,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     "~/plugins/axios.js",
+    {src: "~/plugins/jspdf.js"},
     "~/plugins/lottie-vue-player.client.js",
     {
       src: "~/plugins/Vuelidate.js",
