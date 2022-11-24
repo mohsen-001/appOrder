@@ -243,13 +243,13 @@ export default {
         price =
           price +
           parseFloat(this.form.price.$model ? this.form.price.$model : 0);
-
-      return (
+      price =
         price +
         parseFloat(
           this.form.delivery_fee.$model ? this.form.delivery_fee.$model : 0
-        )
-      );
+        );
+      // this.from.total_price.$model = price;
+      return price;
       //  return exist ? true : false;
     },
   },
@@ -260,7 +260,6 @@ export default {
         const url = `https://api.teebalhoor.net/public/products`;
         const { data } = await this.$axios.get(url);
         this.products = data.data;
-        console.log("products", this.products);
       } catch (error) {
         console.log(error);
       }

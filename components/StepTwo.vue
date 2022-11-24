@@ -138,7 +138,7 @@ export default {
   methods: {
     validateState(name) {
       const { $dirty, $error } = this.form[name];
-      console.log($dirty, $error);
+
       return $dirty ? !$error : null;
     },
     validate() {

@@ -170,11 +170,6 @@ export default {
         delay: null,
         delay_order: false,
         note: null,
-
-        send_brochure: true,
-        with_tax: true,
-
-        selectedAddress: null,
         name: null,
       },
     };
@@ -247,9 +242,10 @@ export default {
   },
   methods: {
     nextStep() {
+      this.arrangeData();
       let isvlaid = this.$refs["step" + this.currentStepper].validate();
 
-      if (true) {
+      if (isvlaid) {
         if (this.currentStepper == 3) {
           this.currentStepper = 0;
           this.$refs.stepper.nextStep();
@@ -263,44 +259,53 @@ export default {
       }
     },
 
-    submit() {
+    async submit() {
       let isvlaid = this.$refs["step" + this.currentStepper].validate();
       if (!isvlaid) return;
+      const products = this.arrangeData();
+      const data = await this.$axios.post(
+        "http://192.168.3.27:8000/api/add-crm-order",
+        products
+      );
+      console.log(data);
 
       return this.nextStep();
     },
     arrangeData() {
       const products = {};
-      products["province"] = this.products.city;
-      products["area"] = this.products.area;
-      products["address"] = this.products.address;
-      products["name"] = this.products.name;
+      try {
+        products["province"] = this.form.city;
+        products["area"] = this.form.area;
+        products["address"] = this.form.address;
+        products["name"] = this.form.name;
 
-      products["pcode"] = this.products.products.map((row) => row.product_code);
-      products["qty"] = this.products.products.map(
-        (row) => row.product_quantity
-      );
-      products["prod_size"] = this.products.products.map(
-        (row) => row.product_size
-      );
-      products["prod_color"] = this.products.products.map(
-        (row) => row.product_color
-      );
-      products["prod_price"] = this.form.price_per_picture
-        ? this.products.products.map((row) => row.product_price)
-        : [];
-      products["delay"] = this.products.delay;
-      products["project"] = this.products.project;
-      products["withtax"] = 0;
-      products["buroaz"] = 0;
-      products["ad_id"] = this.$auth.user.username;
-      products["phone"] = this.products.number;
-      products["price"] = parseFloat(this.products.price);
-      products["status"] = this.products.delay_order == true ? 1 : 5;
-      products["source"] = this.products.source;
-      products["landing_link"] = this.products.landing_link;
+        products["pcode"] = this.form.products.map((row) => row.product_code);
+        products["qty"] = this.form.products.map((row) => row.product_quantity);
+        products["prod_size"] = this.form.products.map(
+          (row) => row.product_size
+        );
+        products["prod_color"] = this.form.products.map(
+          (row) => row.product_color
+        );
+        products["prod_price"] = this.form.price_per_picture
+          ? this.form.products.map((row) => row.product_price)
+          : [];
+        products["delay"] = this.form.delay;
+        products["project"] = this.form.project;
+        products["withtax"] = 0;
+        products["buroaz"] = 0;
+        products["ad_id"] = "this.$auth.user.username";
+        products["phone"] = this.form.number;
+        products["price"] = parseFloat(this.$refs["step2"].totalPrice);
+        products["status"] = this.form.delay_order == true ? 1 : 5;
+        products["source"] = this.form.source;
+        products["landing_link"] = this.form.landing_link;
 
-      products["notes"] = this.products.note;
+        products["notes"] = this.form.note;
+      } catch (error) {
+        console.log(error);
+      }
+      return products;
     },
     prevStep() {
       if (this.currentStepper == 0) {
