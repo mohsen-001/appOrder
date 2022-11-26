@@ -90,6 +90,8 @@ export default {
   --pri-color: #115598;
 } */
 
+/* hey */
+
 body {
   font-family: "Poppins", sans-serif;
 }
