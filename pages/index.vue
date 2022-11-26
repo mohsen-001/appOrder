@@ -131,7 +131,13 @@
 
 <script>
 import CountrySelection from "../components/CountrySelection.vue";
-import { required, minLength, url, helpers } from "vuelidate/lib/validators";
+import {
+  required,
+  minLength,
+  url,
+  helpers,
+  requiredIf,
+} from "vuelidate/lib/validators";
 import { jsPDF } from "jspdf";
 
 export default {
