@@ -13,7 +13,12 @@
         />
         <div
           @click="$emit('rmBtn')"
-          class="position-absolute d-flex justify-content-center align-items-center"
+          class="
+            position-absolute
+            d-flex
+            justify-content-center
+            align-items-center
+          "
         >
           <i class="fa-solid fa-xmark"></i>
         </div>
@@ -32,7 +37,7 @@
           :state="validateproducts('product_quantity')"
         >
         </b-form-input>
-        <b-form-invalid-feedback> Qty *</b-form-invalid-feedback>
+        <!-- <b-form-invalid-feedback> Qty *</b-form-invalid-feedback> -->
       </b-form-group>
       <b-button
         @click="minsBtn"
@@ -64,7 +69,7 @@
           :state="validateproducts('product_price')"
         >
         </b-form-input>
-        <b-form-invalid-feedback>Price *</b-form-invalid-feedback>
+        <!-- <b-form-invalid-feedback>Price *</b-form-invalid-feedback> -->
       </b-form-group>
     </div>
   </div>
