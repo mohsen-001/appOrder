@@ -13,11 +13,13 @@
           </div>
 
           <div class="startup_img ml-2">
-            <lottie-vue-player v-show="animateSence" :src="`/start-animation/start-animation-first.json`"
+            <lottie-vue-player v-show="animateSence" id="test" ref="lottie" :src="`/start-animation/start-animation-first.json`"
               :player-controls="false" autoplay style="width: 250px">
             </lottie-vue-player>
 
-            <lottie-player v-show="!animateSence" ref="lottieContainer" loop
+            <!-- <lottie-animation ref="anim" :animationData="require('@/static/start-animation/start-animation-first.json')" /> -->
+
+            <lottie-player @enterFrame="loading()" v-show="!animateSence" ref="lottieContainer" loop
               src="/start-animation/start-animation-second.json" style="width: 250px;">
             </lottie-player>
           </div>
@@ -33,20 +35,33 @@ export default {
   data() {
     return {
       animateSence: true,
-      showBtn: false, 
+      showBtn: false,
     }
   },
   mounted() {
-    setTimeout(() => {
-      this.animateSence = false;
-      this.$refs.lottieContainer.play()
-    }, 2500)
+
+    document.querySelector('#test').addEventListener('play', ()=> {
+      console.log('hey');
+    })
 
     setTimeout(() => {
       this.showBtn = true;
-      console.log('worked');
     }, 1350)
+
+    setTimeout(() => {
+      this.animateSence = false;
+      this.$refs.lottieContainer.play()
+      // console.log('worked');
+      // console.log(this.$refs.lottieContainer.play);
+    }, 2500)
   },
+
+  methods: {
+    loading() {
+      console.log('hey');
+    }
+
+  }
 }
 
 
