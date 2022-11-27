@@ -41,7 +41,18 @@
 
     <div class="project" @scroll="touchScroll">
       <div class="slide_wrpr">
+        <div v-if="loading" class="d-flex">
+          <div class="loader-div mr-3" v-for="i in 8" :key="i">
+            <b-skeleton-img
+              no-aspect
+              class="skeleton-loader mb-1"
+            ></b-skeleton-img>
+            <b-skeleton width="70px" height="10px" class="ml-2"></b-skeleton>
+          </div>
+        </div>
+
         <div
+          v-else-if="items.length > 0"
           @click="handleClick(item, index)"
           class="item mr-3"
           v-for="(item, index) in items"
@@ -57,6 +68,7 @@
             {{ item.name }}
           </p>
         </div>
+        <div v-else>no_data</div>
       </div>
     </div>
   </div>
@@ -68,7 +80,9 @@ export default {
   props: {
     items: Array,
     itemValue: String,
+    loading: Boolean,
   },
+
   data() {
     return {
       // items: [
@@ -223,5 +237,14 @@ export default {
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
+}
+
+.skeleton-loader {
+  width: 90px !important;
+  height: 90px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
 }
 </style>
