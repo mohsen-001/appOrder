@@ -185,6 +185,7 @@ export default {
   justify-content: center;
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(128, 128, 128, 0.23);
+  box-sizing: border-box;
 }
 
 .project .flag img {
@@ -192,7 +193,9 @@ export default {
 }
 
 .selected {
-  border: 3px solid #007bff;
+  /* border: 3px solid #007bff; */
+  outline: solid 3px #007bff;
+  outline-offset: -3px;
 }
 
 .project_name {

@@ -172,7 +172,7 @@ export default {
 }
 
 .selected.flag {
-  border: 3px solid #007bff;
+  border: 2px solid #007bff;
 }
 
 .company_name {
