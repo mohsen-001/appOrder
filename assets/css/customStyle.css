@@ -119,6 +119,7 @@
 
 .table_holder table tr td:nth-child(2) {
   width: 400px;
+  
 }
 
 .table_holder table thead th{
@@ -148,4 +149,44 @@
 .table_holder table thead th:last-child{
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
+}
+
+.dropdown .dropdown-toggle::after{
+  display: none;
+}
+
+.dropdown .dropdown-toggle{
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 20px;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  padding: 0 !important;
+  background-color: transparent;
+  border: none;
+  /* padding: 20px 20px !important; */
+}
+
+.dropdown .dropdown-toggle:active {
+  background-color: rgba(255, 255, 255, 0.202) !important;
+}
+
+.dropdown .dropdown-toggle .fa-solid{
+  font-size: 1.3rem;
+  line-height: normal !important;
+}
+
+.dropdown ul{
+  border-radius: 10px;
+}
+
+.dropdown ul li button{
+  padding: 0.5rem 1rem !important;
+}
+
+.dropdown ul li i{
+  font-size: 1.1rem;
+  margin-right: 10px;
+  opacity: 0.3;
 }

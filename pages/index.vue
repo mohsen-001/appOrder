@@ -1,85 +1,47 @@
 <template>
   <div>
+    <div class="invoice_page_hide">
+      <PdfPage ref="pdfDownload" />
+    </div>
     <div id="containerOne">
-      <div class="invoice_page_hide">
-        <PdfPage ref="pdfDownload" />
-      </div>
       <div>
-        <b-modal
-          id="modal-center"
-          class="logout_model"
-          centered
-          title="BootstrapVue"
-        >
+        <b-modal id="modal-center" class="logout_model" centered title="BootstrapVue">
           <p class="my-4">Vertically centered modal!</p>
         </b-modal>
       </div>
 
       <div class="btm_pge d-flex" v-if="showActionBtn">
-        <b-button
-          @click="nextStep"
-          pill
-          variant="primary"
-          class="btn w-100"
-          v-show="currentStepper < 2"
-          >Next</b-button
-        >
-        <b-button
-          @click="submit"
-          pill
-          variant="primary"
-          class="btn w-100"
-          v-show="currentStepper == 2"
-          >Submit
+        <b-button @click="nextStep" pill variant="primary" class="btn w-100" v-show="currentStepper < 2">Next</b-button>
+        <b-button @click="submit" pill variant="primary" class="btn w-100" v-show="currentStepper == 2">Submit
         </b-button>
-        <b-button
-          @click="download"
-          pill
-          variant="primary"
-          class="btn w-100"
-          v-show="currentStepper == 3"
-          >Download PDF
+        <b-button @click="download" pill variant="primary" class="btn w-100" v-show="currentStepper == 3">Download PDF
         </b-button>
-        <b-button
-          @click="backHome"
-          pill
-          variant="primary"
-          class="btn w-100"
-          v-show="downloaded"
-          >Back to Home</b-button
-        >
+        <b-button @click="backHome" pill variant="primary" class="btn w-100" v-show="downloaded">Back to Home</b-button>
         <!-- <button class="ml-2 logout_btn d-flex justify-content-center align-items-center"><i
             class="fa-solid fa-arrow-right-from-bracket" v-b-modal.modal-center></i></button> -->
-        <b-button
-          class="
+        <!-- <b-button class="
             ml-2
             logout_btn
             d-flex
             justify-content-center
             align-items-center
-          "
-          @click="logOut"
-        >
+          ">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        </b-button>
+        </b-button> -->
       </div>
       <div id="app_container">
         <!-- lgoin Cover -->
 
         <div class="login_cover">
-          <img
-            @click="prevStep"
-            class="back"
-            src="../static/arrow-back.svg"
-            alt="back"
-            v-show="currentStepper > 0 && currentStepper <= 3"
-          />
-          <img
-            class="page_head_img"
-            src="../static/head-img.svg"
-            alt="aracbic person"
-            width="200px"
-          />
+          <img @click="prevStep" class="back" src="../static/arrow-back.svg" alt="back"
+            v-show="currentStepper > 0 && currentStepper <= 3" />
+          <img class="page_head_img" src="../static/head-img.svg" alt="aracbic person" width="200px" />
+
+          <b-dropdown id="dropdown-right" right :html="`<i class='fa-solid fa-ellipsis-vertical'></i>`"
+            variant="primary" class="m-2">
+            <b-dropdown-item-button><i class="fa-solid fa-user"></i> Profile</b-dropdown-item-button>
+            <b-dropdown-item-button @click="logOut"><span style="color: red !important;"><i class="fa-solid fa-arrow-right-from-bracket"></i>logout</span></b-dropdown-item-button>
+          </b-dropdown>
         </div>
 
         <!-- login container -->
@@ -93,26 +55,10 @@
             </div>
 
             <div class="form_area">
-              <StepOne
-                v-show="currentStepper == 0"
-                ref="step0"
-                :form="$v.form"
-              />
-              <StepTwo
-                v-show="currentStepper == 1"
-                ref="step1"
-                :form="$v.form"
-              />
-              <StepThree
-                v-show="currentStepper == 2"
-                ref="step2"
-                :form="$v.form"
-              />
-              <StepFour
-                v-show="currentStepper == 3"
-                ref="step3"
-                :form="$v.form"
-              />
+              <StepOne v-show="currentStepper == 0" ref="step0" :form="$v.form" />
+              <StepTwo v-show="currentStepper == 1" ref="step1" :form="$v.form" />
+              <StepThree v-show="currentStepper == 2" ref="step2" :form="$v.form" />
+              <StepFour v-show="currentStepper == 3" ref="step3" :form="$v.form" />
             </div>
           </div>
 
@@ -286,7 +232,7 @@ export default {
       this.arrangeData();
       let isvlaid = this.$refs["step" + this.currentStepper].validate();
 
-      if (isvlaid) {
+      if (true) {
         if (this.currentStepper == 3) {
           this.currentStepper = 0;
           this.$refs.stepper.nextStep();
@@ -413,9 +359,18 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+#dropdown-right {
+  position: absolute;
+  right: 10px;
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 20;
+}
+
 .invoice_page_hide {
   position: fixed !important;
-  top: -2000px !important;
+  top: 2000px !important;
+  z-index: 20;
 }
 
 .logout_btn {
@@ -496,7 +451,7 @@ body {
 .page_head_img {
   position: absolute;
   bottom: 0px;
-  right: 20px;
+  right: 80px;
 }
 
 .page_container {
