@@ -38,8 +38,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    "~/plugins/axios.js",
-    {src: "~/plugins/jspdf.js"},
+    // "~/plugins/axios.js",
+    { src: "~/plugins/jspdf.js" },
     "~/plugins/lottie-vue-player.client.js",
     {
       src: "~/plugins/Vuelidate.js",
@@ -48,8 +48,11 @@ export default {
   ],
 
   axios: {
-    baseURL: "https://api.teebalhoor.net/public",
+    baseURL: "http://localhost:8000/api/v1",
+    // baseURL: "https://api.teebalhoor.net/public",
     credentials: true,
+    // proxy: true,
+
     changeOrigin: true,
     common: {
       Accept: "application/json",
@@ -57,26 +60,68 @@ export default {
   },
 
 
+  // auth: {
+  //   // Options
+  //   strategies: {
+  //     laravelSanctum: {
+  //       provider: "laravel/sanctum",
+  //       url: "https://api.teebalhoor.net/public",
+  //       endpoints: {
+  //         login: {
+  //           url: "/api/login",
+  //         },
+  //         logout: {
+  //           url: "/api/logout",
+  //         },
+  //       },
+  //     },
+  //   },
+  //   redirect: {
+  //     home: "/",
+  //     login: "/signin",
+  //     logout: "/signin",
+  //   },
+  // },
+
+
   auth: {
-    // Options
+    cookie: false,
+    localStorage: {
+      prefix: "auth.",
+    },
+    redirect: {
+      login: "/signin",
+      logout: "/signin",
+      callback: "/signin",
+      home: false,
+    },
     strategies: {
-      laravelSanctum: {
-        provider: "laravel/sanctum",
-        url: "https://api.teebalhoor.net/public",
+      local: {
+        token: {
+          property: "token",
+          global: true,
+          required: true,
+          type: "Bearer",
+        },
+        user: {
+          property: "data",
+          autoFetch: true,
+        },
         endpoints: {
           login: {
-            url: "/api/login",
+            url: "/login",
+            method: "post",
           },
           logout: {
-            url: "/api/logout",
+            url: "/logout",
+            method: "post",
+          },
+          user: {
+            url: "/auth/user",
+            method: "get",
           },
         },
       },
-    },
-    redirect: {
-      home: "/",
-      login: "/signin",
-      logout: "/signin",
     },
   },
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -96,6 +141,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     "@nuxtjs/pwa",
+    "@nuxtjs/axios",
     "bootstrap-vue/nuxt",
     '@nuxtjs/auth-next'
   ],

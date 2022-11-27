@@ -12,15 +12,27 @@
               placeholder="Product name"
               required
               :state="validateproducts('product_code')"
-              :options="products"
               class="mb-3"
-              value-field="pcode"
-              text-field="name"
             >
+              <!-- value-field="pcode"
+              text-field="pcode" -->
+              <!-- :options="products" -->
               <template #first>
                 <b-form-select-option :value="null" disabled>
                   Choose Product
                 </b-form-select-option>
+                <option
+                  v-for="(option, index) in products"
+                  :key="index"
+                  :value="option.pcode"
+                >
+                  <div
+                    style="display: flex; justify-content: between; width: 100%"
+                  >
+                    <span> {{ option.pcode }} </span>
+                    <span>({{ option.name }}) </span>
+                  </div>
+                </option>
               </template>
             </b-form-select>
             <b-form-invalid-feedback
@@ -44,12 +56,8 @@
           v-model="form.$model.products[activeIndex].product_size"
           type="text"
           placeholder="Size"
-          :state="validateproducts('product_size')"
         >
         </b-form-input>
-        <b-form-invalid-feedback
-          >Product Size Is Required
-        </b-form-invalid-feedback>
       </b-form-group>
 
       <b-form-group id="input-group-1" label="Color" label-for="input-1">
@@ -59,13 +67,9 @@
           v-model="form.$model.products[activeIndex].product_color"
           type="text"
           placeholder="Color"
-          :state="validateproducts('product_color')"
           required
         >
         </b-form-input>
-        <b-form-invalid-feedback
-          >Product Color Is Required</b-form-invalid-feedback
-        >
       </b-form-group>
     </div>
 
@@ -257,11 +261,11 @@ export default {
     async getProducts() {
       try {
         // https://api.teebalhoor.net/public/api/projects
-        const url = `https://api.teebalhoor.net/public/products`;
-        const { data } = await this.$axios.get(url);
-        this.products = data.data;
+        // const url = `https://api.teebalhoor.net/public/products`;
+        const { data } = await this.$axios.get("/crm/get-products");
+        this.products = data;
       } catch (error) {
-        console.log(error);
+        console.log("error get producs", error);
       }
     },
     validateproducts(name) {

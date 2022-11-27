@@ -53,7 +53,7 @@
                 </b-form-input>
               </b-form-group>
 
-              <b-button @click="login" variant="primary" class="cus-btn"
+              <b-button @click="login()" variant="primary" class="cus-btn"
                 >Primary</b-button
               >
             </form>
@@ -76,8 +76,25 @@ export default {
     };
   },
   methods: {
-    login() {
-      this.$router.push("/");
+    async login() {
+      console.log("called");
+      await this.$auth
+        .loginWith("local", {
+          data: {
+            email_username: this.form.username,
+            password: this.form.password,
+            browser: "343343",
+            latitude: "444554",
+            longitude: "4545454545",
+          },
+        })
+        .then((res) => {
+          this.$router.push("/");
+          console.log("login successfully");
+        })
+        .catch(async (err) => {
+          console.log("eerror", err);
+        });
     },
   },
 };

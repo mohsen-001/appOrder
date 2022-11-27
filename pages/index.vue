@@ -1,9 +1,9 @@
-<!-- <div class="invoice_page_hide">
-  <PdfPage ref="pdfDownload" />
-</div> -->
 <template>
   <div>
     <div id="containerOne">
+      <div class="invoice_page_hide">
+        <PdfPage ref="pdfDownload" />
+      </div>
       <div>
         <b-modal id="modal-center" class="logout_model" centered title="BootstrapVue">
           <p class="my-4">Vertically centered modal!</p>
@@ -118,7 +118,36 @@ export default {
             product_image: null,
             product_quantity: null,
             product_size: null,
-            product_color: "#FF0000FF",
+            product_color: "",
+            product_price: null,
+          },
+        ],
+        price_per_picture: false,
+        price: 0,
+        delivery_fee: 0,
+        delay: null,
+        delay_order: false,
+        note: null,
+        name: null,
+      },
+      reset_form: {
+        country: null,
+        project: null,
+        source: 7,
+        no_ad_order: false,
+        landing_link: null,
+        number: null,
+        city: null,
+        area: null,
+        address: null,
+        products: [
+          {
+            id: 1,
+            product_code: null,
+            product_image: null,
+            product_quantity: null,
+            product_size: null,
+            product_color: "",
             product_price: null,
           },
         ],
@@ -169,8 +198,8 @@ export default {
           id: {},
           product_code: { required },
           product_quantity: { required },
-          product_size: { required },
-          product_color: { required },
+          product_size: {},
+          product_color: {},
           product_price: {
             required: requiredIf(function (value) {
               return this.form.price_per_picture;
@@ -279,6 +308,7 @@ export default {
       this.done = true;
       this.currentStepper++;
       e.target.style.display = "none";
+      this.$refs.pdfDownload.generateIt();
     },
 
     backHome() {
@@ -286,6 +316,7 @@ export default {
       this.formInsertion = true;
       this.done = false;
       this.downloaded = false;
+      this.form = JSON.parse(JSON.stringify(this.reset_form));
     },
 
     logOut() {
