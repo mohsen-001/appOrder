@@ -185,14 +185,14 @@ export default {
             id: 1,
             product_code: null,
             product_image: null,
-            product_quantity: null,
+            product_quantity: 1,
             product_size: null,
             product_color: "",
             product_price: null,
           },
         ],
         price_per_picture: false,
-        price: 0,
+        price: null,
         delivery_fee: 0,
         delay: null,
         delay_order: false,
@@ -214,14 +214,14 @@ export default {
             id: 1,
             product_code: null,
             product_image: null,
-            product_quantity: null,
+            product_quantity: 1,
             product_size: null,
             product_color: "",
             product_price: null,
           },
         ],
         price_per_picture: false,
-        price: 0,
+        price: null,
         delivery_fee: 0,
         delay: null,
         delay_order: false,
@@ -356,11 +356,12 @@ export default {
         products["ad_id"] = this.$auth.user.username;
         products["phone"] = this.form.number;
         products["price"] = parseFloat(this.$refs["step2"].totalPrice);
-        products["status"] = this.form.delay_order == true ? 1 : 5;
+        products["status"] = this.form.delay_order == true ? 5 : 1;
         products["source"] = this.form.source;
         products["landing_link"] = this.form.landing_link;
 
         products["notes"] = this.form.note;
+        products["delivery_fee"] = this.form.delivery_fee;
       } catch (error) {
         console.log(error);
       }

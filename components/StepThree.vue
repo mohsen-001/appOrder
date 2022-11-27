@@ -202,28 +202,6 @@ export default {
       showPrice: false,
       activeIndex: 0,
       invalidIndexs: [],
-      products: [
-        {
-          pcode: "CL23",
-          name: "سماعات - ايربودز - ابل",
-        },
-        {
-          pcode: "CL28",
-          name: "سكوتر كهربائي",
-        },
-        {
-          pcode: "CL17",
-          name: "عطر ماهر",
-        },
-        {
-          pcode: "CL19",
-          name: "جهاز التسبيح الأصلي - اشتري واحد و احصل على الثاني مجانا",
-        },
-        {
-          pcode: "CL16",
-          name: "عطر خشبي",
-        },
-      ],
     };
   },
   created() {
@@ -279,6 +257,7 @@ export default {
       return $dirty ? !$error : null;
     },
     product() {
+      console.log(this.form.$model.products, this.form.$model.products.length);
       this.activeIndex = this.form.$model.products.length - 1;
       this.form.products.$model.push({
         id: this.generateID(),
