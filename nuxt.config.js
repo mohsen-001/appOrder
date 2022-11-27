@@ -2,7 +2,7 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
   server: {
-    port: 3007
+    // port: 3007
     // host: "192.168.3.26",
   },
 
@@ -48,8 +48,8 @@ export default {
   ],
 
   axios: {
-    // baseURL: "http://localhost:8000/api/v1",
-    baseURL: "https://clientbackend.oredoh.org/api/v1",
+    baseURL: "http://localhost:8000/api/v1",
+    // baseURL: "https://clientbackend.oredoh.org/api/v1",
     // baseURL: "https://api.teebalhoor.net/public",
     credentials: true,
     // proxy: true,
