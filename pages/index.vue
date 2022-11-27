@@ -171,6 +171,8 @@ export default {
       done: false,
       invalidSteps: [],
       form: {
+        selected_company: null,
+        invoice_number: null,
         country: null,
         project: null,
         source: 7,
@@ -200,6 +202,8 @@ export default {
         name: null,
       },
       reset_form: {
+        selected_company: null,
+        invoice_number: null,
         country: null,
         project: null,
         source: 7,
@@ -281,10 +285,10 @@ export default {
         required: requiredIf(function (value) {
           return this.form.price_per_picture == false;
         }),
-        minValue: conditional(
-          !this.form.price_per_picture,
-          (value) => value > 0
-        ),
+        // minValue: conditional(
+        //   !this.form.price_per_picture,
+        //   (value) => value > 0
+        // ),
       },
       delivery_fee: {},
       delay_order: {},
@@ -298,6 +302,8 @@ export default {
         required,
         minLength: minLength(5),
       },
+      selected_company: {},
+      invoice_number: {},
     },
   },
   methods: {
@@ -327,6 +333,7 @@ export default {
         const data = await this.$axios.post("crm-orders", products);
         console.log("data", data);
         if (data.status) {
+          this.form.selected_company.$model = data.data.data;
           this.makeToast("success", "Your Order Successfully added");
           this.nextStep();
         } else this.makeToast("danger", "Something went wrong");
@@ -357,7 +364,8 @@ export default {
         products["project"] = this.form.project;
         products["withtax"] = 0;
         products["buroaz"] = 0;
-        products["ad_id"] = this.$auth.user.username;
+        products["ad_id"] = "ashraffrotan";
+        // this.$auth.user.username;
         products["phone"] = this.form.number;
         products["price"] = parseFloat(this.$refs["step2"].totalPrice);
         products["status"] = this.form.delay_order == true ? 5 : 1;

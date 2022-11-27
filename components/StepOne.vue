@@ -60,6 +60,13 @@ export default {
   props: {
     form: Object,
   },
+  watch: {
+    "form.project.$model": function (item) {
+      this.form.selected_company.$model = this.projects.filter(
+        (item) => item.id == this.form.project.$model
+      );
+    },
+  },
   data() {
     return {
       checked: false,
