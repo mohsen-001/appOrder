@@ -301,7 +301,7 @@ export default {
       this.arrangeData();
       let isvlaid = this.$refs["step" + this.currentStepper].validate();
 
-      if (true) {
+      if (isvlaid) {
         if (this.currentStepper == 3) {
           this.currentStepper = 0;
           this.$refs.stepper.nextStep();
@@ -317,16 +317,16 @@ export default {
 
     async submit() {
       try {
-      } catch (error) {}
-      let isvlaid = this.$refs["step" + this.currentStepper].validate();
-      if (!isvlaid) return;
-      const products = this.arrangeData();
-      // const data = await this.$axios.post(
-      //   "https://api.teebalhoor.net/public/api/add-crm-order",
-      //   products
-      // );
-      this.makeToast("success", "Your Order Successfully added");
-      return this.nextStep();
+        let isvlaid = this.$refs["step" + this.currentStepper].validate();
+        if (!isvlaid) return;
+        const products = this.arrangeData();
+        const data = await this.$axios.post("crm-orders", products);
+        if (data.status)
+          this.makeToast("success", "Your Order Successfully added");
+        else this.makeToast("danger", "Something went wrong");
+      } catch (error) {
+        this.makeToast("danger", "Something went wrong");
+      }
     },
     arrangeData() {
       const products = {};
@@ -388,6 +388,10 @@ export default {
       this.done = false;
       this.downloaded = false;
       this.form = JSON.parse(JSON.stringify(this.reset_form));
+      this.resetValidations();
+    },
+    resetValidations() {
+      this.$v.form.$reset();
     },
 
     logOut() {
