@@ -316,6 +316,8 @@ export default {
     },
 
     async submit() {
+      try {
+      } catch (error) {}
       let isvlaid = this.$refs["step" + this.currentStepper].validate();
       if (!isvlaid) return;
       const products = this.arrangeData();
@@ -323,7 +325,7 @@ export default {
       //   "https://api.teebalhoor.net/public/api/add-crm-order",
       //   products
       // );
-
+      this.makeToast("success", "Your Order Successfully added");
       return this.nextStep();
     },
     arrangeData() {
@@ -418,6 +420,15 @@ export default {
       this.startInsert = false;
       this.formInsertion = true;
       this.showActionBtn = true;
+    },
+
+    makeToast(variant = null, message = "sss") {
+      this.$bvToast.toast(message, {
+        variant: variant,
+        solid: true,
+        noCloseButton: true,
+        autoHideDelay: "1000",
+      });
     },
   },
 };
