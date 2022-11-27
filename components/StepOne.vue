@@ -7,7 +7,11 @@
       >
     </div>
     <div>
-      <projectSelection :items="projects" v-model="form.project.$model" />
+      <projectSelection
+        :items="projects"
+        v-model="form.project.$model"
+        :loading.sync="isFetchingProjects"
+      />
       <div class="error-container mb-3">
         <span class="error" v-show="this.is_touched && form.project.$invalid"
           >Company Is Required</span

@@ -1,22 +1,53 @@
 <template>
   <div>
     <div class="invoice_page_hide">
-      <PdfPage ref="pdfDownload" />
+      <PdfPage ref="pdfDownload" :form_data.sync="form" />
     </div>
     <div id="containerOne">
       <div>
-        <b-modal id="modal-center" class="logout_model" centered title="BootstrapVue">
+        <b-modal
+          id="modal-center"
+          class="logout_model"
+          centered
+          title="BootstrapVue"
+        >
           <p class="my-4">Vertically centered modal!</p>
         </b-modal>
       </div>
 
       <div class="btm_pge d-flex" v-if="showActionBtn">
-        <b-button @click="nextStep" pill variant="primary" class="btn w-100" v-show="currentStepper < 2">Next</b-button>
-        <b-button @click="submit" pill variant="primary" class="btn w-100" v-show="currentStepper == 2">Submit
+        <b-button
+          @click="nextStep"
+          pill
+          variant="primary"
+          class="btn w-100"
+          v-show="currentStepper < 2"
+          >Next</b-button
+        >
+        <b-button
+          @click="submit"
+          pill
+          variant="primary"
+          class="btn w-100"
+          v-show="currentStepper == 2"
+          >Submit
         </b-button>
-        <b-button @click="download" pill variant="primary" class="btn w-100" v-show="currentStepper == 3">Download PDF
+        <b-button
+          @click="download"
+          pill
+          variant="primary"
+          class="btn w-100"
+          v-show="currentStepper == 3"
+          >Download PDF
         </b-button>
-        <b-button @click="backHome" pill variant="primary" class="btn w-100" v-show="downloaded">Back to Home</b-button>
+        <b-button
+          @click="backHome"
+          pill
+          variant="primary"
+          class="btn w-100"
+          v-show="downloaded"
+          >Back to Home</b-button
+        >
         <!-- <button class="ml-2 logout_btn d-flex justify-content-center align-items-center"><i
             class="fa-solid fa-arrow-right-from-bracket" v-b-modal.modal-center></i></button> -->
         <!-- <b-button class="
@@ -33,14 +64,36 @@
         <!-- lgoin Cover -->
 
         <div class="login_cover">
-          <img @click="prevStep" class="back" src="../static/arrow-back.svg" alt="back"
-            v-show="currentStepper > 0 && currentStepper <= 3" />
-          <img class="page_head_img" src="../static/head-img.svg" alt="aracbic person" width="200px" />
+          <img
+            @click="prevStep"
+            class="back"
+            src="../static/arrow-back.svg"
+            alt="back"
+            v-show="currentStepper > 0 && currentStepper <= 3"
+          />
+          <img
+            class="page_head_img"
+            src="../static/head-img.svg"
+            alt="aracbic person"
+            width="200px"
+          />
 
-          <b-dropdown id="dropdown-right" right :html="`<i class='fa-solid fa-ellipsis-vertical'></i>`"
-            variant="primary" class="m-2">
-            <b-dropdown-item-button><i class="fa-solid fa-user"></i> Profile</b-dropdown-item-button>
-            <b-dropdown-item-button @click="logOut"><span style="color: red !important;"><i class="fa-solid fa-arrow-right-from-bracket"></i>logout</span></b-dropdown-item-button>
+          <b-dropdown
+            id="dropdown-right"
+            right
+            :html="`<i class='fa-solid fa-ellipsis-vertical'></i>`"
+            variant="primary"
+            class="m-2"
+          >
+            <b-dropdown-item-button
+              ><i class="fa-solid fa-user"></i> Profile</b-dropdown-item-button
+            >
+            <b-dropdown-item-button @click="logOut"
+              ><span
+                ><i class="fa-solid fa-arrow-right-from-bracket"></i
+                >logout</span
+              ></b-dropdown-item-button
+            >
           </b-dropdown>
         </div>
 
@@ -55,10 +108,26 @@
             </div>
 
             <div class="form_area">
-              <StepOne v-show="currentStepper == 0" ref="step0" :form="$v.form" />
-              <StepTwo v-show="currentStepper == 1" ref="step1" :form="$v.form" />
-              <StepThree v-show="currentStepper == 2" ref="step2" :form="$v.form" />
-              <StepFour v-show="currentStepper == 3" ref="step3" :form="$v.form" />
+              <StepOne
+                v-show="currentStepper == 0"
+                ref="step0"
+                :form="$v.form"
+              />
+              <StepTwo
+                v-show="currentStepper == 1"
+                ref="step1"
+                :form="$v.form"
+              />
+              <StepThree
+                v-show="currentStepper == 2"
+                ref="step2"
+                :form="$v.form"
+              />
+              <StepFour
+                v-show="currentStepper == 3"
+                ref="step3"
+                :form="$v.form"
+              />
             </div>
           </div>
 
@@ -232,7 +301,7 @@ export default {
       this.arrangeData();
       let isvlaid = this.$refs["step" + this.currentStepper].validate();
 
-      if (true) {
+      if (isvlaid) {
         if (this.currentStepper == 3) {
           this.currentStepper = 0;
           this.$refs.stepper.nextStep();
@@ -247,15 +316,19 @@ export default {
     },
 
     async submit() {
-      let isvlaid = this.$refs["step" + this.currentStepper].validate();
-      if (!isvlaid) return;
-      const products = this.arrangeData();
-      // const data = await this.$axios.post(
-      //   "https://api.teebalhoor.net/public/api/add-crm-order",
-      //   products
-      // );
-
-      return this.nextStep();
+      try {
+        let isvlaid = this.$refs["step" + this.currentStepper].validate();
+        if (!isvlaid) return;
+        const products = this.arrangeData();
+        const data = await this.$axios.post("crm-orders", products);
+        console.log("data", data);
+        if (data.status) {
+          this.makeToast("success", "Your Order Successfully added");
+          this.nextStep();
+        } else this.makeToast("danger", "Something went wrong");
+      } catch (error) {
+        this.makeToast("danger", "Something went wrong");
+      }
     },
     arrangeData() {
       const products = {};
@@ -280,7 +353,7 @@ export default {
         products["project"] = this.form.project;
         products["withtax"] = 0;
         products["buroaz"] = 0;
-        products["ad_id"] = "this.$auth.user.username";
+        products["ad_id"] = this.$auth.user.username;
         products["phone"] = this.form.number;
         products["price"] = parseFloat(this.$refs["step2"].totalPrice);
         products["status"] = this.form.delay_order == true ? 1 : 5;
@@ -308,7 +381,7 @@ export default {
       this.done = true;
       this.currentStepper++;
       e.target.style.display = "none";
-      this.$refs.pdfDownload.generateIt();
+      this.$refs.pdfDownload.downnloadPDF();
     },
 
     backHome() {
@@ -317,6 +390,10 @@ export default {
       this.done = false;
       this.downloaded = false;
       this.form = JSON.parse(JSON.stringify(this.reset_form));
+      this.resetValidations();
+    },
+    resetValidations() {
+      this.$v.form.$reset();
     },
 
     logOut() {
@@ -333,10 +410,10 @@ export default {
           hideHeaderClose: false,
           centered: true,
         })
-        .then((value) => {
-          this.log_out = value;
+        .then(async (value) => {
           if (value) {
-            this.$router.push("/");
+            await this.$auth.logout();
+            this.$router.push("/signin");
           }
         })
         .catch((err) => {
@@ -349,6 +426,15 @@ export default {
       this.startInsert = false;
       this.formInsertion = true;
       this.showActionBtn = true;
+    },
+
+    makeToast(variant = null, message = "sss") {
+      this.$bvToast.toast(message, {
+        variant: variant,
+        solid: true,
+        noCloseButton: true,
+        autoHideDelay: "1000",
+      });
     },
   },
 };
