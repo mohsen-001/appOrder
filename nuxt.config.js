@@ -7,7 +7,7 @@ export default {
   },
 
   router: {
-    middleware: ['auth']
+    middleware: ["auth"],
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -60,7 +60,6 @@ export default {
     },
   },
 
-
   // auth: {
   //   // Options
   //   strategies: {
@@ -83,7 +82,6 @@ export default {
   //     logout: "/signin",
   //   },
   // },
-
 
   auth: {
     cookie: false,
@@ -129,9 +127,7 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-
-  ],
+  buildModules: [],
 
   // script: [
   //   {
@@ -144,7 +140,7 @@ export default {
     "@nuxtjs/pwa",
     "@nuxtjs/axios",
     "bootstrap-vue/nuxt",
-    '@nuxtjs/auth-next'
+    "@nuxtjs/auth-next",
   ],
   pwa: {
     meta: {

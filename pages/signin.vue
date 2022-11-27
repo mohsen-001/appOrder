@@ -3,13 +3,7 @@
     <div id="container">
       <div id="app_container">
         <!-- lgoin Cover -->
-        <b-button
-          variant="info"
-          @click="makeToast('info')"
-          class="mb-2"
-          no-close-button="true"
-          >Info</b-button
-        >
+
         <div class="login_cover">
           <img
             class="login_cover_img"
@@ -59,8 +53,12 @@
                 </b-form-input>
               </b-form-group>
 
-              <b-button @click="login()" variant="primary" class="cus-btn"
-                >Primary</b-button
+              <b-button
+                @click="login()"
+                :disabled="isInvalid()"
+                variant="primary"
+                :class="`cus-btn ${isInvalid() ? 'invalid' : ''}`"
+                >Login</b-button
               >
             </form>
           </div>
@@ -82,8 +80,10 @@ export default {
     };
   },
   methods: {
+    isInvalid() {
+      return !(this.form.username && this.form.password);
+    },
     async login() {
-      console.log("called");
       await this.$auth
         .loginWith("local", {
           data: {
@@ -95,19 +95,22 @@ export default {
           },
         })
         .then((res) => {
+          this.makeToast("success", "successfully loggined");
           this.$router.push("/");
           console.log("login successfully");
         })
         .catch(async (err) => {
-          console.log("eerror", err);
+          this.makeToast("danger", err.response.data.message);
+          console.log("eerror", err.response.data.message);
         });
     },
 
-    makeToast(variant = null) {
-      this.$bvToast.toast("Toast body content", {
-        title: `Variant ${variant || "default"}`,
+    makeToast(variant = null, message = "sss") {
+      this.$bvToast.toast(message, {
         variant: variant,
         solid: true,
+        noCloseButton: true,
+        autoHideDelay: "1000",
       });
     },
   },
@@ -124,7 +127,9 @@ export default {
 body {
   font-family: "Poppins", sans-serif;
 }
-
+.invalid {
+  cursor: not-allowed;
+}
 #container {
   width: 100vw;
   height: 100vh;

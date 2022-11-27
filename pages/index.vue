@@ -171,6 +171,8 @@ export default {
       done: false,
       invalidSteps: [],
       form: {
+        selected_company: null,
+        invoice_number: null,
         country: null,
         project: null,
         source: 7,
@@ -185,14 +187,14 @@ export default {
             id: 1,
             product_code: null,
             product_image: null,
-            product_quantity: null,
+            product_quantity: 1,
             product_size: null,
             product_color: "",
             product_price: null,
           },
         ],
         price_per_picture: false,
-        price: 0,
+        price: null,
         delivery_fee: 0,
         delay: null,
         delay_order: false,
@@ -200,6 +202,8 @@ export default {
         name: null,
       },
       reset_form: {
+        selected_company: null,
+        invoice_number: null,
         country: null,
         project: null,
         source: 7,
@@ -214,14 +218,14 @@ export default {
             id: 1,
             product_code: null,
             product_image: null,
-            product_quantity: null,
+            product_quantity: 1,
             product_size: null,
             product_color: "",
             product_price: null,
           },
         ],
         price_per_picture: false,
-        price: 0,
+        price: null,
         delivery_fee: 0,
         delay: null,
         delay_order: false,
@@ -279,8 +283,12 @@ export default {
       price_per_picture: {},
       price: {
         required: requiredIf(function (value) {
-          return !this.form.price_per_picture;
+          return this.form.price_per_picture == false;
         }),
+        // minValue: conditional(
+        //   !this.form.price_per_picture,
+        //   (value) => value > 0
+        // ),
       },
       delivery_fee: {},
       delay_order: {},
@@ -294,6 +302,8 @@ export default {
         required,
         minLength: minLength(5),
       },
+      selected_company: {},
+      invoice_number: {},
     },
   },
   methods: {
@@ -323,6 +333,7 @@ export default {
         const data = await this.$axios.post("crm-orders", products);
         console.log("data", data);
         if (data.status) {
+          this.form.selected_company.$model = data.data.data;
           this.makeToast("success", "Your Order Successfully added");
           this.nextStep();
         } else this.makeToast("danger", "Something went wrong");
@@ -353,14 +364,16 @@ export default {
         products["project"] = this.form.project;
         products["withtax"] = 0;
         products["buroaz"] = 0;
-        products["ad_id"] = this.$auth.user.username;
+        products["ad_id"] = "ashraffrotan";
+        // this.$auth.user.username;
         products["phone"] = this.form.number;
         products["price"] = parseFloat(this.$refs["step2"].totalPrice);
-        products["status"] = this.form.delay_order == true ? 1 : 5;
+        products["status"] = this.form.delay_order == true ? 5 : 1;
         products["source"] = this.form.source;
         products["landing_link"] = this.form.landing_link;
 
         products["notes"] = this.form.note;
+        products["delivery_fee"] = this.form.delivery_fee;
       } catch (error) {
         console.log(error);
       }
