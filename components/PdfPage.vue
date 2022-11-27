@@ -66,9 +66,9 @@ export default {
             inovice_owner: 'flaminstore',
             logo: '',
             items: [
-                { No: 1, decription: 'Product Description goes here', price: '$ 100.00' },
-                { No: 2, decription: 'Product Description goes here', price: '$ 100.00' },
-                { No: 3, decription: 'Product Description goes here', price: '$ 100.00' },
+                { No: 1, Product: 'Product Description goes here', QTY: '2', price: '$ 100.00' },
+                { No: 2, Product: 'Product Description goes here', QTY: '1', price: '$ 100.00' },
+                { No: 3, Product: 'Product Description goes here', QTY: '3', price: '$ 100.00' },
             ]
         }
     },

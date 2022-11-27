@@ -1,9 +1,9 @@
 <template>
   <div>
+    <div class="invoice_page_hide">
+      <PdfPage ref="pdfDownload" />
+    </div>
     <div id="containerOne">
-      <div class="invoice_page_hide">
-        <PdfPage ref="pdfDownload" />
-      </div>
       <div>
         <b-modal id="modal-center" class="logout_model" centered title="BootstrapVue">
           <p class="my-4">Vertically centered modal!</p>
@@ -369,7 +369,8 @@ body {
 
 .invoice_page_hide {
   position: fixed !important;
-  top: -2000px !important;
+  top: 2000px !important;
+  z-index: 20;
 }
 
 .logout_btn {
