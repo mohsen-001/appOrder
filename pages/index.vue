@@ -321,9 +321,11 @@ export default {
         if (!isvlaid) return;
         const products = this.arrangeData();
         const data = await this.$axios.post("crm-orders", products);
-        if (data.status)
+        console.log("data", data);
+        if (data.status) {
           this.makeToast("success", "Your Order Successfully added");
-        else this.makeToast("danger", "Something went wrong");
+          this.nextStep();
+        } else this.makeToast("danger", "Something went wrong");
       } catch (error) {
         this.makeToast("danger", "Something went wrong");
       }
