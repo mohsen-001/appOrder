@@ -45,7 +45,7 @@
           <div class="loader-div mr-3" v-for="i in 8" :key="i">
             <b-skeleton-img
               no-aspect
-              class="skeleton-loader mb-1"
+              class="skeleton-loader mb-2"
             ></b-skeleton-img>
             <b-skeleton width="70px" height="10px" class="ml-2"></b-skeleton>
           </div>
@@ -68,7 +68,7 @@
             {{ item.name }}
           </p>
         </div>
-        <div v-else>no_data</div>
+        <div v-else>No Project Found</div>
       </div>
     </div>
   </div>

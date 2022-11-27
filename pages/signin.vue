@@ -3,7 +3,13 @@
     <div id="container">
       <div id="app_container">
         <!-- lgoin Cover -->
-
+        <b-button
+          variant="info"
+          @click="makeToast('info')"
+          class="mb-2"
+          no-close-button="true"
+          >Info</b-button
+        >
         <div class="login_cover">
           <img
             class="login_cover_img"
@@ -95,6 +101,14 @@ export default {
         .catch(async (err) => {
           console.log("eerror", err);
         });
+    },
+
+    makeToast(variant = null) {
+      this.$bvToast.toast("Toast body content", {
+        title: `Variant ${variant || "default"}`,
+        variant: variant,
+        solid: true,
+      });
     },
   },
 };
