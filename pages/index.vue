@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="invoice_page_hide">
-      <PdfPage ref="pdfDownload" />
+      <PdfPage ref="pdfDownload" :form_data.sync="form" />
     </div>
     <div id="containerOne">
       <div>
@@ -89,7 +89,7 @@
               ><i class="fa-solid fa-user"></i> Profile</b-dropdown-item-button
             >
             <b-dropdown-item-button @click="logOut"
-              ><span style="color: red !important"
+              ><span
                 ><i class="fa-solid fa-arrow-right-from-bracket"></i
                 >logout</span
               ></b-dropdown-item-button
@@ -349,7 +349,7 @@ export default {
         products["project"] = this.form.project;
         products["withtax"] = 0;
         products["buroaz"] = 0;
-        products["ad_id"] = "this.$auth.user.username";
+        products["ad_id"] = this.$auth.user.username;
         products["phone"] = this.form.number;
         products["price"] = parseFloat(this.$refs["step2"].totalPrice);
         products["status"] = this.form.delay_order == true ? 1 : 5;
@@ -377,7 +377,7 @@ export default {
       this.done = true;
       this.currentStepper++;
       e.target.style.display = "none";
-      this.$refs.pdfDownload.generateIt();
+      this.$refs.pdfDownload.downnloadPDF();
     },
 
     backHome() {
@@ -402,13 +402,10 @@ export default {
           hideHeaderClose: false,
           centered: true,
         })
-        .then((value) => {
-          console.log(value);
-          this.$auth.logout();
-          console.log("logout");
-          this.log_out = value;
+        .then(async (value) => {
           if (value) {
-            this.$router.push("/");
+            await this.$auth.logout();
+            this.$router.push("/signin");
           }
         })
         .catch((err) => {
