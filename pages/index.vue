@@ -279,8 +279,12 @@ export default {
       price_per_picture: {},
       price: {
         required: requiredIf(function (value) {
-          return !this.form.price_per_picture;
+          return this.form.price_per_picture == false;
         }),
+        minValue: conditional(
+          !this.form.price_per_picture,
+          (value) => value > 0
+        ),
       },
       delivery_fee: {},
       delay_order: {},

@@ -58,7 +58,7 @@
                 :disabled="isInvalid()"
                 variant="primary"
                 :class="`cus-btn ${isInvalid() ? 'invalid' : ''}`"
-                >Primary</b-button
+                >Login</b-button
               >
             </form>
           </div>

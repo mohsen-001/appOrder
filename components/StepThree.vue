@@ -106,9 +106,9 @@
       >
         <b-form-input
           id="input-4"
-          type="text"
-          placeholder="number"
-          :state="validateState('price_per_picture')"
+          type="number"
+          placeholder="price"
+          :state="validateState('price')"
           v-model="form.price.$model"
           required
           @blur="form.price.$touch"
@@ -194,14 +194,13 @@ export default {
   data() {
     return {
       checked: false,
-      stepThreeform: {
-        products: [],
-      },
+
       checked: false,
       isDelay: false,
       showPrice: false,
       activeIndex: 0,
       invalidIndexs: [],
+      products: [],
     };
   },
   created() {
@@ -258,16 +257,15 @@ export default {
     },
     product() {
       console.log(this.form.$model.products, this.form.$model.products.length);
-      this.activeIndex = this.form.$model.products.length - 1;
       this.form.products.$model.push({
         id: this.generateID(),
-        category: "",
-        label_name: "",
-        color: "#FF0000FF",
-        title: "",
-        tab: [],
-        status: "",
+        product_code: null,
+        product_quantity: 1,
+        product_size: null,
+        product_color: null,
+        product_price: null,
       });
+      this.activeIndex = this.form.$model.products.length - 1;
     },
     generateID() {
       return (
