@@ -48,8 +48,8 @@ export default {
   ],
 
   axios: {
-    baseURL: "http://localhost:8000/api/v1",
-    // baseURL: "https://clientbackend.oredoh.org/api/v1",
+    // baseURL: "http://localhost:8000/api/v1",
+    baseURL: "https://clientbackend.oredoh.org/api/v1",
     // baseURL: "https://api.teebalhoor.net/public",
     credentials: true,
     // proxy: true,

@@ -38,9 +38,9 @@
             <span class="font-weight-bold text-uppercase">{{
               form_data.country
             }}</span>
-            <span class="font-weight-light"
-              >{{ form_data.city }}, {{ form_data.area }}</span
-            >
+            <span class="font-weight-light">{{
+              form_data.city + " " + form_data.area
+            }}</span>
             <span class="font-weight-light">{{ form_data.number }}</span>
           </div>
 
@@ -62,8 +62,8 @@
             <b-table striped :items="form_data.products" :fields="fields">
               <template #cell(product_price)="data">
                 {{
-                  data.value.product_price
-                    ? data.value.product_price
+                  form_data.price_per_picture
+                    ? data.item.product_price + " AED"
                     : "collection"
                 }}
               </template>
@@ -160,7 +160,7 @@ export default {
       // doc.save('test.pdf');
 
       doc.html(documennt, {
-        callback: function (doc) {
+        callback: (doc) => {
           doc.save(`invoice_${this.form_data.invoice_number}.pdf`);
         },
         x: 0,
@@ -173,12 +173,13 @@ export default {
       let price = 0;
       if (this.form_data.price_per_picture) {
         this.form_data.products.forEach((row) => {
-          price += parseInt(row.product_price);
+          price +=
+            parseInt(row.product_quantity) * parseFloat(row.product_price);
         });
       } else {
-        price = parseInt(this.form_data.price);
+        price = parseFloat(this.form_data.price);
       }
-      price += parseInt(this.form_data.delivery_fee);
+      price += parseFloat(this.form_data.delivery_fee);
       return price;
     },
   },

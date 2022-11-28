@@ -317,7 +317,7 @@ export default {
       this.arrangeData();
       let isvlaid = this.$refs["step" + this.currentStepper].validate();
 
-      if (isvlaid) {
+      if (true) {
         if (this.currentStepper == 3) {
           this.currentStepper = 0;
           this.$refs.stepper.nextStep();
@@ -585,6 +585,13 @@ body {
     width: 100%;
     height: 100vh;
     background-color: #4779ff;
+  }
+}
+
+
+@media screen and (max-height: 670px) {
+  .form_area{
+    padding-bottom: 50px;
   }
 }
 </style>
