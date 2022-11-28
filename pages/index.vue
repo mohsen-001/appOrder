@@ -30,6 +30,7 @@
           style="background: #115598"
           class="btn w-100"
           v-show="currentStepper == 2"
+          :disabled="isLoading"
         >
           <b-spinner v-if="isLoading" small></b-spinner>
           Submit
@@ -337,6 +338,7 @@ export default {
         let isvlaid = this.$refs["step" + this.currentStepper].validate();
         if (!isvlaid) {
           this.isLoading = false;
+          this.makeToast("danger", "Please Fill All Required Feilds");
           return;
         }
         const products = this.arrangeData();
