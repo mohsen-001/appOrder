@@ -30,6 +30,7 @@
           style="background: #115598"
           class="btn w-100"
           v-show="currentStepper == 2"
+          :disabled="isLoading"
         >
           <b-spinner v-if="isLoading" small></b-spinner>
           Submit
@@ -343,15 +344,16 @@ export default {
         let isValid = this.$refs["step" + this.currentStepper].validate();
         if (!isValid) {
           this.isLoading = false;
+          this.makeToast("danger", "Please Fill All Required Feilds");
           return;
         }
         const products = this.arrangeData();
         const data = await this.$axios.post("crm-orders", products);
 
-        if (data.status == 200) {
+        if (data.data.status_type == "success") {
           this.form.invoice_number = data.data.data;
           this.makeToast("success", "Your Order Successfully added");
-          console.log(this.from);
+          console.log(data.data.data, data.data);
           this.nextStep();
         } else this.makeToast("danger", "Something went wrong");
       } catch (error) {
@@ -388,7 +390,8 @@ export default {
         products["status"] = this.form.delay_order == true ? 5 : 1;
         products["source"] = this.form.source;
         products["landing_link"] = this.form.landing_link;
-
+        products["withtax"] = 0;
+        products["buroaz"] = 0;
         products["notes"] = this.form.note;
         products["delivery_fee"] = this.form.delivery_fee;
       } catch (error) {
@@ -598,9 +601,8 @@ body {
   }
 }
 
-
 @media screen and (max-height: 670px) {
-  .form_area{
+  .form_area {
     padding-bottom: 50px;
   }
 }
