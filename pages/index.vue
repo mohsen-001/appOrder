@@ -342,10 +342,10 @@ export default {
         const products = this.arrangeData();
         const data = await this.$axios.post("crm-orders", products);
 
-        if (data.status == 200) {
+        if (data.data.message != "Insertion faild") {
           this.form.invoice_number = data.data.data;
           this.makeToast("success", "Your Order Successfully added");
-          console.log(this.from);
+          console.log(data.data.data, data.data);
           this.nextStep();
         } else this.makeToast("danger", "Something went wrong");
       } catch (error) {
@@ -588,9 +588,8 @@ body {
   }
 }
 
-
 @media screen and (max-height: 670px) {
-  .form_area{
+  .form_area {
     padding-bottom: 50px;
   }
 }
