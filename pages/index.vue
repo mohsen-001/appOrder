@@ -30,7 +30,9 @@
           style="background: #115598"
           class="btn w-100"
           v-show="currentStepper == 2"
-          >Submit
+        >
+          <b-spinner v-if="isLoading" small></b-spinner>
+          Submit
         </b-button>
         <b-button
           @click="download"
@@ -160,6 +162,7 @@ export default {
   watch: {},
   data() {
     return {
+      isLoading: false,
       checked: true,
 
       log_out: "",
@@ -332,11 +335,12 @@ export default {
     },
 
     async submit() {
+      this.isLoading = true;
       try {
         let isvlaid = this.$refs["step" + this.currentStepper].validate();
         if (!isvlaid) return;
         const products = this.arrangeData();
-        const data = await this.$axios.post("crm-orders", products);
+        // const data = await this.$axios.post("crm-orders", products);
 
         if (data.status == 200) {
           this.form.invoice_number = data.data.data;
@@ -345,8 +349,9 @@ export default {
           this.nextStep();
         } else this.makeToast("danger", "Something went wrong");
       } catch (error) {
-        this.makeToast("danger", "Something went wrong11");
+        this.makeToast("danger", "Something went wrong");
       }
+      this.isLoading = false;
     },
     arrangeData() {
       const products = {};
