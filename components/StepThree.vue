@@ -218,7 +218,8 @@ export default {
               this.form.$model.products[key].product_price
                 ? this.form.$model.products[key].product_price
                 : 0
-            );
+            ) *
+              parseFloat(this.form.$model.products[key].product_quantity);
         }
       else
         price =
