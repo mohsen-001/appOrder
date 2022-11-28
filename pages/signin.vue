@@ -42,15 +42,19 @@
                 id="input-group-2"
                 label="Password"
                 label-for="input-2"
+                class="showEye"
               >
                 <b-form-input
                   id="input-2"
                   v-model="form.password"
-                  :type="type"
+                  :type="showPass?'text':'password'"
                   placeholder="Password"
                   required
                 >
                 </b-form-input>
+                <div @click="showPassword" class="eye_icon">
+                  <i :class="`fa-regular fa-eye${showPass? '-slash':''}`"></i>
+                </div>
               </b-form-group>
               <b-button
                 @click="login()"
@@ -71,7 +75,7 @@ export default {
   name: "IndexPage",
   data() {
     return {
-      type: "password",
+      showPass: false,
       form: {
         username: "",
         password: "",
@@ -112,6 +116,10 @@ export default {
         autoHideDelay: "1000",
       });
     },
+
+    showPassword(){
+      this.showPass = !this.showPass;
+    }
   },
 };
 </script>
@@ -122,6 +130,8 @@ export default {
 } */
 
 /* hey */
+
+
 
 body {
   font-family: "Poppins", sans-serif;

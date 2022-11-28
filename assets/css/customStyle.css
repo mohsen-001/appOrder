@@ -190,3 +190,27 @@
   margin-right: 10px;
   opacity: 0.3;
 }
+
+
+
+
+/* login show/hide password */
+.showEye > div{
+  position: relative;
+}
+.showEye > div .eye_icon{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+  padding: 10px;
+  opacity: 0.5;
+}
+
+.showEye > div .eye_icon:active {
+  opacity: 1 !important;
+}
+
+.showEye input {
+  padding-right: 55px !important;
+}
