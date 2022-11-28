@@ -62,7 +62,16 @@
             class="flag p-5"
             :class="index == selected_item ? 'selected' : ''"
           >
-            <img src="/logos/fairy.png" alt="image" />
+            <img
+              class="flag-icon"
+              :src="
+                item.logo &&
+                item.log != 'https://api.teebalhoor.net/public/logo/'
+                  ? item.logo
+                  : '/logos/fairy.png'
+              "
+              alt="logo"
+            />
           </div>
           <p :class="index == selected_item ? 'project_name' : ''">
             {{ item.name }}
@@ -193,6 +202,11 @@ export default {
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(128, 128, 128, 0.23);
   box-sizing: border-box;
+}
+.flag-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 
 .project .flag img {

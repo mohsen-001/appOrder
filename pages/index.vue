@@ -277,6 +277,9 @@ export default {
             required: requiredIf(function (value) {
               return this.form.price_per_picture;
             }),
+            minValue: function (value) {
+              return this.form.price_per_picture ? value >= 1 : true;
+            },
           },
         },
       },
@@ -285,10 +288,9 @@ export default {
         required: requiredIf(function (value) {
           return this.form.price_per_picture == false;
         }),
-        // minValue: conditional(
-        //   !this.form.price_per_picture,
-        //   (value) => value > 0
-        // ),
+        minValue: function (value) {
+          return !this.form.price_per_picture ? value >= 1 : true;
+        },
       },
       delivery_fee: {},
       delay_order: {},
