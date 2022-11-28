@@ -13,14 +13,14 @@
           </div>
 
           <div class="startup_img ml-2">
-            <lottie-vue-player v-show="animateSence" id="test" ref="lottie" :src="`/start-animation/start-animation-first.json`"
+            <lottie-vue-player v-show="animateSence" id="test" ref="lottie" :src="`/update-animation/start-animation-first.json`"
               :player-controls="false" autoplay style="width: 250px">
             </lottie-vue-player>
 
             <!-- <lottie-animation ref="anim" :animationData="require('@/static/start-animation/start-animation-first.json')" /> -->
 
             <lottie-player @enterFrame="loading()" v-show="!animateSence" ref="lottieContainer" loop
-              src="/start-animation/start-animation-second.json" style="width: 250px;">
+              src="/update-animation/start-animation-second.json" style="width: 250px;">
             </lottie-player>
           </div>
         </div>
@@ -96,10 +96,11 @@ export default {
 }
 
 .anim_btn {
-  top: 48%;
+  top: 49%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
+  opacity: 0;
 }
 
 /* .startup_text span:first-child {
