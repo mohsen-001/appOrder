@@ -133,7 +133,7 @@ export default {
   top: 50%;
   transform: translateY(-50%);
   background-color: #007bff25;
-  border: #007bff78;
+  border: #115598;
 }
 
 .left-0 {
@@ -146,7 +146,7 @@ export default {
 
 .incBtn span {
   margin-bottom: 5px;
-  color: #007bff;
+  color: #115598;
 }
 
 .incBtn:active span {
@@ -166,7 +166,7 @@ export default {
   border: 1px solid #ee303054;
 }
 .active {
-  border: 1px solid rgba(0, 123, 255, 0.47059);
+  border: 1px solid #115598;
 }
 
 .product_img {
