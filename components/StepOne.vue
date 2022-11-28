@@ -67,8 +67,12 @@ export default {
       );
     },
     "form.country.$model": function (item) {
-      console.log("country", item);
-      this.fetchItems({ country: item });
+      if (this.selectedCompany != item && item != "") {
+        this.selectedCompany = item;
+        this.form.project.$model = null;
+        this.fetchItems({ country: item });
+      }
+      console.log(item != "", this.selectedCompany);
     },
   },
   data() {
@@ -78,6 +82,7 @@ export default {
       projects: [],
       isFetchingProjects: false, //
       is_touched: false, //
+      selectedCompany: null,
     };
   },
   created() {
@@ -96,8 +101,15 @@ export default {
         const { data } = await this.$axios.get(url, {
           params: param,
         });
-        console.log(data);
-        this.projects = data.data;
+
+        if (data.items && data.items.length > 0) this.projects = data.items;
+        else
+          this.$bvToast.toast("company Not Found", {
+            variant: "danger",
+            solid: true,
+            noCloseButton: true,
+            autoHideDelay: "1000",
+          });
       } catch (error) {
         console.log(error);
       }
