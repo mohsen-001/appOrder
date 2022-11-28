@@ -60,7 +60,7 @@
         >
           <div
             class="flag p-5"
-            :class="index == selected_item ? 'selected' : ''"
+            :class="item.id == selected_item ? 'selected' : ''"
           >
             <img
               class="flag-icon"
@@ -103,11 +103,11 @@ export default {
 
   methods: {
     handleClick(item, index) {
-      if (this.selected_item == index) {
+      if (this.selected_item == item.id) {
         this.selected_item = null;
         this.$emit("input", null);
       } else {
-        this.selected_item = index;
+        this.selected_item = item.id;
         this.$emit("input", item.id);
       }
 
