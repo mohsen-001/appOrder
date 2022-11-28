@@ -307,6 +307,9 @@ export default {
     },
   },
   methods: {
+    conditional(conition1, condition2) {
+      return conition1 ? condition2 : true;
+    },
     nextStep() {
       this.arrangeData();
       let isvlaid = this.$refs["step" + this.currentStepper].validate();
@@ -333,8 +336,9 @@ export default {
         const data = await this.$axios.post("crm-orders", products);
         console.log("data", data);
         if (data.status) {
-          this.form.selected_company.$model = data.data.data;
+          this.form.invoice_number.$model = data.data.data;
           this.makeToast("success", "Your Order Successfully added");
+          console.log(this.from);
           this.nextStep();
         } else this.makeToast("danger", "Something went wrong");
       } catch (error) {
