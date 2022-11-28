@@ -30,12 +30,14 @@
           style="background: #115598"
           class="btn w-100"
           v-show="currentStepper == 2"
-          >Submit
+        >
+          <b-spinner v-if="isLoading" small></b-spinner>
+          Submit
         </b-button>
         <b-button
           @click="download"
           pill
-          variant="primary"
+          style="background-color: #115598"
           class="btn w-100"
           v-show="currentStepper == 3"
           >Download PDF
@@ -43,7 +45,7 @@
         <b-button
           @click="backHome"
           pill
-          variant="primary"
+          style="background-color: #115598"
           class="btn w-100"
           v-show="downloaded"
           >Back to Home</b-button
@@ -160,6 +162,7 @@ export default {
   watch: {},
   data() {
     return {
+      isLoading: false,
       checked: true,
 
       log_out: "",
@@ -256,10 +259,7 @@ export default {
         required,
         minLength: minLength(3),
       },
-      area: {
-        required,
-        minLength: minLength(3),
-      },
+      area: {},
       address: {
         required,
         minLength: minLength(3),
@@ -332,21 +332,24 @@ export default {
     },
 
     async submit() {
+      this.isLoading = true;
       try {
         let isvlaid = this.$refs["step" + this.currentStepper].validate();
         if (!isvlaid) return;
         const products = this.arrangeData();
         const data = await this.$axios.post("crm-orders", products);
-        console.log("data", data);
-        if (data.status) {
-          this.form.invoice_number.$model = data.data.data;
+
+        if (data.status == 200) {
+          this.form.invoice_number = data.data.data;
           this.makeToast("success", "Your Order Successfully added");
           console.log(this.from);
           this.nextStep();
         } else this.makeToast("danger", "Something went wrong");
       } catch (error) {
+        console.log("errro", error);
         this.makeToast("danger", "Something went wrong");
       }
+      this.isLoading = false;
     },
     arrangeData() {
       const products = {};
@@ -369,8 +372,6 @@ export default {
           : [];
         products["delay"] = this.form.delay;
         products["project"] = this.form.project;
-        products["withtax"] = 0;
-        products["buroaz"] = 0;
         products["ad_id"] = "ashraffrotan";
         // this.$auth.user.username;
         products["phone"] = this.form.number;
@@ -396,11 +397,11 @@ export default {
     },
 
     download(e) {
-      // this.formInsertion = false;
-      // this.downloaded = true;
-      // this.done = true;
-      // this.currentStepper++;
-      // e.target.style.display = "none";
+      this.formInsertion = false;
+      this.downloaded = true;
+      this.done = true;
+      this.currentStepper++;
+      e.target.style.display = "none";
       this.$refs.pdfDownload.downnloadPDF();
     },
 

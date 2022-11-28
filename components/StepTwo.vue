@@ -134,6 +134,13 @@ export default {
 
       this.areas = this.areas[0];
     },
+    "form.country.$model": function (item) {
+      if (item == "United Arab Emirates")
+        this.cities = allcities(this).Emaratscities;
+      else if (item == "Qatar") this.cities = allcities(this).KuwaitCities;
+      else if (item == "Kuwait") this.cities = allcities(this).KuwaitCities;
+      else if (item == "Iraq") this.cities = allcities(this).QatarCities;
+    },
   },
   methods: {
     validateState(name) {

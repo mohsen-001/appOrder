@@ -72,7 +72,6 @@ export default {
         this.form.project.$model = null;
         this.fetchItems({ country: item });
       }
-      console.log(item != "", this.selectedCompany);
     },
   },
   data() {

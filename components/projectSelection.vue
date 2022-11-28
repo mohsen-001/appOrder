@@ -1,7 +1,7 @@
 <template>
   <div class="project_container">
     <div class="slide_label d-flex justify-content-between z-10">
-      <span class="label_text">company</span>
+      <span class="label_text">Company</span>
       <div class="arrow">
         <svg
           :style="{ opacity: opacityL }"
@@ -91,7 +91,11 @@ export default {
     itemValue: String,
     loading: Boolean,
   },
-
+  watch: {
+    items: function (item) {
+      this.selected_item = null;
+    },
+  },
   data() {
     return {
       selected_item: null,
@@ -174,6 +178,7 @@ export default {
   font-size: 1.2rem;
   font-weight: bold;
   opacity: 0.8;
+  margin-top: unset !important;
   margin: 10px;
 }
 
