@@ -302,7 +302,7 @@ export default {
 
       note: {
         required,
-        minLength: minLength(5),
+        minLength: minLength(2),
       },
       selected_company: {},
       invoice_number: {},
