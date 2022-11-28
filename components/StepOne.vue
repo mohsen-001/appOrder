@@ -66,6 +66,10 @@ export default {
         (item) => item.id == this.form.project.$model
       );
     },
+    "form.country.$model": function (item) {
+      console.log("country", item);
+      this.fetchItems({ country: item });
+    },
   },
   data() {
     return {
@@ -77,20 +81,22 @@ export default {
     };
   },
   created() {
-    if (this.projects.length < 1) this.fetchItems();
+    if (this.projects.length < 1) this.fetchItems({});
   },
   methods: {
     validateState(name) {
       const { $dirty, $error } = this.form[name];
       return $dirty ? !$error : null;
     },
-    async fetchItems() {
+    async fetchItems(param) {
       try {
         this.isFetchingProjects = true;
-        const url = `https://api.teebalhoor.net/public/api/projects`;
+        const url = `orders/fetch-items/projects/1`;
+
         const { data } = await this.$axios.get(url, {
-          params: {},
+          params: param,
         });
+        console.log(data);
         this.projects = data.data;
       } catch (error) {
         console.log(error);

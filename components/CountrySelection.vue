@@ -92,7 +92,6 @@ export default {
         this.selected_country = item;
         this.$emit("input", item);
       }
-      console.log(item);
     },
 
     scrollRight() {
