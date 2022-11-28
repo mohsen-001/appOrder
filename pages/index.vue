@@ -396,11 +396,11 @@ export default {
     },
 
     download(e) {
-      // this.formInsertion = false;
-      // this.downloaded = true;
-      // this.done = true;
-      // this.currentStepper++;
-      // e.target.style.display = "none";
+      this.formInsertion = false;
+      this.downloaded = true;
+      this.done = true;
+      this.currentStepper++;
+      e.target.style.display = "none";
       this.$refs.pdfDownload.downnloadPDF();
     },
 
