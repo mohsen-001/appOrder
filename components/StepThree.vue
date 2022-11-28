@@ -310,18 +310,13 @@ export default {
       this.checkValidation();
       let isValid = !this.form.products.$invalid;
       this.form.$touch();
-      console.log(
-        isValid &&
-          !this.form.note.$invalid &&
-          !this.form.delay.$invalid &&
-          !this.form.price.$invalid
-      );
-      return (
+      let result =
         isValid &&
         !this.form.note.$invalid &&
         !this.form.delay.$invalid &&
-        !this.form.price.$invalid
-      );
+        !this.form.price.$invalid;
+      if (!result) this.makeToast("danger", "Please Fill all Feilds!");
+      return result;
     },
     removeProduct(item, key) {
       if (this.activeIndex == key) this.activeIndex = 0;
@@ -342,6 +337,14 @@ export default {
     },
     onActiveProduct(index) {
       this.activeIndex = index;
+    },
+    makeToast(variant = null, message = "sss") {
+      this.$bvToast.toast(message, {
+        variant: variant,
+        solid: true,
+        noCloseButton: true,
+        autoHideDelay: "1000",
+      });
     },
   },
 };
