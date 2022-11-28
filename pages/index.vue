@@ -342,7 +342,7 @@ export default {
         const products = this.arrangeData();
         const data = await this.$axios.post("crm-orders", products);
 
-        if (data.data.message != "Insertion faild") {
+        if (data.data.status_type == "success") {
           this.form.invoice_number = data.data.data;
           this.makeToast("success", "Your Order Successfully added");
           console.log(data.data.data, data.data);
@@ -382,7 +382,8 @@ export default {
         products["status"] = this.form.delay_order == true ? 5 : 1;
         products["source"] = this.form.source;
         products["landing_link"] = this.form.landing_link;
-
+        products["withtax"] = 0;
+        products["buroaz"] = 0;
         products["notes"] = this.form.note;
         products["delivery_fee"] = this.form.delivery_fee;
       } catch (error) {
