@@ -27,7 +27,7 @@
         <b-button
           @click="submit"
           pill
-          variant="primary"
+          style="background: #115598"
           class="btn w-100"
           v-show="currentStepper == 2"
           >Submit
