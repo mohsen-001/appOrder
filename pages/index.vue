@@ -37,7 +37,7 @@
         <b-button
           @click="download"
           pill
-          variant="primary"
+          style="background-color: #115598"
           class="btn w-100"
           v-show="currentStepper == 3"
           >Download PDF
@@ -45,7 +45,7 @@
         <b-button
           @click="backHome"
           pill
-          variant="primary"
+          style="background-color: #115598"
           class="btn w-100"
           v-show="downloaded"
           >Back to Home</b-button
