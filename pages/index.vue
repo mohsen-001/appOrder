@@ -259,10 +259,7 @@ export default {
         required,
         minLength: minLength(3),
       },
-      area: {
-        required,
-        minLength: minLength(3),
-      },
+      area: {},
       address: {
         required,
         minLength: minLength(3),
@@ -320,7 +317,7 @@ export default {
       this.arrangeData();
       let isvlaid = this.$refs["step" + this.currentStepper].validate();
 
-      if (isvlaid) {
+      if (true) {
         if (this.currentStepper == 3) {
           this.currentStepper = 0;
           this.$refs.stepper.nextStep();
@@ -375,8 +372,6 @@ export default {
           : [];
         products["delay"] = this.form.delay;
         products["project"] = this.form.project;
-        products["withtax"] = 0;
-        products["buroaz"] = 0;
         products["ad_id"] = "ashraffrotan";
         // this.$auth.user.username;
         products["phone"] = this.form.number;
@@ -587,6 +582,13 @@ body {
     width: 100%;
     height: 100vh;
     background-color: #4779ff;
+  }
+}
+
+
+@media screen and (max-height: 670px) {
+  .form_area{
+    padding-bottom: 50px;
   }
 }
 </style>
