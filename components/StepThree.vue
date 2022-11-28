@@ -42,7 +42,7 @@
           <b-button
             @click="addProduct(product)"
             pill
-            variant="primary"
+            style="background: #115598"
             class="add_btn ml-2"
             ><span>+</span></b-button
           >
