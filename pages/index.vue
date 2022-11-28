@@ -157,6 +157,7 @@ import { jsPDF } from "jspdf";
 
 export default {
   name: "StepOnePage",
+  watch: {},
   data() {
     return {
       checked: true,
