@@ -337,7 +337,7 @@ export default {
         let isvlaid = this.$refs["step" + this.currentStepper].validate();
         if (!isvlaid) return;
         const products = this.arrangeData();
-        // const data = await this.$axios.post("crm-orders", products);
+        const data = await this.$axios.post("crm-orders", products);
 
         if (data.status == 200) {
           this.form.invoice_number = data.data.data;
@@ -346,6 +346,7 @@ export default {
           this.nextStep();
         } else this.makeToast("danger", "Something went wrong");
       } catch (error) {
+        console.log("errro", error);
         this.makeToast("danger", "Something went wrong");
       }
       this.isLoading = false;

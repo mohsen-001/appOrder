@@ -161,7 +161,7 @@ export default {
 
       doc.html(documennt, {
         callback: function (doc) {
-          doc.save("test.pdf");
+          doc.save(`invoice_${this.form_data.invoice_number}.pdf`);
         },
         x: 0,
         y: 0,
