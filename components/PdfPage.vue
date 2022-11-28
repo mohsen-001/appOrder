@@ -20,7 +20,7 @@
     >
       <img src="../static/logos/flaminstore.png" alt="Logo" />
       <p class="mt-3">
-        <span class="company-logo">{{ inovice_owner.toUpperCase() }}</span
+        <span class="company-logo text-uppercase">{{ form_data.project }}</span
         >.COM
       </p>
     </div>
@@ -29,12 +29,16 @@
       <div class="invoice-details d-flex justify-content-between mb-4">
         <div class="invoiceTo d-flex flex-column">
           <span class="opacity font-weight-bold">Invoice to</span>
-          <span class="text-uppercase font-weight-bold"
-            >Omar Murshid Bandar</span
+          <span class="text-uppercase font-weight-bold">{{
+            form_data.name
+          }}</span>
+          <span class="font-weight-bold text-uppercase">{{
+            form_data.country
+          }}</span>
+          <span class="font-weight-light"
+            >{{ form_data.city }}, {{ form_data.area }}</span
           >
-          <span class="font-weight-bold">UAE</span>
-          <span class="font-weight-light">Sharja, Alazrah</span>
-          <span class="font-weight-light">00971562876382</span>
+          <span class="font-weight-light">{{ form_data.number }}</span>
         </div>
 
         <div class="invoiceNo">
@@ -45,25 +49,42 @@
           </div>
           <div class="d-flex justify-content-between">
             <span class="opacity">DATE</span>
-            <span>JAN 25, 2022</span>
+            <span class="text-uppercase">{{ getDate() }}</span>
           </div>
         </div>
       </div>
 
       <div class="invoice-table p-3">
         <div class="table_holder">
-          <b-table striped :items="items"></b-table>
+          <b-table striped :items="form_data.products" :fields="fields">
+            <template #cell(product_price)="data">
+              {{
+                data.value.product_price ? data.value.product_price : "Packaged"
+              }}
+            </template>
+          </b-table>
         </div>
       </div>
       <div class="w-100 d-flex justify-content-end mt-5">
         <div class="total-holder p-2">
           <div class="d_fee d-flex justify-content-between p-2 pl-4 pr-4">
             <span class="opacity">Delivery Fee</span>
-            <span class="font-weight-bold prm-c">$ 15.00</span>
+            <span class="font-weight-bold prm-c"
+              >{{ form_data.delivery_fee }} AED</span
+            >
+          </div>
+          <div
+            class="d_fee d-flex justify-content-between p-2 pl-4 pr-4"
+            v-if="!form_data.price_per_picture"
+          >
+            <span class="opacity">Selling Price</span>
+            <span class="font-weight-bold prm-c">{{ form_data.price }}AED</span>
           </div>
           <div class="total d-flex justify-content-between p-2 pl-4 pr-4">
             <span class="opacity">Total</span>
-            <span class="font-weight-bold prm-c">$ 315.00</span>
+            <span class="font-weight-bold prm-c"
+              >{{ getTotalPrice() }} AED</span
+            >
           </div>
         </div>
       </div>
@@ -88,29 +109,36 @@ export default {
     return {
       inovice_owner: "flaminstore",
       logo: "",
-      items: [
-        {
-          No: 1,
-          Product: "Product Description goes here",
-          QTY: "2",
-          price: "$ 100.00",
-        },
-        {
-          No: 2,
-          Product: "Product Description goes here",
-          QTY: "1",
-          price: "$ 100.00",
-        },
-        {
-          No: 3,
-          Product: "Product Description goes here",
-          QTY: "3",
-          price: "$ 100.00",
-        },
+      fields: [
+        { key: "id", label: "No" },
+        { key: "product_code", label: "Product" },
+        { key: "product_quantity", label: "QTY" },
+        { key: "product_price", label: "Price" },
       ],
     };
   },
   methods: {
+    getDate() {
+      const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const d = new Date();
+      let month = months[d.getMonth()];
+      let day = d.getDate();
+      let year = d.getFullYear();
+      return month + day + ", " + year;
+    },
     downnloadPDF() {
       console.log("download data", this.form_data);
       // const doc = new jsPDF();
@@ -131,6 +159,18 @@ export default {
         width: 793, //target width in the PDF document
         windowWidth: 1058, //window width in CSS pixels
       });
+    },
+    getTotalPrice() {
+      let price = 0;
+      if (this.form_data.price_per_picture) {
+        this.form_data.products.forEach((row) => {
+          price += row.product_price;
+        });
+      } else {
+        price = this.form_data.price;
+      }
+      price += this.form_data.delivery_fee;
+      return price;
     },
   },
 };
