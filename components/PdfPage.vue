@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="form_data.selected_company"
+    v-if="form_data.selected_company && form_data.selected_company.length > 0"
     class="
       fullHeight
       d-flex
