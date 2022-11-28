@@ -71,7 +71,7 @@
             class="back"
             src="../static/arrow-back.svg"
             alt="back"
-            v-show="currentStepper > 0 && currentStepper <= 3"
+            v-show="currentStepper > 0 && currentStepper <= 2"
           />
           <img
             class="page_head_img"
@@ -317,7 +317,7 @@ export default {
       this.arrangeData();
       let isvlaid = this.$refs["step" + this.currentStepper].validate();
 
-      if (true) {
+      if (isvlaid) {
         if (this.currentStepper == 3) {
           this.currentStepper = 0;
           this.$refs.stepper.nextStep();
