@@ -339,7 +339,7 @@ export default {
         const data = await this.$axios.post("crm-orders", products);
         console.log("data", data.status == 200, data.status);
         if (data.status == 200) {
-          this.form.invoice_number.$model = data.data.data;
+          this.form.invoice_number = data.data.data;
           this.makeToast("success", "Your Order Successfully added");
           console.log(this.from);
           this.nextStep();
