@@ -126,7 +126,6 @@ export default {
   },
   watch: {
     "form.city.$model": function (item) {
-      this.cities = allcities(this).Emaratscities;
       const city = this.cities.filter(
         (city) => city.name == this.form.city.$model
       );

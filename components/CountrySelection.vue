@@ -77,7 +77,7 @@ export default {
         { name: "Kuwait", flag: "kw" },
         { name: "Iraq", flag: "iq" },
       ],
-      selected_country: null,
+      selected_country: "United Arab Emirates",
       opacityL: 0.2,
       opacityR: 1,
     };

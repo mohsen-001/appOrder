@@ -177,7 +177,7 @@ export default {
       form: {
         selected_company: null,
         invoice_number: null,
-        country: null,
+        country: "United Arab Emirates",
         project: null,
         source: 7,
         no_ad_order: false,
@@ -335,7 +335,10 @@ export default {
       this.isLoading = true;
       try {
         let isvlaid = this.$refs["step" + this.currentStepper].validate();
-        if (!isvlaid) return;
+        if (!isvlaid) {
+          this.isLoading = false;
+          return;
+        }
         const products = this.arrangeData();
         const data = await this.$axios.post("crm-orders", products);
 
