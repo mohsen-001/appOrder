@@ -259,10 +259,7 @@ export default {
         required,
         minLength: minLength(3),
       },
-      area: {
-        required,
-        minLength: minLength(3),
-      },
+      area: {},
       address: {
         required,
         minLength: minLength(3),
@@ -374,8 +371,6 @@ export default {
           : [];
         products["delay"] = this.form.delay;
         products["project"] = this.form.project;
-        products["withtax"] = 0;
-        products["buroaz"] = 0;
         products["ad_id"] = "ashraffrotan";
         // this.$auth.user.username;
         products["phone"] = this.form.number;
