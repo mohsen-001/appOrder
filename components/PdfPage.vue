@@ -115,7 +115,14 @@ import { jsPDF } from "jspdf";
 export default {
   props: { form_data: Object },
   data() {
-    return {};
+    return {
+      fields: [
+        { key: "id", label: "No" },
+        { key: "product_code", label: "Product" },
+        { key: "product_quantity", label: "QTY" },
+        { key: "product_price", label: "Price" },
+      ],
+    };
   },
   methods: {
     getDate() {
