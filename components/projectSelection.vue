@@ -91,7 +91,11 @@ export default {
     itemValue: String,
     loading: Boolean,
   },
-
+  watch: {
+    items: function (item) {
+      this.selected_item = null;
+    },
+  },
   data() {
     return {
       selected_item: null,
