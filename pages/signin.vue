@@ -46,13 +46,12 @@
                 <b-form-input
                   id="input-2"
                   v-model="form.password"
-                  type="password"
+                  :type="type"
                   placeholder="Password"
                   required
                 >
                 </b-form-input>
               </b-form-group>
-
               <b-button
                 @click="login()"
                 :disabled="isInvalid()"
@@ -72,6 +71,7 @@ export default {
   name: "IndexPage",
   data() {
     return {
+      type: "password",
       form: {
         username: "",
         password: "",
@@ -183,7 +183,7 @@ body {
 }
 
 input {
-  width: 300px;
+  min-width: 300px;
   height: 50px;
   border-radius: 50px;
 }
