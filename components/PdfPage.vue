@@ -1,110 +1,112 @@
 <template>
-  <div
-    v-if="form_data.selected_company && form_data.selected_company.length > 0"
-    class="
-      fullHeight
-      d-flex
-      justify-content-start
-      align-items-center
-      p-5
-      position-relative
-    "
-  >
+  <div v-if="form_data.selected_company">
     <div
+      v-if="form_data.selected_company.length > 0"
       class="
-        invoice-header
+        fullHeight
         d-flex
-        justify-content-center
+        justify-content-start
         align-items-center
-        mb-5
+        p-5
+        position-relative
       "
     >
-      <img :src="form_data.selected_company[0].logo" alt="Logo" />
-      <p class="mt-3">
-        <span class="company-logo text-uppercase">{{
-          form_data.selected_company[0].name
-        }}</span>
-      </p>
-    </div>
-
-    <div class="invoice-body w-100">
-      <div class="invoice-details d-flex justify-content-between mb-4">
-        <div class="invoiceTo d-flex flex-column">
-          <span class="opacity font-weight-bold">Invoice to</span>
-          <span class="text-uppercase font-weight-bold">{{
-            form_data.name
+      <div
+        class="
+          invoice-header
+          d-flex
+          justify-content-center
+          align-items-center
+          mb-5
+        "
+      >
+        <img :src="form_data.selected_company[0].logo" alt="Logo" />
+        <p class="mt-3">
+          <span class="company-logo text-uppercase">{{
+            form_data.selected_company[0].name
           }}</span>
-          <span class="font-weight-bold text-uppercase">{{
-            form_data.country
-          }}</span>
-          <span class="font-weight-light"
-            >{{ form_data.city }}, {{ form_data.area }}</span
-          >
-          <span class="font-weight-light">{{ form_data.number }}</span>
+        </p>
+      </div>
+
+      <div class="invoice-body w-100">
+        <div class="invoice-details d-flex justify-content-between mb-4">
+          <div class="invoiceTo d-flex flex-column">
+            <span class="opacity font-weight-bold">Invoice to</span>
+            <span class="text-uppercase font-weight-bold">{{
+              form_data.name
+            }}</span>
+            <span class="font-weight-bold text-uppercase">{{
+              form_data.country
+            }}</span>
+            <span class="font-weight-light"
+              >{{ form_data.city }}, {{ form_data.area }}</span
+            >
+            <span class="font-weight-light">{{ form_data.number }}</span>
+          </div>
+
+          <div class="invoiceNo">
+            <span class="text font-weight-bold mb-3 d-block">INVOICE</span>
+            <div class="d-flex justify-content-between">
+              <span class="opacity">NO.</span>
+              <span>{{ form_data.invoice_number }}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span class="opacity">DATE</span>
+              <span class="text-uppercase">{{ getDate() }}</span>
+            </div>
+          </div>
         </div>
 
-        <div class="invoiceNo">
-          <span class="text font-weight-bold mb-3 d-block">INVOICE</span>
-          <div class="d-flex justify-content-between">
-            <span class="opacity">NO.</span>
-            <span>{{ form_data.invoice_number }}</span>
+        <div class="invoice-table p-3">
+          <div class="table_holder">
+            <b-table striped :items="form_data.products" :fields="fields">
+              <template #cell(product_price)="data">
+                {{
+                  data.value.product_price
+                    ? data.value.product_price
+                    : "collection"
+                }}
+              </template>
+              <template #cell(id)="{ index }">
+                {{ index + 1 }}
+              </template>
+            </b-table>
           </div>
-          <div class="d-flex justify-content-between">
-            <span class="opacity">DATE</span>
-            <span class="text-uppercase">{{ getDate() }}</span>
+        </div>
+        <div class="w-100 d-flex justify-content-end mt-5">
+          <div class="total-holder p-2">
+            <div class="d_fee d-flex justify-content-between p-2 pl-4 pr-4">
+              <span class="opacity">Delivery Fee</span>
+              <span class="font-weight-bold prm-c"
+                >{{ form_data.delivery_fee }} AED</span
+              >
+            </div>
+            <div
+              class="d_fee d-flex justify-content-between p-2 pl-4 pr-4"
+              v-if="!form_data.price_per_picture"
+            >
+              <span class="opacity">Selling Price</span>
+              <span class="font-weight-bold prm-c"
+                >{{ form_data.price }} AED</span
+              >
+            </div>
+            <div class="total d-flex justify-content-between p-2 pl-4 pr-4">
+              <span class="opacity">Total</span>
+              <span class="font-weight-bold prm-c"
+                >{{ getTotalPrice() }} AED</span
+              >
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="invoice-table p-3">
-        <div class="table_holder">
-          <b-table striped :items="form_data.products" :fields="fields">
-            <template #cell(product_price)="data">
-              {{
-                data.value.product_price
-                  ? data.value.product_price
-                  : "collection"
-              }}
-            </template>
-            <template #cell(id)="{ index }">
-              {{ index + 1 }}
-            </template>
-          </b-table>
+      <div class="inovice-footer text-center position-absolute">
+        <div class="text-uppercase">Thank you for choosing us.</div>
+        <div class="invoice-contact mt-5">
+          <span>{{ form_data.selected_company[0].location }}</span>
+          <span>{{ form_data.selected_company[0].email }}</span>
+          <span>{{ form_data.selected_company[0].phone }}</span>
         </div>
-      </div>
-      <div class="w-100 d-flex justify-content-end mt-5">
-        <div class="total-holder p-2">
-          <div class="d_fee d-flex justify-content-between p-2 pl-4 pr-4">
-            <span class="opacity">Delivery Fee</span>
-            <span class="font-weight-bold prm-c"
-              >{{ form_data.delivery_fee }} AED</span
-            >
-          </div>
-          <div
-            class="d_fee d-flex justify-content-between p-2 pl-4 pr-4"
-            v-if="!form_data.price_per_picture"
-          >
-            <span class="opacity">Selling Price</span>
-            <span class="font-weight-bold prm-c"
-              >{{ form_data.price }} AED</span
-            >
-          </div>
-          <div class="total d-flex justify-content-between p-2 pl-4 pr-4">
-            <span class="opacity">Total</span>
-            <span class="font-weight-bold prm-c"
-              >{{ getTotalPrice() }} AED</span
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="inovice-footer text-center position-absolute">
-      <div class="text-uppercase">Thank you for choosing us.</div>
-      <div class="invoice-contact mt-5">
-        <span>{{ form_data.selected_company[0].location }}</span>
-        <span>{{ form_data.selected_company[0].email }}</span>
-        <span>{{ form_data.selected_company[0].phone }}</span>
       </div>
     </div>
   </div>

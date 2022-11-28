@@ -6,12 +6,12 @@ export default {
     // host: "192.168.3.26",
   },
 
-  router: {
-    middleware: ["auth"],
-  },
+  // router: {
+  //   middleware: ["auth"],
+  // },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "app-order",
+    title: "Smart Friqi Order App",
     htmlAttrs: {
       lang: "en",
     },
