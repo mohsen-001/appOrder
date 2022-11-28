@@ -68,7 +68,7 @@
             {{ item.name }}
           </p>
         </div>
-        <div v-else>No Project Found</div>
+        <div v-else class="pl-2">No Project Found</div>
       </div>
     </div>
   </div>
@@ -85,12 +85,6 @@ export default {
 
   data() {
     return {
-      // items: [
-      //   { name: "Afghanistan", flag: "https://tinyurl.com/4b8wjs3p" },
-      //   { name: "Iran", flag: "https://tinyurl.com/4b8wjs3p" },
-      //   { name: "America", flag: "https://tinyurl.com/4b8wjs3p" },
-      //   { name: "United State", flag: "https://tinyurl.com/4b8wjs3p" },
-      // ],
       selected_item: null,
       opacityL: 0.2,
       opacityR: 1,
@@ -101,7 +95,6 @@ export default {
   methods: {
     handleClick(item, index) {
       if (this.selected_item == index) {
-        console.log("here");
         this.selected_item = null;
         this.$emit("input", null);
       } else {
