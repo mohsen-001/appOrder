@@ -215,12 +215,12 @@ export default {
 
 .selected {
   /* border: 3px solid #007bff; */
-  outline: solid 3px #007bff;
+  outline: solid 3px #115598;
   outline-offset: -3px;
 }
 
 .project_name {
-  color: #007bff;
+  color: #115598;
 }
 
 .item {

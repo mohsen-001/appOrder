@@ -19,7 +19,7 @@
         <b-button
           @click="nextStep"
           pill
-          variant="primary"
+          style="background: #115598"
           class="btn w-100"
           v-show="currentStepper < 2"
           >Next</b-button
@@ -395,11 +395,11 @@ export default {
     },
 
     download(e) {
-      this.formInsertion = false;
-      this.downloaded = true;
-      this.done = true;
-      this.currentStepper++;
-      e.target.style.display = "none";
+      // this.formInsertion = false;
+      // this.downloaded = true;
+      // this.done = true;
+      // this.currentStepper++;
+      // e.target.style.display = "none";
       this.$refs.pdfDownload.downnloadPDF();
     },
 

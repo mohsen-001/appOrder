@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="form_data.selected_company"
     class="
       fullHeight
       d-flex
@@ -18,10 +19,11 @@
         mb-5
       "
     >
-      <img src="../static/logos/flaminstore.png" alt="Logo" />
+      <img :src="form_data.selected_company[0].logo" alt="Logo" />
       <p class="mt-3">
-        <span class="company-logo text-uppercase">{{ form_data.project }}</span
-        >.COM
+        <span class="company-logo text-uppercase">{{
+          form_data.selected_company[0].name
+        }}</span>
       </p>
     </div>
 
@@ -45,7 +47,7 @@
           <span class="text font-weight-bold mb-3 d-block">INVOICE</span>
           <div class="d-flex justify-content-between">
             <span class="opacity">NO.</span>
-            <span>002345</span>
+            <span>{{ form_data.invoice_number }}</span>
           </div>
           <div class="d-flex justify-content-between">
             <span class="opacity">DATE</span>
@@ -59,8 +61,13 @@
           <b-table striped :items="form_data.products" :fields="fields">
             <template #cell(product_price)="data">
               {{
-                data.value.product_price ? data.value.product_price : "Packaged"
+                data.value.product_price
+                  ? data.value.product_price
+                  : "collection"
               }}
+            </template>
+            <template #cell(id)="{ index }">
+              {{ index + 1 }}
             </template>
           </b-table>
         </div>
@@ -78,7 +85,9 @@
             v-if="!form_data.price_per_picture"
           >
             <span class="opacity">Selling Price</span>
-            <span class="font-weight-bold prm-c">{{ form_data.price }}AED</span>
+            <span class="font-weight-bold prm-c"
+              >{{ form_data.price }} AED</span
+            >
           </div>
           <div class="total d-flex justify-content-between p-2 pl-4 pr-4">
             <span class="opacity">Total</span>
@@ -93,9 +102,9 @@
     <div class="inovice-footer text-center position-absolute">
       <div class="text-uppercase">Thank you for choosing us.</div>
       <div class="invoice-contact mt-5">
-        <span>Ajman, Freez zone</span>
-        <span>info@magicstyle.com</span>
-        <span>00971562876382</span>
+        <span>{{ form_data.selected_company[0].location }}</span>
+        <span>{{ form_data.selected_company[0].email }}</span>
+        <span>{{ form_data.selected_company[0].phone }}</span>
       </div>
     </div>
   </div>
@@ -107,8 +116,6 @@ export default {
   props: { form_data: Object },
   data() {
     return {
-      inovice_owner: "flaminstore",
-      logo: "",
       fields: [
         { key: "id", label: "No" },
         { key: "product_code", label: "Product" },
@@ -164,12 +171,12 @@ export default {
       let price = 0;
       if (this.form_data.price_per_picture) {
         this.form_data.products.forEach((row) => {
-          price += row.product_price;
+          price += parseInt(row.product_price);
         });
       } else {
-        price = this.form_data.price;
+        price = parseInt(this.form_data.price);
       }
-      price += this.form_data.delivery_fee;
+      price += parseInt(this.form_data.delivery_fee);
       return price;
     },
   },
@@ -223,7 +230,7 @@ export default {
 }
 
 .total-holder {
-  width: 250px;
+  width: 300px;
 }
 
 .total {

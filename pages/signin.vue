@@ -56,7 +56,6 @@
               <b-button
                 @click="login()"
                 :disabled="isInvalid()"
-                variant="primary"
                 :class="`cus-btn ${isInvalid() ? 'invalid' : ''}`"
                 >Login</b-button
               >
@@ -141,6 +140,7 @@ body {
   padding: 15px;
   width: 100%;
   /* max-width: 600px; */
+  background: #115598;
   border-radius: 50px;
   margin-top: 10px;
   /* background-color: #115598; */

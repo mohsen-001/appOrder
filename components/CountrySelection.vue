@@ -4,26 +4,56 @@
       <span class="label_text">Country</span>
       <div class="arrow">
         <span class="flag-icon flag-icon-gr"></span>
-        <svg :style="{ opacity: opacityL }" @click="scrollLeft" class="scroll-left mr-4"
-          xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path id="arrow-left"
+        <svg
+          :style="{ opacity: opacityL }"
+          @click="scrollLeft"
+          class="scroll-left mr-4"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path
+            id="arrow-left"
             d="M-2976-1071h-.036a1.493,1.493,0,0,1-.627-.154h0l-.028-.014h-.007l-.023-.012-.015-.009-.014-.008-.021-.013h-.008l-.025-.016h0l-.028-.019h0a1.5,1.5,0,0,1-.128-.1h0l-.02-.017-.009-.008-.017-.016-.011-.01-.017-.016-.011-.01-.008-.008-10.5-10.5a1.5,1.5,0,0,1,0-2.121,1.5,1.5,0,0,1,2.121,0l7.94,7.94V-1093.5a1.5,1.5,0,0,1,1.5-1.5,1.5,1.5,0,0,1,1.5,1.5v17.378l7.94-7.939a1.5,1.5,0,0,1,2.12,0,1.5,1.5,0,0,1,0,2.121l-10.5,10.5a1.506,1.506,0,0,1-.409.291h0l-.025.011-.017.008-.013.006-.027.011h0a1.493,1.493,0,0,1-.491.108H-2976Z"
-            transform="translate(-1071 2987.992) rotate(90)" fill="#115598" />
+            transform="translate(-1071 2987.992) rotate(90)"
+            fill="#115598"
+          />
         </svg>
 
-        <svg :style="{ opacity: opacityR }" @click="scrollRight" class="scroll right" xmlns="http://www.w3.org/2000/svg"
-          width="24" height="24" viewBox="0 0 24 24">
-          <path id="arrow-right"
+        <svg
+          :style="{ opacity: opacityR }"
+          @click="scrollRight"
+          class="scroll right"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path
+            id="arrow-right"
             d="M-2976-1071h-.036a1.493,1.493,0,0,1-.627-.154h0l-.028-.014h-.007l-.023-.012-.015-.009-.014-.008-.021-.013h-.008l-.025-.016h0l-.028-.019h0a1.5,1.5,0,0,1-.128-.1h0l-.02-.017-.009-.008-.017-.016-.011-.01-.017-.016-.011-.01-.008-.008-10.5-10.5a1.5,1.5,0,0,1,0-2.121,1.5,1.5,0,0,1,2.121,0l7.94,7.94V-1093.5a1.5,1.5,0,0,1,1.5-1.5,1.5,1.5,0,0,1,1.5,1.5v17.378l7.94-7.939a1.5,1.5,0,0,1,2.12,0,1.5,1.5,0,0,1,0,2.121l-10.5,10.5a1.506,1.506,0,0,1-.409.291h0l-.025.011-.017.008-.013.006-.027.011h0a1.493,1.493,0,0,1-.491.108H-2976Z"
-            transform="translate(1095 -2963.993) rotate(-90)" fill="#115598" />
+            transform="translate(1095 -2963.993) rotate(-90)"
+            fill="#115598"
+          />
         </svg>
       </div>
     </div>
     <div class="country" @scroll="touchScroll">
       <div class="slide_wrpr">
-        <div @click="selectCountry(item.name)" class="item mr-3" v-for="(item, index) in countries" :key="index">
-          <div :class="` flag ${item.name == selected_country ? 'selected' : ''}`">
-            <span class="flag_img" :class="`fi fi-${item.flag} flag-icon `"></span>
+        <div
+          @click="selectCountry(item.name)"
+          class="item mr-3"
+          v-for="(item, index) in countries"
+          :key="index"
+        >
+          <div
+            :class="` flag ${item.name == selected_country ? 'selected' : ''}`"
+          >
+            <span
+              class="flag_img"
+              :class="`fi fi-${item.flag} flag-icon `"
+            ></span>
             <!-- <img :src="countries[index].flag" alt="image" /> -->
           </div>
           <p :class="item.name == selected_country ? 'country_name' : ''">
@@ -144,6 +174,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 3px solid transparent;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(128, 128, 128, 0.23);
 }
@@ -159,11 +190,11 @@ export default {
 }
 
 .selected.flag {
-  border: 3px solid #007bff;
+  border: 3px solid #115598;
 }
 
 .country_name {
-  color: #007bff;
+  color: #115598;
 }
 
 .item {

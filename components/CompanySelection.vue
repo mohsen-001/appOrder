@@ -164,6 +164,7 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+  border: 2px solid transparent;
   box-shadow: 0 0 20px rgba(128, 128, 128, 0.23);
 }
 
@@ -172,11 +173,11 @@ export default {
 }
 
 .selected.flag {
-  border: 2px solid #007bff;
+  border: 2px solid #115598 !important;
 }
 
 .company_name {
-  color: #007bff;
+  color: #115598 !important;
 }
 
 .item {
