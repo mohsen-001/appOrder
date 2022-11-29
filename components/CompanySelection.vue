@@ -78,6 +78,10 @@ export default {
     };
   },
 
+  mounted(){
+    
+  },
+
   methods: {
     selectcompany(index) {
       this.selected_company = index;

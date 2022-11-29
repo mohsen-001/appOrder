@@ -2,7 +2,7 @@
   <div class="project_container">
     <div class="slide_label d-flex justify-content-between z-10">
       <span class="label_text">Company</span>
-      <div class="arrow">
+      <div class="project_arrow">
         <svg
           :style="{ opacity: opacityL }"
           @click="scrollLeft"
@@ -91,6 +91,27 @@ export default {
     itemValue: String,
     loading: Boolean,
   },
+  data(){
+    return {
+      width: 0,
+    }
+  },
+  created() { window.addEventListener('resize', this.resizeHandler) },
+  destroyed() { window.removeEventListener('resize', this.resizeHandler) },
+  mounted() {
+    this.width = window.innerWidth;
+    let arrow = document.querySelector(".project_arrow");
+    arrow.style.display = 'none';
+  },
+  updated(){
+    let elem = document.querySelector(".product_holder");
+    let elemArr = document.querySelector(".product_arrow");
+    let elemW = elem.scrollWidth;
+    let elemC = elem.clientWidth;
+    if (elemC >= elemW) {
+      elemArr.style.display = 'none';
+    }
+  },
   watch: {
     items: function (item) {
       this.selected_item = null;
@@ -102,10 +123,24 @@ export default {
       opacityL: 0.2,
       opacityR: 1,
       value: null,
+      width: 0,
     };
   },
 
   methods: {
+    resizeHandler() {
+      this.width = window.innerWidth;
+      let elem = document.querySelector(".project");
+      let elemArr = document.querySelector(".project_arrow");
+      let elemW = elem.scrollWidth;
+      let elemC = elem.clientWidth;
+      // console.log(this.width);
+      if (elemC >= elemW) {
+        elemArr.style.display = 'none';
+      }else{
+        elemArr.style.display = 'block';
+      }
+    },
     handleClick(item, index) {
       if (this.selected_item == item.id) {
         this.selected_item = null;
@@ -187,6 +222,7 @@ export default {
   padding-top: 1rem;
   padding-left: 40px;
   scroll-behavior: smooth;
+  width: 100%;
 }
 
 .project .slide_wrpr {

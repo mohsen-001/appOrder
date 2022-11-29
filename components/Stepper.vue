@@ -5,17 +5,13 @@
     </div>
 
     <div class="step" v-for="(step, index) in steppers" :key="index">
-      <div
-        class="circle"
-        :class="` ${
-          index < doneStepper && index != activeStepper ? 'done_stepper' : ''
-        } ${index == activeStepper ? 'active_stepper' : ''}`"
-      >
+      <div class="circle" :class="` ${index < doneStepper && index != activeStepper ? 'done_stepper' : ''
+      } ${index == activeStepper ? 'active_stepper' : ''}`">
         <div class="check_holder"></div>
         <i class="fa-solid fa-check position-absolute"></i>
       </div>
       <span :class="index == activeStepper ? 'active_text' : ''">{{
-        steppers[index]
+          steppers[index]
       }}</span>
     </div>
   </div>
@@ -30,17 +26,33 @@ export default {
       activeStepper: 0,
       doneStepper: 0,
       progress: 0,
+      progressWidth: 0,
     };
   },
 
+  created() { window.addEventListener('resize', this.resizeHandler) },
+
   mounted() {
-    const stepDis = document.querySelectorAll(".step")[1].offsetLeft;
-    this.progress = (stepDis - 40) / 2 + 40;
+    this.progressWidth = document.querySelectorAll(".step")[1].offsetLeft;
+    this.progress = (this.progressWidth - 40) / 2 + 40;
   },
 
   methods: {
+    resizeHandler() {
+      this.progressWidth = document.querySelectorAll(".step")[1].offsetLeft;
+      if (this.activeStepper > 0) {
+        if (this.activeStepper == this.steppers.length - 1) {
+          this.progress = (((this.progressWidth - 40) / 2) * 2 + 40) * (this.activeStepper);
+          console.log('first');
+        } else {
+          this.progress = (((this.progressWidth - 40) / 2) * 2 + 40) * (this.activeStepper) + ((this.progressWidth - 40) / 2 + 40);
+        }
+      } else {
+        this.progress = ((this.progressWidth - 40) / 2 + 40) * (this.activeStepper + 1);
+      }
+    },
+
     nextStep() {
-      const stepDis = document.querySelectorAll(".step")[1].offsetLeft;
       this.activeStepper += 1;
       if (this.doneStepper > this.activeStepper) {
         return;
@@ -51,7 +63,7 @@ export default {
       }
 
       if (this.activeStepper > this.steppers.length - 1) {
-        this.progress = (stepDis - 40) / 2 + 40;
+        this.progress = (this.progressWidth - 40) / 2 + 40;
         this.activeStepper = 0;
         this.doneStepper = 0;
         return;
@@ -60,34 +72,32 @@ export default {
           this.activeStepper >= 1 &&
           this.activeStepper <= this.steppers.length - 2
         ) {
-          this.progress += stepDis;
+          this.progress += this.progressWidth;
         } else {
-          this.progress += stepDis / 2 + 20;
+          this.progress += this.progressWidth / 2 + 20;
         }
       }
     },
 
     prevStep() {
       const progressLine = document.querySelector(".progress_line").offsetWidth;
-      const stepDis = document.querySelectorAll(".step")[1].offsetLeft;
-
       if (this.activeStepper <= 0) {
         return;
       } else {
         this.activeStepper -= 1;
       }
 
-      if (this.progress <= (stepDis - 40) / 2 + 40) {
+      if (this.progress <= (this.progressWidth - 40) / 2 + 40) {
         return;
       } else if (this.doneStepper != this.activeStepper - 1) {
         return;
       } else if (
         this.progress < progressLine &&
-        this.progress > (stepDis - 40) / 2 + 40
+        this.progress > (this.progressWidth - 40) / 2 + 40
       ) {
-        this.progress -= stepDis;
+        this.progress -= this.progressWidth;
       } else {
-        this.progress -= stepDis / 2 + 20;
+        this.progress -= this.progressWidth / 2 + 20;
       }
     },
   },
