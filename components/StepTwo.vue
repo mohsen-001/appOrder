@@ -36,27 +36,7 @@
     <div class="p40 m20">
       <!-- <b-progress :value="12" :max="34" show-progress animated></b-progress> -->
       <b-form-group id="input-group-3" label="City" label-for="input-3">
-        <b-form-input
-          list="input-list"
-          placeholder="Choose city"
-          v-model="form.city.$model"
-          :state="validateState('city')"
-          @blur="form.city.$touch"
-        ></b-form-input>
-        <b-form-datalist
-          id="input-list"
-          :options="cities"
-          class="mb-3"
-          value-field="name"
-          text-field="name"
-        >
-          <template #first>
-            <b-form-select-option :value="null" disabled>
-              Choose City
-            </b-form-select-option>
-          </template></b-form-datalist
-        >
-        <!-- <b-form-select
+        <b-form-select
           id="input-3"
           v-model="form.city.$model"
           type="text"
@@ -69,8 +49,12 @@
           value-field="name"
           text-field="name"
         >
-
-        </b-form-select> -->
+          <template #first>
+            <b-form-select-option :value="null" disabled>
+              Choose City
+            </b-form-select-option>
+          </template>
+        </b-form-select>
         <b-form-invalid-feedback
           >Customer City Is Required</b-form-invalid-feedback
         >
@@ -78,16 +62,15 @@
     </div>
     <div class="p40 m20">
       <b-form-group id="input-group-4" label="Area" label-for="input-4">
-        <b-form-select
+        <!-- <b-form-select
           id="input-4"
-          v-model="form.area.$model"
           type="text"
+          v-model="form.area.$model"
           placeholder="Choose area"
-          required
           :state="validateState('area')"
           @blur="form.area.$touch"
-          :options="areas"
           class="mb-3"
+          :options="areas"
           value-field="name"
           text-field="name"
         >
@@ -96,7 +79,21 @@
               Choose Area
             </b-form-select-option>
           </template>
-        </b-form-select>
+        </b-form-select> -->
+        <b-form-input
+          list="input-list"
+          v-model="form.area.$model"
+          placeholder="Choose area"
+          debounce="500"
+        ></b-form-input>
+        <b-form-datalist
+          id="input-list"
+          class="mb-3"
+          :options="areas"
+          value-field="name"
+          text-field="name"
+        >
+        </b-form-datalist>
         <b-form-invalid-feedback
           >Customer Area Is Required</b-form-invalid-feedback
         >
@@ -142,6 +139,7 @@ export default {
   },
   watch: {
     "form.city.$model": function (item) {
+      console.log(item);
       const city = this.cities.filter(
         (city) => city.name == this.form.city.$model
       );
