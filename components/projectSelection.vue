@@ -91,25 +91,29 @@ export default {
     itemValue: String,
     loading: Boolean,
   },
-  data(){
+  data() {
     return {
       width: 0,
-    }
+    };
   },
-  created() { window.addEventListener('resize', this.resizeHandler) },
-  destroyed() { window.removeEventListener('resize', this.resizeHandler) },
+  created() {
+    window.addEventListener("resize", this.resizeHandler);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.resizeHandler);
+  },
   mounted() {
     this.width = window.innerWidth;
     let arrow = document.querySelector(".project_arrow");
-    arrow.style.display = 'none';
+    arrow.style.display = "none";
   },
-  updated(){
+  updated() {
     let elem = document.querySelector(".product_holder");
     let elemArr = document.querySelector(".product_arrow");
     let elemW = elem.scrollWidth;
     let elemC = elem.clientWidth;
     if (elemC >= elemW) {
-      elemArr.style.display = 'none';
+      elemArr.style.display = "none";
     }
   },
   watch: {
@@ -136,9 +140,9 @@ export default {
       let elemC = elem.clientWidth;
       // console.log(this.width);
       if (elemC >= elemW) {
-        elemArr.style.display = 'none';
-      }else{
-        elemArr.style.display = 'block';
+        elemArr.style.display = "none";
+      } else {
+        elemArr.style.display = "block";
       }
     },
     handleClick(item, index) {

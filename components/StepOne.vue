@@ -62,15 +62,16 @@ export default {
   },
   watch: {
     "form.project.$model": function (item) {
-      this.form.selected_company.$model = this.projects.filter(
+      this.form.selected_company.$model = this.projects.find(
         (item) => item.id == this.form.project.$model
       );
+      console.log(this.form.selected_company.$model);
     },
     "form.country.$model": function (item) {
       if (this.selectedCompany != item && item != "") {
         this.selectedCompany = item;
         this.form.project.$model = null;
-        this.fetchItems({ country: item });
+        this.fetchItems({});
       }
     },
   },

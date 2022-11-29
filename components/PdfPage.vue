@@ -12,18 +12,23 @@
       "
     >
       <div
-        class="
-          invoice-header
-          d-flex
-          justify-content-center
-          align-items-center
-          mb-5
-        "
+        class="invoice-header d-flex justify-content-center align-items-center mb-5"
       >
-        <img :src="form_data.selected_company[0].logo" alt="Logo" />
+        <img
+          :src="
+            form_data.selected_company?.logo
+              ? form_data.selected_company.logo
+              : '/logos/fairy.png'
+          "
+          alt="Logo"
+          width="100px"
+          height="150px"
+        />
         <p class="mt-3">
-          <span class="company-logo text-uppercase">{{
-            form_data.selected_company[0].name
+          <span class="company-logo">{{
+            form_data.selected_company?.name
+              ? form_data.selected_company.name
+              : "company"
           }}</span>
         </p>
       </div>
@@ -32,12 +37,8 @@
         <div class="invoice-details d-flex justify-content-between mb-4">
           <div class="invoiceTo d-flex flex-column">
             <span class="opacity font-weight-bold">Invoice to</span>
-            <span class="text-uppercase font-weight-bold">{{
-              form_data.name
-            }}</span>
-            <span class="font-weight-bold text-uppercase">{{
-              form_data.country
-            }}</span>
+            <span class="font-weight-bold">{{ form_data.name }}</span>
+            <span class="font-weight-bold">{{ form_data.country }}</span>
             <span class="font-weight-light">{{
               form_data.city + " " + form_data.area
             }}</span>
@@ -52,7 +53,7 @@
             </div>
             <div class="d-flex justify-content-between">
               <span class="opacity">DATE</span>
-              <span class="text-uppercase">{{ getDate() }}</span>
+              <span class=" ">{{ getDate() }}</span>
             </div>
           </div>
         </div>
@@ -101,7 +102,7 @@
       </div>
 
       <div class="inovice-footer text-center position-absolute">
-        <div class="text-uppercase">Thank you for choosing us.</div>
+        <div class=" ">Thank you for Choosing us.</div>
         <div class="invoice-contact mt-5">
           <span>{{ form_data.selected_company[0].location }}</span>
           <span>{{ form_data.selected_company[0].email }}</span>
