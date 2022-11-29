@@ -374,6 +374,7 @@ export default {
     arrangeData() {
       const products = {};
       try {
+        products["country"] = this.form.country;
         products["province"] = this.form.city;
         products["area"] = this.form.area;
         products["address"] = this.form.address;
