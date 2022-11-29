@@ -41,8 +41,7 @@
           style="background-color: #115598"
           class="btn w-100"
           v-show="currentStepper == 3"
-          
-          >
+        >
           <b-spinner v-if="isDownloading" small></b-spinner>
           Download PDF
         </b-button>
@@ -128,6 +127,11 @@
                 v-show="currentStepper == 2"
                 ref="step2"
                 :form="$v.form"
+                @setPcodes="
+                  (items) => {
+                    pcodes = items;
+                  }
+                "
               />
               <StepFour
                 v-show="currentStepper == 3"
@@ -158,6 +162,7 @@ import {
   url,
   helpers,
   requiredIf,
+  validator,
 } from "vuelidate/lib/validators";
 import { jsPDF } from "jspdf";
 
@@ -166,6 +171,7 @@ export default {
   watch: {},
   data() {
     return {
+      pcodes: [],
       isLoading: false,
       isDownloading: false,
       checked: true,
@@ -192,15 +198,15 @@ export default {
         area: null,
         address: null,
         products: [
-          {
-            id: 1,
-            product_code: null,
-            product_image: null,
-            product_quantity: 1,
-            product_size: null,
-            product_color: "",
-            product_price: null,
-          },
+          // {
+          //   id: 1,
+          //   product_code: null,
+          //   product_image: null,
+          //   product_quantity: 1,
+          //   product_size: null,
+          //   product_color: "",
+          //   product_price: null,
+          // },
         ],
         price_per_picture: false,
         price: null,
@@ -223,15 +229,15 @@ export default {
         area: null,
         address: null,
         products: [
-          {
-            id: 1,
-            product_code: null,
-            product_image: null,
-            product_quantity: 1,
-            product_size: null,
-            product_color: "",
-            product_price: null,
-          },
+          // {
+          //   id: 1,
+          //   product_code: null,
+          //   product_image: null,
+          //   product_quantity: 1,
+          //   product_size: null,
+          //   product_color: "",
+          //   product_price: null,
+          // },
         ],
         price_per_picture: false,
         price: null,
@@ -275,7 +281,12 @@ export default {
       products: {
         $each: {
           id: {},
-          product_code: { required },
+          product_code: {
+            required,
+            validator: function (val) {
+              return this.pcodes.includes(val);
+            },
+          },
           product_quantity: { required },
           product_size: {},
           product_color: {},
@@ -409,15 +420,15 @@ export default {
     },
 
     download(e) {
-      if(this.isDownloading) return;
+      if (this.isDownloading) return;
       this.isDownloading = true;
       setTimeout(() => {
         this.formInsertion = false;
         this.downloaded = true;
         this.done = true;
-        this.currentStepper++
+        this.currentStepper++;
         e.target.style.display = "none";
-      }, 2000)
+      }, 2000);
       this.$refs.pdfDownload.downnloadPDF();
     },
 

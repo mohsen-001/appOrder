@@ -13,17 +13,14 @@
         />
         <div
           @click="$emit('rmBtn')"
-          class="
-            position-absolute
-            d-flex
-            justify-content-center
-            align-items-center
-          "
+          class="position-absolute d-flex justify-content-center align-items-center"
         >
           <i class="fa-solid fa-xmark"></i>
         </div>
       </div>
-      <span class="mt-2 d-block">{{ title ? title : "product" }}</span>
+      <span class="mt-2 d-block" :style="`color:${title ? '' : '#e23f3055'}`">{{
+        title ? title : "Empty"
+      }}</span>
     </div>
     <div class="p40 m20 position-relative">
       <b-form-group id="input-group-1">
