@@ -86,13 +86,53 @@
       </b-form-group>
     </div>
 
-    <div class="p40 m20">
+    <div class="p40 m20 d-flex justify-content-between">
       <b-form-checkbox switch size="lg" v-model="form.price_per_picture.$model"
         >Price Per Picture</b-form-checkbox
       >
+
+      <div class="product_arrow">
+        <span class="flag-icon flag-icon-gr"></span>
+        <svg
+          :style="{ opacity: opacityL }"
+          @click="scrollLeft"
+          class="scroll-left mr-4"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path
+            id="arrow-left"
+            d="M-2976-1071h-.036a1.493,1.493,0,0,1-.627-.154h0l-.028-.014h-.007l-.023-.012-.015-.009-.014-.008-.021-.013h-.008l-.025-.016h0l-.028-.019h0a1.5,1.5,0,0,1-.128-.1h0l-.02-.017-.009-.008-.017-.016-.011-.01-.017-.016-.011-.01-.008-.008-10.5-10.5a1.5,1.5,0,0,1,0-2.121,1.5,1.5,0,0,1,2.121,0l7.94,7.94V-1093.5a1.5,1.5,0,0,1,1.5-1.5,1.5,1.5,0,0,1,1.5,1.5v17.378l7.94-7.939a1.5,1.5,0,0,1,2.12,0,1.5,1.5,0,0,1,0,2.121l-10.5,10.5a1.506,1.506,0,0,1-.409.291h0l-.025.011-.017.008-.013.006-.027.011h0a1.493,1.493,0,0,1-.491.108H-2976Z"
+            transform="translate(-1071 2987.992) rotate(90)"
+            fill="#115598"
+          />
+        </svg>
+
+        <svg
+          :style="{ opacity: opacityR }"
+          @click="scrollRight"
+          class="scroll right"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path
+            id="arrow-right"
+            d="M-2976-1071h-.036a1.493,1.493,0,0,1-.627-.154h0l-.028-.014h-.007l-.023-.012-.015-.009-.014-.008-.021-.013h-.008l-.025-.016h0l-.028-.019h0a1.5,1.5,0,0,1-.128-.1h0l-.02-.017-.009-.008-.017-.016-.011-.01-.017-.016-.011-.01-.008-.008-10.5-10.5a1.5,1.5,0,0,1,0-2.121,1.5,1.5,0,0,1,2.121,0l7.94,7.94V-1093.5a1.5,1.5,0,0,1,1.5-1.5,1.5,1.5,0,0,1,1.5,1.5v17.378l7.94-7.939a1.5,1.5,0,0,1,2.12,0,1.5,1.5,0,0,1,0,2.121l-10.5,10.5a1.506,1.506,0,0,1-.409.291h0l-.025.011-.017.008-.013.006-.027.011h0a1.493,1.493,0,0,1-.491.108H-2976Z"
+            transform="translate(1095 -2963.993) rotate(-90)"
+            fill="#115598"
+          />
+        </svg>
+      </div>
     </div>
 
-    <div class="m20 product_holder d-flex justify-content-start">
+    <div
+      class="m20 product_holder d-flex justify-content-start"
+      @scroll="touchScroll"
+    >
       <div class="wrapper">
         <Product
           @click="onActiveProduct(index)"
@@ -234,10 +274,22 @@ export default {
         color: null,
         size: null,
       },
+      opacityL: 0.2,
+      opacityR: 1,
+      width: 0,
     };
   },
   created() {
     this.getProducts();
+    window.addEventListener("resize", this.resizeHandler);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.resizeHandler);
+  },
+  mounted() {
+    this.width = window.innerWidth;
+    let arrow = document.querySelector(".product_arrow");
+    arrow.style.display = "none";
   },
   computed: {
     totalPrice() {
@@ -269,6 +321,58 @@ export default {
     },
   },
   methods: {
+    resizeHandler() {
+      this.width = window.innerWidth;
+      let elem = document.querySelector(".product_holder");
+      let elemArr = document.querySelector(".product_arrow");
+      let elemW = elem.scrollWidth;
+      let elemC = elem.clientWidth;
+      // console.log(this.width);
+      if (elemC >= elemW) {
+        elemArr.style.display = "none";
+      } else {
+        elemArr.style.display = "block";
+      }
+    },
+    scrollRight() {
+      let elem = document.querySelector(".product_holder");
+      let elemW = elem.scrollWidth;
+      let scrollBottom = elemW - elem.scrollLeft - elem.clientWidth;
+      elem.scrollLeft += 180;
+      this.opacityL = 1;
+      if (scrollBottom <= 180) {
+        this.opacityR = 0.2;
+        return;
+      }
+    },
+
+    scrollLeft() {
+      let elem = document.querySelector(".product_holder");
+      let elemW = elem.scrollWidth;
+      let scrollBottom = elemW - elem.scrollLeft - elem.clientWidth;
+      elem.scrollLeft -= 180;
+      this.opacityR = 1;
+      if (elem.scrollLeft <= 180) {
+        this.opacityL = 0.2;
+        return;
+      }
+    },
+
+    touchScroll() {
+      let elem = document.querySelector(".product_holder");
+      let elemW = elem.scrollWidth;
+      let scrollBottom = elemW - elem.scrollLeft - elem.clientWidth;
+
+      this.opacityL = 1;
+      this.opacityR = 1;
+
+      if (scrollBottom <= 0) {
+        this.opacityR = 0.2;
+      } else if (elem.scrollLeft <= 0) {
+        this.opacityL = 0.2;
+      }
+    },
+
     async getProducts() {
       try {
         // https://api.teebalhoor.net/public/api/projects
@@ -325,8 +429,18 @@ export default {
 
       await callback();
       let elem = document.querySelector(".product_holder");
+      let elemArr = document.querySelector(".product_arrow");
       let elemW = elem.scrollWidth;
+      let elemC = elem.clientWidth;
       elem.scrollTo(elemW, 0);
+      this.width = window.innerWidth;
+
+      // console.log(this.width);
+      if (elemC >= elemW) {
+        elemArr.style.display = "none";
+      } else {
+        elemArr.style.display = "block";
+      }
     },
 
     checkInvalidProductForm() {
@@ -429,6 +543,10 @@ export default {
 .v-enter-form,
 .v-leave-to {
   opacity: 0;
+}
+
+.product_arrow svg {
+  width: 15px;
 }
 
 /* .custm .add_btn {

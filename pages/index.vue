@@ -538,6 +538,7 @@ body {
   left: 40px;
   transform: translateY(-50%);
   width: 20px;
+  cursor: pointer;
 }
 
 #containerOne {

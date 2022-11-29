@@ -53,7 +53,7 @@
                 >
                 </b-form-input>
                 <div @click="showPassword" class="eye_icon">
-                  <i :class="`fa-regular fa-eye${showPass? '-slash':''}`"></i>
+                  <i :class="`fa-regular fa-eye${showPass? '':'-slash'}`"></i>
                 </div>
               </b-form-group>
               <b-button
