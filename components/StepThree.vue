@@ -151,9 +151,7 @@
           @blur="form.price.$touch"
         >
         </b-form-input>
-        <b-form-invalid-feedback
-          >Total Price Is Required</b-form-invalid-feedback
-        >
+        <b-form-invalid-feedback>Invalid Total Price </b-form-invalid-feedback>
       </b-form-group>
     </div>
     <div class="p40 m20">
@@ -215,7 +213,7 @@
         >
         </b-form-textarea>
         <b-form-invalid-feedback
-          >Note Must Be 5 Character</b-form-invalid-feedback
+          >Note Must Be 2 Character</b-form-invalid-feedback
         >
       </b-form-group>
     </div>
