@@ -36,7 +36,27 @@
     <div class="p40 m20">
       <!-- <b-progress :value="12" :max="34" show-progress animated></b-progress> -->
       <b-form-group id="input-group-3" label="City" label-for="input-3">
-        <b-form-select
+        <b-form-input
+          list="input-list"
+          placeholder="Choose city"
+          v-model="form.city.$model"
+          :state="validateState('city')"
+          @blur="form.city.$touch"
+        ></b-form-input>
+        <b-form-datalist
+          id="input-list"
+          :options="cities"
+          class="mb-3"
+          value-field="name"
+          text-field="name"
+        >
+          <template #first>
+            <b-form-select-option :value="null" disabled>
+              Choose City
+            </b-form-select-option>
+          </template></b-form-datalist
+        >
+        <!-- <b-form-select
           id="input-3"
           v-model="form.city.$model"
           type="text"
@@ -49,12 +69,8 @@
           value-field="name"
           text-field="name"
         >
-          <template #first>
-            <b-form-select-option :value="null" disabled>
-              Choose City
-            </b-form-select-option>
-          </template>
-        </b-form-select>
+
+        </b-form-select> -->
         <b-form-invalid-feedback
           >Customer City Is Required</b-form-invalid-feedback
         >
