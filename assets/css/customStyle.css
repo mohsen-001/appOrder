@@ -117,10 +117,10 @@
   border: none;
 }
 
-.table_holder table tr td:nth-child(2) {
+/* .table_holder table tr td:nth-child(2) {
   width: 400px;
   
-}
+} */
 
 .table_holder table thead th{
   background-color: #80CDCF !important;
