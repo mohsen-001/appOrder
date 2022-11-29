@@ -1,7 +1,7 @@
 <template>
-  <div v-if="true || form_data.selected_company" >
+  <div v-if="form_data.selected_company" >
     <div
-      v-if="true || form_data.selected_company.length > 0"
+      v-if="form_data.selected_company.length > 0"
       class="
         fullHeight
         d-flex
@@ -20,11 +20,11 @@
           mb-5
         "
       >
-        <!-- <img :src="form_data.selected_company[0].logo" alt="Logo" /> -->
+        <img :src="form_data.selected_company[0].logo" alt="Logo" />
         <p class="mt-3">
-          <!-- <span class="company-logo text-uppercase">{{
+          <span class="company-logo text-uppercase">{{
             form_data.selected_company[0].name
-          }}</span> -->
+          }}</span>
         </p>
       </div>
 
@@ -103,9 +103,9 @@
       <div class="inovice-footer text-center position-absolute">
         <div class="text-uppercase">Thank you for choosing us.</div>
         <div class="invoice-contact mt-5">
-          <!-- <span>{{ form_data.selected_company[0].location }}</span>
+          <span>{{ form_data.selected_company[0].location }}</span>
           <span>{{ form_data.selected_company[0].email }}</span>
-          <span>{{ form_data.selected_company[0].phone }}</span> -->
+          <span>{{ form_data.selected_company[0].phone }}</span>
         </div>
       </div>
     </div>

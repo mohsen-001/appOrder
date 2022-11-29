@@ -333,7 +333,7 @@ export default {
       this.arrangeData();
       let isValid = this.$refs["step" + this.currentStepper].validate();
 
-      if (true) {
+      if (isValid) {
         if (this.currentStepper == 3) {
           this.currentStepper = 0;
           this.$refs.stepper.nextStep();
@@ -348,8 +348,6 @@ export default {
     },
 
     async submit() {
-      this.nextStep();
-      return;
       this.isLoading = true;
       try {
         let isValid = this.$refs["step" + this.currentStepper].validate();
@@ -503,7 +501,7 @@ body {
 
 .invoice_page_hide {
   position: fixed !important;
-  top: 0 !important;
+  top: 2000 !important;
   bottom: 0;
   z-index: 20;
 }

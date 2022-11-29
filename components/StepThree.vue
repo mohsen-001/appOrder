@@ -425,7 +425,7 @@ export default {
       );
     },
     async addProduct(callback) {
-      // if (!this.checkValidation()) return;
+      if (!this.checkValidation()) return;
 
       await callback();
       let elem = document.querySelector(".product_holder");
