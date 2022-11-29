@@ -348,8 +348,6 @@ export default {
     },
 
     async submit() {
-      this.nextStep();
-      return;
       this.isLoading = true;
       try {
         let isValid = this.$refs["step" + this.currentStepper].validate();

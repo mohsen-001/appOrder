@@ -71,7 +71,7 @@ export default {
       if (this.selectedCompany != item && item != "") {
         this.selectedCompany = item;
         this.form.project.$model = null;
-        this.fetchItems({ country: item });
+        this.fetchItems({});
       }
     },
   },
