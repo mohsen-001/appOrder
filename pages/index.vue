@@ -41,7 +41,10 @@
           style="background-color: #115598"
           class="btn w-100"
           v-show="currentStepper == 3"
-          >Download PDF
+          
+          >
+          <b-spinner v-if="isDownloading" small></b-spinner>
+          Download PDF
         </b-button>
         <b-button
           @click="backHome"
@@ -164,6 +167,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      isDownloading: false,
       checked: true,
 
       log_out: "",
@@ -316,9 +320,9 @@ export default {
     },
     nextStep() {
       this.arrangeData();
-      let isvlaid = this.$refs["step" + this.currentStepper].validate();
+      let isValid = this.$refs["step" + this.currentStepper].validate();
 
-      if (isvlaid) {
+      if (isValid) {
         if (this.currentStepper == 3) {
           this.currentStepper = 0;
           this.$refs.stepper.nextStep();
@@ -335,8 +339,8 @@ export default {
     async submit() {
       this.isLoading = true;
       try {
-        let isvlaid = this.$refs["step" + this.currentStepper].validate();
-        if (!isvlaid) {
+        let isValid = this.$refs["step" + this.currentStepper].validate();
+        if (!isValid) {
           this.isLoading = false;
           this.makeToast("danger", "Please Fill All Required Feilds");
           return;
@@ -403,11 +407,15 @@ export default {
     },
 
     download(e) {
-      this.formInsertion = false;
-      this.downloaded = true;
-      this.done = true;
-      this.currentStepper++;
-      e.target.style.display = "none";
+      if(this.isDownloading) return;
+      this.isDownloading = true;
+      setTimeout(() => {
+        this.formInsertion = false;
+        this.downloaded = true;
+        this.done = true;
+        this.currentStepper++
+        e.target.style.display = "none";
+      }, 2000)
       this.$refs.pdfDownload.downnloadPDF();
     },
 
