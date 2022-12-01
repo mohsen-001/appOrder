@@ -11,7 +11,7 @@ export default {
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "Smart Friqi Order App",
+    title: "Order App",
     htmlAttrs: {
       lang: "en",
     },
@@ -25,7 +25,7 @@ export default {
       {
         rel: "icon",
         type: "image/x-icon",
-        href: "/favicon.ico",
+        href: "/icon.png",
         rel: "stylesheet",
         type: "text/css",
         href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css",
