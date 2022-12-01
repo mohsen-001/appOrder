@@ -1,15 +1,7 @@
 <template>
-  <div v-if="form_data.selected_company" >
+  <div>
     <div
-      v-if="form_data.selected_company.length > 0"
-      class="
-        fullHeight
-        d-flex
-        justify-content-start
-        align-items-center
-        p-5
-        position-relative
-      "
+      class="fullHeight d-flex justify-content-start align-items-center p-5 position-relative"
     >
       <div
         class="invoice-header d-flex justify-content-center align-items-center mb-5"
@@ -104,9 +96,9 @@
       <div class="inovice-footer text-center position-absolute">
         <div class=" ">Thank you for Choosing us.</div>
         <div class="invoice-contact mt-5">
-          <span>{{ form_data.selected_company[0].location }}</span>
-          <span>{{ form_data.selected_company[0].email }}</span>
-          <span>{{ form_data.selected_company[0].phone }}</span>
+          <span>{{ form_data.selected_company?.location }}</span>
+          <span>{{ form_data.selected_company?.email }}</span>
+          <span>{{ form_data.selected_company?.phone }}</span>
         </div>
       </div>
     </div>
