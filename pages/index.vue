@@ -257,6 +257,10 @@ export default {
         required: requiredIf(function (value) {
           return !this.form.no_ad_order;
         }),
+        validator: function (val) {
+          if (this.form.no_ad_order) return true;
+          return val == null ? false : val.includes("bc=");
+        },
       },
       name: {
         required,
@@ -264,7 +268,7 @@ export default {
       },
       number: {
         required,
-        phoneNumber: helpers.regex("phoneNumber", /^[\d()+]{7,14}$/),
+        phoneNumber: helpers.regex("phoneNumber", /^[\d()+]{9,14}$/),
       },
       city: {
         required,
@@ -362,7 +366,7 @@ export default {
         if (data.data.status_type == "success") {
           this.form.invoice_number = data.data.data;
           this.makeToast("success", "Your Order Successfully added");
-          console.log(data.data.data, data.data);
+
           this.nextStep();
         } else this.makeToast("danger", "Something went wrong");
       } catch (error) {
@@ -469,7 +473,6 @@ export default {
     },
 
     startForm() {
-      // console.log('hey');
       this.startInsert = false;
       this.formInsertion = true;
       this.showActionBtn = true;
@@ -491,6 +494,9 @@ export default {
 body {
   font-family: "Poppins", sans-serif;
 }
+.btn {
+  padding: 20px;
+}
 
 #dropdown-right {
   position: absolute;
@@ -502,7 +508,7 @@ body {
 
 .invoice_page_hide {
   position: fixed !important;
-  top: 2000 !important;
+  top: 2000px !important;
   bottom: 0;
   z-index: 20;
 }

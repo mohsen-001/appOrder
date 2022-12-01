@@ -61,7 +61,16 @@
           <div
             class="flag p-5"
             :class="item.id == selected_item ? 'selected' : ''"
+            style="position: relative"
           >
+            <b-avatar
+              variant="primary"
+              class="selected-avatar"
+              :size="18"
+              v-if="item.id == selected_item"
+            >
+              <i class="fa-solid fa-check small-icon" samll></i
+            ></b-avatar>
             <img
               class="flag-icon"
               :src="
@@ -301,5 +310,20 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 15px;
+}
+.small-icon {
+  /* width: 5px;
+  height: 10px; */
+  font-weight: 100px;
+  font-size: 0.95rem;
+}
+.selected-avatar {
+  position: absolute;
+  top: 8px;
+  z-index: 100;
+  text-align: center;
+  right: 5px;
+
+  border: 1px solid white;
 }
 </style>

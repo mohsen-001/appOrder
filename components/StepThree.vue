@@ -199,16 +199,23 @@
     <Transition>
       <div class="p40 m20 if_input" v-show="form.delay_order.$model">
         <b-form-group id="input-group-5" label="Date" label-for="input-5">
-          <b-form-input
-            id="input-5"
-            type="date"
-            placeholder="Choose"
-            required
+          <!-- <b-form-input id="input-5" type="date" placeholder="Choose" required>
+          </b-form-input> -->
+          <b-form-datepicker
+            size="lg"
+            class="date-picker"
+            id="datepicker-dateformat2"
+            :date-format-options="{
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+            }"
+            locale="en"
             :state="validateState('delay')"
             v-model="form.delay.$model"
             @blur="form.delay.$touch"
-          >
-          </b-form-input>
+            :min="new Date()"
+          ></b-form-datepicker>
           <b-form-invalid-feedback
             >Delay Date Is Required</b-form-invalid-feedback
           >
@@ -535,6 +542,15 @@ export default {
 </script>
 
 <style scoped>
+.btn {
+  padding: unset !important;
+}
+
+.date-picker {
+  width: 100%;
+  height: 50px;
+  border-radius: 50px;
+}
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s ease;

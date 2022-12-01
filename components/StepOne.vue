@@ -45,7 +45,7 @@
           @blur="form.landing_link.$touch"
         >
         </b-form-input>
-        <b-form-invalid-feedback>Invalid link url</b-form-invalid-feedback>
+        <b-form-invalid-feedback>{{ landingError }}</b-form-invalid-feedback>
       </b-form-group>
     </div>
   </div>
@@ -83,6 +83,7 @@ export default {
       isFetchingProjects: false, //
       is_touched: false, //
       selectedCompany: null,
+      landingError: "Invalid link url",
     };
   },
   created() {
@@ -91,6 +92,10 @@ export default {
   methods: {
     validateState(name) {
       const { $dirty, $error } = this.form[name];
+
+      if ($dirty && !this.form[name]?.validator && this.form[name]?.required)
+        this.landingError = "Landing Link Must have bc param";
+      else this.landingError = "Invalid link url";
       return $dirty ? !$error : null;
     },
     async fetchItems(param) {

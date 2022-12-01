@@ -47,20 +47,24 @@
                 <b-form-input
                   id="input-2"
                   v-model="form.password"
-                  :type="showPass?'text':'password'"
+                  :type="showPass ? 'text' : 'password'"
                   placeholder="Password"
                   required
                 >
                 </b-form-input>
                 <div @click="showPassword" class="eye_icon">
-                  <i :class="`fa-regular fa-eye${showPass? '':'-slash'}`"></i>
+                  <i
+                    :class="`fa-regular fa-eye${showPass ? '' : '-slash'}`"
+                  ></i>
                 </div>
               </b-form-group>
               <b-button
                 @click="login()"
                 :disabled="isInvalid()"
                 :class="`cus-btn ${isInvalid() ? 'invalid' : ''}`"
-                >Login</b-button
+              >
+                <b-spinner v-if="isLoading" small></b-spinner>
+                Login</b-button
               >
             </form>
           </div>
@@ -76,6 +80,7 @@ export default {
   data() {
     return {
       showPass: false,
+      isLoading: false,
       form: {
         username: "",
         password: "",
@@ -87,6 +92,7 @@ export default {
       return !(this.form.username && this.form.password);
     },
     async login() {
+      this.isLoading = true;
       await this.$auth
         .loginWith("local", {
           data: {
@@ -98,11 +104,13 @@ export default {
           },
         })
         .then((res) => {
+          this.isLoading = false;
           this.makeToast("success", "successfully loggined");
           this.$router.push("/");
           console.log("login successfully");
         })
         .catch(async (err) => {
+          this.isLoading = false;
           this.makeToast("danger", err.response.data.message);
           console.log("eerror", err.response.data.message);
         });
@@ -117,9 +125,9 @@ export default {
       });
     },
 
-    showPassword(){
+    showPassword() {
       this.showPass = !this.showPass;
-    }
+    },
   },
 };
 </script>
@@ -130,8 +138,6 @@ export default {
 } */
 
 /* hey */
-
-
 
 body {
   font-family: "Poppins", sans-serif;
