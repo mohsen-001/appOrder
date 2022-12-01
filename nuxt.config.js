@@ -149,7 +149,7 @@ export default {
     },
     manifest: {
       name: "Smart Friqi Order App",
-      short_name: "SmartFriqi App",
+      short_name: "Order App",
       lang: "en",
     },
   },
