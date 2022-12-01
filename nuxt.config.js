@@ -2,7 +2,7 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
   server: {
-    // port: 3007,
+    port: 3007,
     // host: "192.168.3.26",
   },
 
@@ -11,7 +11,7 @@ export default {
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "Smart Friqi Order App",
+    title: "Order App",
     htmlAttrs: {
       lang: "en",
     },
@@ -25,7 +25,7 @@ export default {
       {
         rel: "icon",
         type: "image/x-icon",
-        href: "/favicon.ico",
+        href: "/icon.png",
         rel: "stylesheet",
         type: "text/css",
         href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css",
@@ -48,8 +48,8 @@ export default {
   ],
 
   axios: {
-    baseURL: "http://localhost:8000/api/v1",
-    // baseURL: "https://clientbackend.oredoh.org/api/v1",
+    // baseURL: "http://localhost:8000/api/v1",
+    baseURL: "https://clientbackend.oredoh.org/api/v1",
     // baseURL: "https://api.teebalhoor.net/public",
     credentials: true,
     // proxy: true,
@@ -149,7 +149,7 @@ export default {
     },
     manifest: {
       name: "Smart Friqi Order App",
-      short_name: "SmartFriqi App",
+      short_name: "Order App",
       lang: "en",
     },
   },
