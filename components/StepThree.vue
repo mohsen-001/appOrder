@@ -202,6 +202,7 @@
           <!-- <b-form-input id="input-5" type="date" placeholder="Choose" required>
           </b-form-input> -->
           <b-form-datepicker
+            style="padding-right: unset !important"
             size="lg"
             class="date-picker"
             id="datepicker-dateformat2"
@@ -254,7 +255,10 @@ export default {
       pcode: {
         required,
         validator: function (val) {
-          return this.pcodes.includes(val);
+          let existPcodes = this.form.$model.products.map(
+            (row) => row?.product_code
+          );
+          return this.pcodes.includes(val) && !existPcodes.includes(val);
         },
       },
       color: {},
@@ -395,7 +399,10 @@ export default {
     },
     validateproduct(name) {
       let { $dirty, $error } = this.$v.productFrom[name];
-
+      //       let exist = this.invalidIndexs.filter(
+      //               (index) => index != key
+      //             );
+      // if()
       return $dirty ? !$error : null;
     },
     validateState(name) {
@@ -403,7 +410,7 @@ export default {
       return $dirty ? !$error : null;
     },
     resetProductForm() {
-      this.productFrom = this.emptyProductForm;
+      this.productFrom = { color: null, pcode: null, size: null };
 
       this.activeIndex = null;
       this.$v.productFrom.$reset();
@@ -432,7 +439,7 @@ export default {
       );
     },
     async addProduct(callback) {
-      if (!this.checkValidation()) return;
+      if (this.checkInvalidProductForm()) return;
 
       await callback();
       let elem = document.querySelector(".product_holder");

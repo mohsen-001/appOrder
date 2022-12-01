@@ -290,6 +290,14 @@ export default {
             validator: function (val) {
               return this.pcodes.includes(val);
             },
+            // isUnique: function (value) {
+            //   let existPcodes = this.form.products.map(
+            //     (row) => row?.product_code
+            //   );
+            //   if (value === "") return true;
+            //   if (existPcodes.length > 0) return !existPcodes.includes(value);
+            //   return false;
+            // },
           },
           product_quantity: { required },
           product_size: {},
