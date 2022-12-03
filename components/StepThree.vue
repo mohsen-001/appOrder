@@ -288,10 +288,10 @@ export default {
       opacityL: 0.2,
       opacityR: 1,
       width: 0,
+      productNames: "",
     };
   },
   created() {
-    this.getProducts();
     window.addEventListener("resize", this.resizeHandler);
   },
   destroyed() {
@@ -329,6 +329,29 @@ export default {
       // this.from.total_price.$model = price;
       return price;
       //  return exist ? true : false;
+    },
+  },
+
+  watch: {
+    "form.project.$model": function (item) {
+      console.log(this.form.selected_company.$model);
+      if (this.form.selected_company.$model != null) {
+        this.getProducts({
+          country: this.form.country.$model,
+          company:
+            this.form.$model.selected_company?.api_name ||
+            this.form.$model.selected_company.name,
+        });
+      }
+    },
+    "form.products.$model": function (item) {
+      let productsCodes = this.form.$model.products.map(
+        (product) => product?.product_code
+      );
+      let products = this.products?.filter((row) =>
+        productsCodes.includes(row?.pcode)
+      );
+      this.form.$model.note = products.map((row) => row?.name).toString();
     },
   },
   methods: {
@@ -384,11 +407,13 @@ export default {
       }
     },
 
-    async getProducts() {
+    async getProducts(body) {
       try {
-        // https://api.teebalhoor.net/public/api/projects
-        // const url = `https://api.teebalhoor.net/public/products`;
-        const { data } = await this.$axios.get("/crm/get-products");
+        // const { data } = await this.$axios.get("/crm/get-products");
+        const { data } = await this.$axios.post(
+          "orders/get-company-products",
+          body
+        );
 
         this.products = data;
         this.pcodes = this.products.map((row) => row.pcode);

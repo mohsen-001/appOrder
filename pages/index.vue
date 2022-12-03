@@ -219,7 +219,7 @@ export default {
       reset_form: {
         selected_company: null,
         invoice_number: null,
-        country: null,
+        country: "United Arab Emirates",
         project: null,
         source: 7,
         no_ad_order: false,
