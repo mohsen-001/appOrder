@@ -405,8 +405,9 @@ export default {
           : [];
         products["delay"] = this.form.delay;
         products["project"] = this.form.project;
-        products["ad_id"] = "ashraffrotan";
-        // this.$auth.user.username;
+        products["ad_id"] = this.$auth.user.username;
+        // "ashraffrotan";
+
         products["phone"] = this.form.number;
         products["price"] = parseFloat(this.$refs["step2"].totalPrice);
         products["status"] = this.form.delay_order == true ? 5 : 1;
