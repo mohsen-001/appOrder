@@ -36,6 +36,7 @@
                 formatter($v.productFrom.pcode.$model, 'product_code')
               "
               debounce="500"
+              :readonly="activeIndex ? true : false"
             ></b-form-input>
 
             <b-form-datalist
@@ -227,6 +228,8 @@
     <div class="p40 m20">
       <b-form-group id="input-group-6" label="Order Note" label-for="textarea">
         <b-form-textarea
+          @onkeydown="getDeletedChar(event, this)"
+          @keyup.delete="getDeletedChar"
           id="textarea"
           placeholder="Order note"
           rows="5"
@@ -288,7 +291,7 @@ export default {
       opacityL: 0.2,
       opacityR: 1,
       width: 0,
-      productNames: "",
+      productNames: [],
     };
   },
   created() {
@@ -338,23 +341,48 @@ export default {
       if (this.form.selected_company.$model != null) {
         this.getProducts({
           country: this.form.country.$model,
-          company:
-            this.form.$model.selected_company?.api_name ||
-            this.form.$model.selected_company.name,
+          company: this.form.$model.selected_company?.id,
+          companyName: this.form.$model.selected_company?.name,
         });
       }
     },
     "form.products.$model": function (item) {
-      let productsCodes = this.form.$model.products.map(
-        (product) => product?.product_code
-      );
-      let products = this.products?.filter((row) =>
-        productsCodes.includes(row?.pcode)
-      );
-      this.form.$model.note = products.map((row) => row?.name).toString();
+      if (this.products.length > 0) {
+        let productsCodes = this.form.$model.products.map(
+          (product) => product?.product_code
+        );
+        let products = this.products?.filter((row) =>
+          productsCodes.includes(row?.pcode)
+        );
+        products = products.map((row) => row?.name);
+        let diff = this.getDifference(products, this.productNames);
+        let note = this.form.$model.note;
+        if (note == null || note === "") {
+          this.form.$model.note = products.toString();
+        } else {
+          if (diff.length == 0) {
+            diff = this.getDifference(this.productNames, products);
+
+            note = note.split(",");
+            note = note.filter((row) => !diff.includes(row));
+            note = note.map((row) => row.replace(diff[0], ""));
+            this.form.$model.note = note.toString();
+          } else {
+            this.form.$model.note =
+              this.form.$model.note + diff.toString() + ",";
+          }
+        }
+
+        this.productNames = products;
+      }
     },
   },
   methods: {
+    getDifference(a, b) {
+      return a.filter((element) => {
+        return !b.includes(element);
+      });
+    },
     resizeHandler() {
       this.width = window.innerWidth;
       let elem = document.querySelector(".product_holder");
@@ -569,6 +597,7 @@ export default {
         autoHideDelay: "1000",
       });
     },
+    getDeletedChar(e) {},
   },
 };
 </script>
