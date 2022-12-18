@@ -343,7 +343,6 @@ export default {
           country: this.form.country.$model,
           company: this.form.$model.selected_company?.id,
           companyName: this.form.$model.selected_company?.name,
-          api_name: this.form.$model.selected_company?.api_name,
         });
       }
     },
